@@ -1,6 +1,6 @@
 {
-  "name": "tsuml",
-  "version": "0.0.1-alpha.8",
+  "name": "tsuml2",
+  "version": "0.0.1",
   "description": "UML diagrams for TypeScript",
   "main": "dist/lib/index.js",
   "bin": {
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remojansen/TsUML.git"
+    "url": "git+https://github.com/demike/TsUML2.git"
   },
   "keywords": [
     "typescript",
@@ -36,10 +36,10 @@
     "generator",
     "class"
   ],
-  "author": "Remo H. Jansen",
+  "author": "Michael Derfler (based on work of Remo H. Jansen)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/remojansen/TsUML/issues"
+    "url": "https://github.com/demike/TsUML2/issues"
   },
-  "homepage": "https://github.com/remojansen/TsUML#readme"
+  "homepage": "https://github.com/demike/TsUML2#readme"
 }

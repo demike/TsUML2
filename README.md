@@ -1,25 +1,31 @@
 <img src="/assets/logo.png" width="150" align="right" />
 
-# TsUML
+# TsUML2
 
 :construction: WORK IN PROGRESS :construction:
 
-Generate UML diagram for your TypeScript applications powered by https://yuml.me/
+Generate UML diagram for your TypeScript applications powered by nomnoml
+TsUML2 works offline 
 
-![](/assets/cli-preview.gif)
+
 
 ## Installation
 
 ```sh
-npm install -g tsuml
+npm install -g tsuml2
 ```
 
 ## Usage
 
 ```
-tsuml --glob ./src/**/*.ts
+tsuml2 --glob ./src/**/*.ts 
 ```
 
-The diagram generated for the code under the [demo folder](https://github.com/remojansen/TsUML/tree/master/src/demo) looks as follows:
+### Arguments
+ - --glob ./src/**/*ts
+ - -o result.svg
 
-![](/assets/uml_diagram.svg)
+
+The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
+
+![](/assets/uml_diagram.svg?sanitize=true)
