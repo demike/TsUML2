@@ -1,34 +1,42 @@
 import { PropertyDetails, MethodDetails} from "./interfaces";
+import { EmitterSettings } from "./emitter-settings";
 
 export const templates = {
     composition: "+->",
-    implementsOrExtends: (abstraction: string, implementation: string) => {
+    implements: (interf: string, implementation: string) => {
         return (
-        `${templates.plainClassOrInterface(abstraction)}` +
-        `^-${templates.plainClassOrInterface(implementation)}`
+        `${templates.plainClassOrInterface(implementation)}--:>${templates.plainClassOrInterface(interf)}`
         );
     },
+    extends: (base: string, derived: string) => {
+        return `${templates.plainClassOrInterface(derived)}-:>${templates.plainClassOrInterface(base)}`;
+    },
     plainClassOrInterface: (name: string) => `[${name}]`,
-    colorClass: (name: string) => `[${name}{bg:skyblue}]`,
-    colorInterface: (name: string) => `[${name}{bg:palegreen}]`,
+    colorClass: (name: string) => `[${name}]`,
+    colorInterface: (name: string) => `[${name}]`,
     class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
-        const pTemplate = (property: PropertyDetails) => `${property.name};`;
-        const mTemplate = (method: MethodDetails) => `${method.name}();`;
-        return (
-        `${templates.colorClass(name)}` +
-        `[${name}|${props.map(pTemplate).join("")}|${methods.map(mTemplate).join("")}]`
-        );
+        return `[${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
     },
     interface: (
         name: string,
         props: PropertyDetails[],
         methods: MethodDetails[]
     ) => {
-        const pTemplate = (property: PropertyDetails) => `${property.name};`;
-        const mTemplate = (method: MethodDetails) => `${method.name}();`;
-        return (
-        `${templates.colorInterface(name)}` +
-        `[${name}|${props.map(pTemplate).join("")}|${methods.map(mTemplate).join("")}]`
-        );
+        return `[<interface>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
     }
 };
+
+
+function methodTemplate(method: MethodDetails): string {
+    if (method.returnType && EmitterSettings.emitPropertyTypes) {
+        return method.name + "(): " + method.returnType
+    }
+    return method.name + '()';
+} 
+
+function propertyTemplate(property: PropertyDetails): string {
+    if (property.type && EmitterSettings.emitPropertyTypes) {
+        return property.name + ": " + property.type;
+    }
+    return property.name;
+}

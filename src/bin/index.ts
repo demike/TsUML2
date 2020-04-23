@@ -2,7 +2,8 @@
 
 import chalk from "chalk";
 import * as yargs from "yargs";
-import { getUrl } from "../core";
+import { getSVG } from "../core";
+import * as fs from 'fs';
 
 (async () => {
 
@@ -14,16 +15,22 @@ import { getUrl } from "../core";
 
         const pattern = yargs.argv.glob;
 
+        const outFileName = yargs.argv.o || 'out.svg'
+
         if (!pattern) {
             console.log(chalk.redBright("Missing --glob"));
         } else {
-            const url = await getUrl("./tsconfig.json", pattern);
-            const opn = require("opn");
-            opn(url);
+            const svg = getSVG("./tsconfig.json", pattern);
+            fs.writeFile(outFileName,svg,(err) => {
+                if(err) {
+                    console.log(chalk.redBright("Error writing file: " + err));
+                }
+            });
+           
         }
 
     } catch(e) {
-        console.log(chalk.redBright(e));
+        console.log(chalk.redBright(e),e);
     }
 
 })();

@@ -1,1 +1,1 @@
-export { getUrl } from "../core";
+export { getSVG } from "../core";
