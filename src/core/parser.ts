@@ -79,7 +79,6 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
     const className = getClassOrInterfaceName(classDeclaration)
     const baseClass =  classDeclaration.getBaseClass();
     
-    const implemented =  classDeclaration.getImplements();
     let heritageClauses: HeritageClause[] = [];
 
     if (baseClass) {
@@ -91,31 +90,14 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
         });
     }
 
-    if (implemented) {
-        implemented.forEach(i => {
-            const identifier = i.getChildrenOfKind(ts.SyntaxKind.Identifier)[0];
-            if (identifier) {
-                const sym = identifier.getSymbol();
-                if (sym) {
-                    heritageClauses.push(
-                        {
-                            clause: sym.getName(),
-                            className,
-                            type: HeritageClauseType.Implements
-                        }
-                    );
-                }
-            }
-        });
-    }
 
     return heritageClauses;
 }
 
-export function parseInterfaceHeritageClauses(classDeclaration: SimpleAST.InterfaceDeclaration) {
+export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
-    const className = getClassOrInterfaceName(classDeclaration)
-    const baseDeclarations =  classDeclaration.getBaseDeclarations()
+    const ifName = getClassOrInterfaceName(interfaceDeclaration)
+    const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
     
     let heritageClauses: HeritageClause[] = [];
 
@@ -126,13 +108,27 @@ export function parseInterfaceHeritageClauses(classDeclaration: SimpleAST.Interf
                 heritageClauses.push(
                     {
                         clause: bdName,
-                        className,
+                        className: ifName,
                         type: HeritageClauseType.Implements
                     }
                 );
             }
         });
     }
+
+    const implementors = interfaceDeclaration.getImplementations();
+    implementors.forEach(impl => {
+        const classDecl = impl.getSourceFile().getClass(impl.getNode().getText());
+        if (classDecl) {
+            heritageClauses.push(
+                {
+                    clause: ifName,
+                    className: getClassOrInterfaceName(classDecl),
+                    type: HeritageClauseType.Implements
+                }
+            );
+        }
+    })
 
     return heritageClauses;
 }

@@ -10,7 +10,15 @@ export interface Magic {
     kind: string;
 }
 
+export interface BlackMagic extends Magic {
+    paintItBlack(): boolean;
+}
+
 export interface MagicWeapon<MT extends Magic> extends Weapon {
     magic: MT;
     tryMagicHit(): boolean
+}
+
+export interface BlackMagicWeapon extends MagicWeapon<BlackMagic> {
+    
 }

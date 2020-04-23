@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\dist\\bin\\index.js",
-            "args": ["--glob","./src/demo/**/*.ts"],
+            "args": ["--glob","./src/demo/**/*.ts","-o", "./assets/uml_diagram.svg"],
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ]

@@ -5,11 +5,11 @@ export const templates = {
     composition: "+->",
     implements: (interf: string, implementation: string) => {
         return (
-        `${templates.plainClassOrInterface(implementation)}--:>${templates.plainClassOrInterface(interf)}`
+            `${templates.plainClassOrInterface(interf)}<:--${templates.plainClassOrInterface(implementation)}`
         );
     },
     extends: (base: string, derived: string) => {
-        return `${templates.plainClassOrInterface(derived)}-:>${templates.plainClassOrInterface(base)}`;
+      return `${templates.plainClassOrInterface(base)}<:-${templates.plainClassOrInterface(derived)}`;
     },
     plainClassOrInterface: (name: string) => `[${name}]`,
     colorClass: (name: string) => `[${name}]`,
