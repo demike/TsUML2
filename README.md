@@ -4,8 +4,9 @@
 
 :construction: WORK IN PROGRESS :construction:
 
-Generate UML diagram for your TypeScript applications powered by nomnoml
-TsUML2 works offline 
+Generate UML diagram for your TypeScript applications powered by nomnoml.
+
+TsUML2 works offline, so no third party servers are involved.
 
 
 
