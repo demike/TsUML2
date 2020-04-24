@@ -1,5 +1,5 @@
 import * as SimpleAST from "ts-morph";
-import * as ts from "typescript";
+
 import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType } from "./interfaces";
 
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
@@ -15,7 +15,7 @@ export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
 
 export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     
-    const className = getClassOrInterfaceName(classDeclaration)
+    const className = getClassOrInterfaceName(classDeclaration) || "undefined";
     const propertyDeclarations = classDeclaration.getProperties();
     const methodDeclarations = classDeclaration.getMethods();
 
@@ -45,7 +45,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
 
 export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
-    const interfaceName = getClassOrInterfaceName(interfaceDeclaration);
+    const interfaceName = getClassOrInterfaceName(interfaceDeclaration) || 'undefined';
     const propertyDeclarations = interfaceDeclaration.getProperties();
     const methodDeclarations = interfaceDeclaration.getMethods();
 
@@ -81,15 +81,20 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
     
     let heritageClauses: HeritageClause[] = [];
 
-    if (baseClass) {
+    if(!className) {
+        return heritageClauses;
+    }
+
+    if (className && baseClass) {
         const baseClassName = getClassOrInterfaceName(baseClass)
-        heritageClauses.push({
+        if(baseClassName) {
+            heritageClauses.push({
                         clause: baseClassName,
                         className,
                         type: HeritageClauseType.Extends
-        });
+            });
+        }
     }
-
 
     return heritageClauses;
 }
@@ -98,8 +103,12 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
 
     const ifName = getClassOrInterfaceName(interfaceDeclaration)
     const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
-    
+
     let heritageClauses: HeritageClause[] = [];
+
+    if(!ifName) {
+        return heritageClauses;
+    }
 
     if (baseDeclarations) {
         baseDeclarations.forEach(bd => {
@@ -119,11 +128,13 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
     const implementors = interfaceDeclaration.getImplementations();
     implementors.forEach(impl => {
         const classDecl = impl.getSourceFile().getClass(impl.getNode().getText());
-        if (classDecl) {
+        let className: string| undefined;
+        if (classDecl && (className = getClassOrInterfaceName(classDecl))) {
+
             heritageClauses.push(
                 {
                     clause: ifName,
-                    className: getClassOrInterfaceName(classDecl),
+                    className,
                     type: HeritageClauseType.Implements
                 }
             );
@@ -158,36 +169,47 @@ function getTypeAsString(type?: SimpleAST.Type<SimpleAST.ts.Type>): string | und
         const typeArgs = type.getTypeArguments();
         if(typeArgs.length > 0) {
             let elType = type.getTypeArguments()[0];
-            name = elType?.getSymbol()?.getName() || elType?.getText();
+            name = getTypeAsString(elType);
         }
         
         if(name) {
-            return name + "\\[\\]"
+            return name + "[]"
         }
-        return "\\[\\]"
+        return "[]"
         
     } else {
-        name = type?.getSymbol()?.getName() || type?.getText();
+        // might be a combination of types  MyType | undefined
+        // getText and remove the import("abc.def.ts"). parts
+        name = type?.getText();
+        name = name.replace(/import\([\d\D]*?\)\./g,'');
     }
 
     return name;
 }
 
 function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments ) {
-    let name: string;
-    let generics: string[] = [];
-    if (classOrIf instanceof SimpleAST.ExpressionWithTypeArguments) {
-        return classOrIf.getText();
-    }
+    try {
+        let name: string;
+        let generics: string[] = [];
+        if (classOrIf instanceof SimpleAST.ExpressionWithTypeArguments) {
+            return classOrIf.getText();
+        }
 
-    name = classOrIf.getSymbol()!.getName();
-    const typeParams = classOrIf.getTypeParameters();
-    generics= typeParams.map((param) => param.getName()); 
-    
-    if (generics && generics.length) {
-        name += "<" + generics.join(",") + ">";
-    }
+        if(!classOrIf.getTypeParameters) {
+            return undefined; // some weird thing with mapped types i.e: Partial (TODO: investigate this further)
+        }
+        name = classOrIf.getSymbol()!.getName();
+        const typeParams = classOrIf.getTypeParameters();
+        generics= typeParams.map((param) => param.getName()); 
+        
+        if (generics && generics.length) {
+            name += "<" + generics.join(",") + ">";
+        }
 
-    return name;
+        return name;
+    } catch(err) {
+        console.log(err);
+        return undefined;
+    }
 }
 

@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import chalk from "chalk";
+import * as chalk from "chalk";
 import * as yargs from "yargs";
 import { getSVG } from "../core";
 import * as fs from 'fs';
@@ -13,9 +13,8 @@ import * as fs from 'fs';
             console.log(chalk.yellowBright("tsuml --glob ./src/**/*.ts"));
         }
 
-        const pattern = yargs.argv.glob;
-
-        const outFileName = yargs.argv.o || 'out.svg'
+        const pattern: string | undefined = yargs.argv.glob as string;
+        const outFileName: string = yargs.argv.o as any || 'out.svg'
 
         if (!pattern) {
             console.log(chalk.redBright("Missing --glob"));
