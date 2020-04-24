@@ -21,6 +21,10 @@ npm install -g tsuml2
 ```
 tsuml2 --glob ./src/**/*.ts 
 ```
+To avoid getting unwanted interfaces / classes you might want to exclude d.ts and spec.ts files:
+```
+tsuml2 --glob ./src/**/!(*.d|*.spec).ts
+```
 
 ### Arguments
  - --glob ./src/**/*ts
