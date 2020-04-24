@@ -7,19 +7,19 @@
     "tsuml": "dist/bin/index.js"
   },
   "devDependencies": {
-    "@types/glob": "5.0.35",
-    "@types/lodash": "4.14.106",
+    "@types/glob": "7.1.1",
+    "@types/lodash": "4.14.150",
     "@types/node": "^13.13.1",
-    "@types/yargs": "11.0.0"
+    "@types/yargs": "^15.0.4"
   },
   "dependencies": {
-    "chalk": "2.3.2",
-    "glob": "7.1.2",
-    "lodash": "4.17.5",
+    "chalk": "4.0.0",
+    "glob": "7.1.6",
+    "lodash": "4.17.15",
     "nomnoml": "^0.6.2",
     "ts-morph": "^7.0.2",
     "typescript": "^3.8.3",
-    "yargs": "11.0.0"
+    "yargs": "^15.3.1"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
