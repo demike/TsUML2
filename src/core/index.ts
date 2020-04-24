@@ -33,7 +33,7 @@ function getDsl(tsConfigPath: string, pattern: string) {
 }
 
 function getStyling(): string {
-  return '#.interface: fill=lightblue\n#ranker: longest-path\n';
+  return '#.interface: fill=lightblue\n';
 }
 
 export function getSVG(tsConfigPath: string, pattern: string) {

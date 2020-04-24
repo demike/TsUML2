@@ -18,8 +18,9 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     const className = getClassOrInterfaceName(classDeclaration) || "undefined";
     const propertyDeclarations = classDeclaration.getProperties();
     const methodDeclarations = classDeclaration.getMethods();
+    const ctors = classDeclaration.getConstructors();
 
-    const properties = propertyDeclarations.map(property => {
+    let properties = propertyDeclarations.map(property => {
         const sym = property.getSymbol();
         if (sym) {
             return {
@@ -28,6 +29,24 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
             };
         }
     }).filter((p) => p !== undefined) as PropertyDetails[];
+
+    if (ctors && ctors.length) {
+        //find the properties declared by using a modifier before a constructor paramter
+        const ctorProperties =
+            ctors[0].getParameters().map(param => {
+                if(!param.getModifiers().length) {
+                    return undefined; 
+                }
+                const sym = param.getSymbol();
+                if(sym) {
+                    return {
+                        name: sym.getName(),
+                        type: getPropertyTypeName(sym)
+                    }
+                }
+            }).filter(p => p !== undefined) as PropertyDetails[];
+        properties.push(...ctorProperties);
+    }
 
     const methods = methodDeclarations.map(method => {
         const sym = method.getSymbol();

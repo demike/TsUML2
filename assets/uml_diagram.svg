@@ -1,4 +1,4 @@
-<svg version="1.1" baseProfile="full" width="1506.25" height="472" viewbox="0 0 1506.25 472" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<svg version="1.1" baseProfile="full" width="1506.25" height="495" viewbox="0 0 1506.25 495" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
   <title >nomnoml</title>
   <desc >#.interface: fill=lightblue
 [&lt;interface&gt;Weapon||tryHit(): boolean]
@@ -16,7 +16,7 @@
 [MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicWeapon]
 [BaseWeapon|damage: number;attributes: string\[\]|]
 [Katana|name: string|tryHit(): boolean]
-[MagicKatana&lt;MT&gt;||tryMagicHit(): boolean]
+[MagicKatana&lt;MT&gt;|magic: MT|tryMagicHit(): boolean]
 [BlackMagicKatana||tryBlackMagicHit(): boolean]
 [BaseWeapon]&lt;:-[Katana]
 [Katana]&lt;:-[MagicKatana&lt;MT&gt;]
@@ -35,18 +35,18 @@
   <path d="M136.3 108.3 L131 108.3 L125.7 108.3 L131 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
   <path d="M410.6 95 L403.5 126.5 L403.5 146.5 L403.5 146.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
   <path d="M412.9 109.2 L407.7 108 L402.5 106.8 L410.6 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M488.8 239.5 L525.5 259.5 L575.2 279.5 L575.2 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M488.8 239.5 L525.5 259.5 L566.6 279.5 L566.6 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
   <path d="M503.1 241.2 L500.5 245.9 L498 250.6 L488.8 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M403.5 239.5 L403.5 259.5 L403.5 314.5 L403.5 314.5 L403.5 369.5 L403.5 369.5 L469.4 389.5 L469.4 389.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M403.5 239.5 L403.5 259.5 L403.5 326 L403.5 326 L403.5 392.5 L403.5 392.5 L469.4 412.5 L469.4 412.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
   <path d="M408.8 252.8 L403.5 252.8 L398.2 252.8 L403.5 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M313.6 239.5 L275 259.5 L275 291 L275 291 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M313.6 239.5 L275 259.5 L275 302.5 L275 302.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
   <path d="M304.3 250.4 L301.8 245.6 L299.4 240.9 L313.6 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
   <path d="M870.5 102.5 L870.5 126.5 L776.3 160.7 L776.3 160.7 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <path d="M875.8 115.8 L870.5 115.8 L865.2 115.8 L870.5 102.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M687.3 239.5 L687.3 259.5 L678.2 279.5 L678.2 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M687.3 239.5 L687.3 259.5 L679.7 279.5 L679.7 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <path d="M692.6 252.8 L687.3 252.8 L681.9 252.8 L687.3 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M662.3 349.5 L662.3 369.5 L634.1 389.5 L634.1 389.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M667.6 362.8 L662.3 362.8 L656.9 362.8 L662.3 349.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M662.3 372.5 L662.3 392.5 L634.1 412.5 L634.1 412.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M667.6 385.8 L662.3 385.8 L656.9 385.8 L662.3 372.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
   <path d="M1225.4 106.5 L1191 126.5 L1191 169.5 L1191 169.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <path d="M1216.6 117.8 L1213.9 113.2 L1211.2 108.6 L1225.4 106.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
   <path d="M1376.6 106.5 L1407.3 126.5 L1407.3 169.5 L1407.3 169.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
@@ -77,10 +77,10 @@
   <text x="296.5" y="199" style="fill: #33322E;font-weight:normal;">magic: MT</text>
   <path d="M288.5 208.5 L518.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <text x="296.5" y="230" style="fill: #33322E;font-weight:normal;">tryMagicHit(): boolean</text>
-  <rect x="186.5" y="291.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="275" y="313" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text>
-  <path d="M186.5 322.5 L363.5 322.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M186.5 330.5 L363.5 330.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="186.5" y="302.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="275" y="324" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text>
+  <path d="M186.5 333.5 L363.5 333.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M186.5 341.5 L363.5 341.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <rect x="767.5" y="17.5" height="85" width="206" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
   <text x="870.5" y="39" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text>
   <path d="M767.5 48.5 L973.5 48.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
@@ -93,16 +93,17 @@
   <text x="606.5" y="199" style="fill: #33322E;font-weight:normal;">name: string</text>
   <path d="M598.5 208.5 L776.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
   <text x="606.5" y="230" style="fill: #33322E;font-weight:normal;">tryHit(): boolean</text>
-  <rect x="547.5" y="279.5" height="70" width="230" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <rect x="547.5" y="279.5" height="93" width="230" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
   <text x="662.5" y="301" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text>
   <path d="M547.5 310.5 L777.5 310.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M547.5 318.5 L777.5 318.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="555.5" y="340" style="fill: #33322E;font-weight:normal;">tryMagicHit(): boolean</text>
-  <rect x="446.5" y="389.5" height="70" width="277" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="585" y="411" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text>
-  <path d="M446.5 420.5 L723.5 420.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M446.5 428.5 L723.5 428.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="454.5" y="450" style="fill: #33322E;font-weight:normal;">tryBlackMagicHit(): boolean</text>
+  <text x="555.5" y="332" style="fill: #33322E;font-weight:normal;">magic: MT</text>
+  <path d="M547.5 341.5 L777.5 341.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="555.5" y="363" style="fill: #33322E;font-weight:normal;">tryMagicHit(): boolean</text>
+  <rect x="446.5" y="412.5" height="70" width="277" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="585" y="434" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text>
+  <path d="M446.5 443.5 L723.5 443.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M446.5 451.5 L723.5 451.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="454.5" y="473" style="fill: #33322E;font-weight:normal;">tryBlackMagicHit(): boolean</text>
   <rect x="1013.5" y="13.5" height="93" width="168" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
   <text x="1097.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text>
   <path d="M1013.5 44.5 L1181.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
