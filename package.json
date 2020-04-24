@@ -1,10 +1,10 @@
 {
   "name": "tsuml2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "UML diagrams for TypeScript",
   "main": "dist/lib/index.js",
   "bin": {
-    "tsuml": "dist/bin/index.js"
+    "tsuml2": "dist/bin/index.js"
   },
   "devDependencies": {
     "@types/glob": "7.1.1",
