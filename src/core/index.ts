@@ -35,7 +35,6 @@ function getDsl(tsConfigPath: string, pattern: string) {
 function getStyling(): string {
   return '#.interface: fill=lightblue\n#ranker: longest-path\n';
 }
-// #ranker: network-simplex | tight-tree | longest-path
 
 export function getSVG(tsConfigPath: string, pattern: string) {
   const dsl = getDsl(tsConfigPath, pattern);
