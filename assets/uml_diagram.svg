@@ -1,11 +1,11 @@
-<svg version="1.1" baseProfile="full" width="1506.25" height="495" viewbox="0 0 1506.25 495" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<svg version="1.1" baseProfile="full" width="1597" height="525" viewbox="0 0 1597 525" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
   <title >nomnoml</title>
   <desc >#.interface: fill=lightblue
-[&lt;interface&gt;Weapon||tryHit(): boolean]
-[&lt;interface&gt;Named|name: string|]
-[&lt;interface&gt;Magic|kind: string|]
-[&lt;interface&gt;BlackMagic||paintItBlack(): boolean]
-[&lt;interface&gt;MagicWeapon&lt;MT&gt;|magic: MT|tryMagicHit(): boolean]
+[&lt;interface&gt;Weapon||+tryHit(): boolean]
+[&lt;interface&gt;Named|+name: string|]
+[&lt;interface&gt;Magic|+kind: string|]
+[&lt;interface&gt;BlackMagic||+paintItBlack(): boolean]
+[&lt;interface&gt;MagicWeapon&lt;MT&gt;|+magic: MT|+tryMagicHit(): boolean]
 [&lt;interface&gt;BlackMagicWeapon||]
 [Weapon]&lt;:--[Katana]
 [Named]&lt;:--[Katana]
@@ -14,114 +14,117 @@
 [MagicWeapon&lt;MT&gt;]&lt;:--[MagicKatana&lt;MT&gt;]
 [MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicKatana]
 [MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicWeapon]
-[BaseWeapon|damage: number;attributes: string\[\]|]
-[Katana|name: string|tryHit(): boolean]
-[MagicKatana&lt;MT&gt;|magic: MT|tryMagicHit(): boolean]
-[BlackMagicKatana||tryBlackMagicHit(): boolean]
+[BaseWeapon|+damage: number;#durability: number;+attributes: string\[\]|]
+[Katana|+name: string|+tryHit(): boolean]
+[MagicKatana&lt;MT&gt;|+magic: MT|+tryMagicHit(): boolean]
+[BlackMagicKatana||+tryBlackMagicHit(): boolean]
 [BaseWeapon]&lt;:-[Katana]
 [Katana]&lt;:-[MagicKatana&lt;MT&gt;]
 [MagicKatana&lt;MT&gt;]&lt;:-[BlackMagicKatana]
-[Ninja|_weapon: Weapon|fight(): boolean]
-[Viking&lt;WT&gt;|weapon: WT|fight(): boolean]
+[Ninja|+static IdCnt: number;-_weapon: Weapon;+id: number|+fight(): boolean]
+[Viking&lt;WT&gt;|+weapon: WT|+fight(): boolean]
 [UberViking&lt;WT&gt;||]
 [VikingWithKatana||]
 [Viking&lt;WT&gt;]&lt;:-[UberViking&lt;WT&gt;]
 [Viking&lt;WT&gt;]&lt;:-[VikingWithKatana]</desc>
-  <path d="M485.3 95 L545.5 126.5 L598.3 151.2 L598.3 151.2 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M499.6 96.5 L497.2 101.2 L494.7 105.9 L485.3 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M662.5 95 L662.5 126.5 L669.9 146.5 L669.9 146.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M667.8 108.3 L662.5 108.3 L657.2 108.3 L662.5 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M131 95 L131 126.5 L131 158 L131 158 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M136.3 108.3 L131 108.3 L125.7 108.3 L131 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M410.6 95 L403.5 126.5 L403.5 146.5 L403.5 146.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M412.9 109.2 L407.7 108 L402.5 106.8 L410.6 95 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M488.8 239.5 L525.5 259.5 L566.6 279.5 L566.6 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M503.1 241.2 L500.5 245.9 L498 250.6 L488.8 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M403.5 239.5 L403.5 259.5 L403.5 326 L403.5 326 L403.5 392.5 L403.5 392.5 L469.4 412.5 L469.4 412.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M408.8 252.8 L403.5 252.8 L398.2 252.8 L403.5 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M313.6 239.5 L275 259.5 L275 302.5 L275 302.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-  <path d="M304.3 250.4 L301.8 245.6 L299.4 240.9 L313.6 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M870.5 102.5 L870.5 126.5 L776.3 160.7 L776.3 160.7 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M875.8 115.8 L870.5 115.8 L865.2 115.8 L870.5 102.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M687.3 239.5 L687.3 259.5 L679.7 279.5 L679.7 279.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M692.6 252.8 L687.3 252.8 L681.9 252.8 L687.3 239.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M662.3 372.5 L662.3 392.5 L634.1 412.5 L634.1 412.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M667.6 385.8 L662.3 385.8 L656.9 385.8 L662.3 372.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M1225.4 106.5 L1191 126.5 L1191 169.5 L1191 169.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M1216.6 117.8 L1213.9 113.2 L1211.2 108.6 L1225.4 106.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <path d="M1376.6 106.5 L1407.3 126.5 L1407.3 169.5 L1407.3 169.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M1390.7 109.3 L1387.8 113.8 L1384.9 118.3 L1376.6 106.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-  <rect x="329.5" y="25.5" height="70" width="178" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="418.5" y="47" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Weapon</text>
-  <path d="M329.5 56.5 L507.5 56.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M329.5 64.5 L507.5 64.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="337.5" y="86" style="fill: #33322E;font-weight:normal;">tryHit(): boolean</text>
-  <rect x="597.5" y="25.5" height="70" width="130" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="662.5" y="47" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Named</text>
-  <path d="M597.5 56.5 L727.5 56.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="605.5" y="78" style="fill: #33322E;font-weight:normal;">name: string</text>
-  <path d="M597.5 87.5 L727.5 87.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <rect x="66.5" y="25.5" height="70" width="130" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="131.5" y="47" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Magic</text>
-  <path d="M66.5 56.5 L196.5 56.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="74.5" y="78" style="fill: #33322E;font-weight:normal;">kind: string</text>
-  <path d="M66.5 87.5 L196.5 87.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <rect x="13.5" y="158.5" height="70" width="235" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="131" y="180" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagic</text>
-  <path d="M13.5 189.5 L248.5 189.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M13.5 197.5 L248.5 197.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="21.5" y="219" style="fill: #33322E;font-weight:normal;">paintItBlack(): boolean</text>
-  <rect x="288.5" y="146.5" height="93" width="230" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="403.5" y="168" style="fill: #33322E;font-weight:normal;text-anchor: middle;">MagicWeapon&lt;MT&gt;</text>
-  <path d="M288.5 177.5 L518.5 177.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="296.5" y="199" style="fill: #33322E;font-weight:normal;">magic: MT</text>
-  <path d="M288.5 208.5 L518.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="296.5" y="230" style="fill: #33322E;font-weight:normal;">tryMagicHit(): boolean</text>
-  <rect x="186.5" y="302.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-  <text x="275" y="324" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text>
-  <path d="M186.5 333.5 L363.5 333.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M186.5 341.5 L363.5 341.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <rect x="767.5" y="17.5" height="85" width="206" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="870.5" y="39" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text>
-  <path d="M767.5 48.5 L973.5 48.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="775.5" y="70" style="fill: #33322E;font-weight:normal;">damage: number</text>
-  <text x="775.5" y="85" style="fill: #33322E;font-weight:normal;">attributes: string[]</text>
-  <path d="M767.5 94.5 L973.5 94.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <rect x="598.5" y="146.5" height="93" width="178" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="687.5" y="168" style="fill: #33322E;text-anchor: middle;">Katana</text>
-  <path d="M598.5 177.5 L776.5 177.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="606.5" y="199" style="fill: #33322E;font-weight:normal;">name: string</text>
-  <path d="M598.5 208.5 L776.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="606.5" y="230" style="fill: #33322E;font-weight:normal;">tryHit(): boolean</text>
-  <rect x="547.5" y="279.5" height="93" width="230" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="662.5" y="301" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text>
-  <path d="M547.5 310.5 L777.5 310.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="555.5" y="332" style="fill: #33322E;font-weight:normal;">magic: MT</text>
-  <path d="M547.5 341.5 L777.5 341.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="555.5" y="363" style="fill: #33322E;font-weight:normal;">tryMagicHit(): boolean</text>
-  <rect x="446.5" y="412.5" height="70" width="277" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="585" y="434" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text>
-  <path d="M446.5 443.5 L723.5 443.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M446.5 451.5 L723.5 451.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="454.5" y="473" style="fill: #33322E;font-weight:normal;">tryBlackMagicHit(): boolean</text>
-  <rect x="1013.5" y="13.5" height="93" width="168" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="1097.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text>
-  <path d="M1013.5 44.5 L1181.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="1021.5" y="66" style="fill: #33322E;font-weight:normal;">_weapon: Weapon</text>
-  <path d="M1013.5 75.5 L1181.5 75.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="1021.5" y="97" style="fill: #33322E;font-weight:normal;">fight(): boolean</text>
-  <rect x="1221.5" y="13.5" height="93" width="168" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="1305.5" y="35" style="fill: #33322E;text-anchor: middle;">Viking&lt;WT&gt;</text>
-  <path d="M1221.5 44.5 L1389.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="1229.5" y="66" style="fill: #33322E;font-weight:normal;">weapon: WT</text>
-  <path d="M1221.5 75.5 L1389.5 75.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <text x="1229.5" y="97" style="fill: #33322E;font-weight:normal;">fight(): boolean</text>
-  <rect x="1114.5" y="169.5" height="47" width="154" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="1191.5" y="191" style="fill: #33322E;text-anchor: middle;">UberViking&lt;WT&gt;</text>
-  <path d="M1114.5 200.5 L1268.5 200.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M1114.5 208.5 L1268.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <rect x="1320.5" y="169.5" height="47" width="173" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-  <text x="1407" y="191" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text>
-  <path d="M1320.5 200.5 L1493.5 200.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-  <path d="M1320.5 208.5 L1493.5 208.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M488.6 110 L563.5 156.5 L614 179.8 L614 179.8 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M502.8 112.5 L499.9 117 L497.1 121.6 L488.6 110 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M685.3 110 L685.3 156.5 L691.9 176.5 L691.9 176.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M690.6 123.3 L685.3 123.3 L679.9 123.3 L685.3 110 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M135.5 110 L135.5 156.5 L135.5 188 L135.5 188 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M140.8 123.3 L135.5 123.3 L130.2 123.3 L135.5 110 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M425.7 110 L417 156.5 L417 176.5 L417 176.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M428.5 124.1 L423.2 123.1 L418 122.1 L425.7 110 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M505.5 269.5 L543.5 289.5 L585.4 309.5 L585.4 309.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M519.7 271 L517.3 275.7 L514.8 280.4 L505.5 269.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M417 269.5 L417 289.5 L417 356 L417 356 L417 422.5 L417 422.5 L484.6 442.5 L484.6 442.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M422.3 282.8 L417 282.8 L411.7 282.8 L417 269.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M327.1 269.5 L288.5 289.5 L288.5 332.5 L288.5 332.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
+  <path d="M317.8 280.4 L315.3 275.6 L312.9 270.9 L327.1 269.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M903.3 125 L903.3 156.5 L801 191.2 L801 191.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M908.6 138.3 L903.3 138.3 L897.9 138.3 L903.3 125 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M707.5 269.5 L707.5 289.5 L700.1 309.5 L700.1 309.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M712.8 282.8 L707.5 282.8 L702.2 282.8 L707.5 269.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M682.8 402.5 L682.8 422.5 L653.8 442.5 L653.8 442.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M688.1 415.8 L682.8 415.8 L677.4 415.8 L682.8 402.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M1315.7 121.5 L1255 156.5 L1255 199.5 L1255 199.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1306.8 132.8 L1304.1 128.2 L1301.4 123.5 L1315.7 121.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <path d="M1454.3 121.5 L1498 156.5 L1498 199.5 L1498 199.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1468 125.7 L1464.7 129.8 L1461.4 134 L1454.3 121.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
+  <rect x="338.5" y="40.5" height="70" width="187" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="432" y="62" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Weapon</text>
+  <path d="M338.5 71.5 L525.5 71.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M338.5 79.5 L525.5 79.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="346.5" y="101" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
+  <rect x="615.5" y="40.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="685.5" y="62" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Named</text>
+  <path d="M615.5 71.5 L755.5 71.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="623.5" y="93" style="fill: #33322E;font-weight:normal;">+name: string</text>
+  <path d="M615.5 102.5 L755.5 102.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="65.5" y="40.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="135.5" y="62" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Magic</text>
+  <path d="M65.5 71.5 L205.5 71.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="73.5" y="93" style="fill: #33322E;font-weight:normal;">+kind: string</text>
+  <path d="M65.5 102.5 L205.5 102.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="13.5" y="188.5" height="70" width="244" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="135.5" y="210" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagic</text>
+  <path d="M13.5 219.5 L257.5 219.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M13.5 227.5 L257.5 227.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="21.5" y="249" style="fill: #33322E;font-weight:normal;">+paintItBlack(): boolean</text>
+  <rect x="297.5" y="176.5" height="93" width="239" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="417" y="198" style="fill: #33322E;font-weight:normal;text-anchor: middle;">MagicWeapon&lt;MT&gt;</text>
+  <path d="M297.5 207.5 L536.5 207.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="305.5" y="229" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
+  <path d="M297.5 238.5 L536.5 238.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="305.5" y="260" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
+  <rect x="200.5" y="332.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
+  <text x="289" y="354" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text>
+  <path d="M200.5 363.5 L377.5 363.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M200.5 371.5 L377.5 371.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="795.5" y="25.5" height="100" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="903.5" y="47" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text>
+  <path d="M795.5 56.5 L1011.5 56.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="803.5" y="78" style="fill: #33322E;font-weight:normal;">+damage: number</text>
+  <text x="803.5" y="93" style="fill: #33322E;font-weight:normal;">#durability: number</text>
+  <text x="803.5" y="108" style="fill: #33322E;font-weight:normal;">+attributes: string[]</text>
+  <path d="M795.5 117.5 L1011.5 117.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="614.5" y="176.5" height="93" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="708" y="198" style="fill: #33322E;text-anchor: middle;">Katana</text>
+  <path d="M614.5 207.5 L801.5 207.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="622.5" y="229" style="fill: #33322E;font-weight:normal;">+name: string</text>
+  <path d="M614.5 238.5 L801.5 238.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="622.5" y="260" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
+  <rect x="563.5" y="309.5" height="93" width="239" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="683" y="331" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text>
+  <path d="M563.5 340.5 L802.5 340.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="571.5" y="362" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
+  <path d="M563.5 371.5 L802.5 371.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="571.5" y="393" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
+  <rect x="459.5" y="442.5" height="70" width="287" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="603" y="464" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text>
+  <path d="M459.5 473.5 L746.5 473.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M459.5 481.5 L746.5 481.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="467.5" y="503" style="fill: #33322E;font-weight:normal;">+tryBlackMagicHit(): boolean</text>
+  <rect x="1051.5" y="13.5" height="123" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1159.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text>
+  <path d="M1051.5 44.5 L1267.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1059.5" y="66" style="fill: #33322E;font-weight:normal;">+static IdCnt: number</text>
+  <text x="1059.5" y="81" style="fill: #33322E;font-weight:normal;">-_weapon: Weapon</text>
+  <text x="1059.5" y="96" style="fill: #33322E;font-weight:normal;">+id: number</text>
+  <path d="M1051.5 105.5 L1267.5 105.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1059.5" y="127" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
+  <rect x="1307.5" y="28.5" height="93" width="178" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1396.5" y="50" style="fill: #33322E;text-anchor: middle;">Viking&lt;WT&gt;</text>
+  <path d="M1307.5 59.5 L1485.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1315.5" y="81" style="fill: #33322E;font-weight:normal;">+weapon: WT</text>
+  <path d="M1307.5 90.5 L1485.5 90.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <text x="1315.5" y="112" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
+  <rect x="1178.5" y="199.5" height="47" width="154" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1255.5" y="221" style="fill: #33322E;text-anchor: middle;">UberViking&lt;WT&gt;</text>
+  <path d="M1178.5 230.5 L1332.5 230.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1178.5 238.5 L1332.5 238.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <rect x="1411.5" y="199.5" height="47" width="173" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+  <text x="1498" y="221" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text>
+  <path d="M1411.5 230.5 L1584.5 230.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+  <path d="M1411.5 238.5 L1584.5 238.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 </svg>

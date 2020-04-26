@@ -2,6 +2,7 @@ import { Weapon, Named, MagicWeapon, Magic, BlackMagic } from "./interfaces";
 
 export class BaseWeapon {
     damage = 25;
+    protected durability: number = 100;
     public attributes: string[] = ["explosive", "bouncing"]
 }
 

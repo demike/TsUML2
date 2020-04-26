@@ -1,8 +1,11 @@
 import { Weapon } from "./interfaces";
 
 export class Ninja {
+    public static IdCnt=0;
     private _weapon: Weapon;
+    public id: number;
     public constructor(weapon: Weapon) {
+        this.id = Ninja.IdCnt++;
         this._weapon = weapon;
     }
     public fight(fromDistance: number) {

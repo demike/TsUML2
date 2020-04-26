@@ -1,5 +1,6 @@
 import { PropertyDetails, MethodDetails} from "./interfaces";
 import { EmitterSettings } from "./emitter-settings";
+import { ModifierFlags } from "typescript";
 
 export const templates = {
     composition: "+->",
@@ -28,15 +29,51 @@ export const templates = {
 
 
 function methodTemplate(method: MethodDetails): string {
+    // TODO go on
+    let retVal = method.name + "()";
     if (method.returnType && EmitterSettings.emitPropertyTypes) {
-        return method.name + "(): " + method.returnType
+        retVal += ": " + method.returnType;
     }
-    return method.name + '()';
+
+    retVal = modifierTemplate(method.modifierFlags) + retVal;
+
+    return retVal;
 } 
 
 function propertyTemplate(property: PropertyDetails): string {
+    // TODO go on
+    let retVal = property.name;
     if (property.type && EmitterSettings.emitPropertyTypes) {
-        return property.name + ": " + property.type;
+        retVal += ": " + property.type;
     }
-    return property.name;
+
+    retVal = modifierTemplate(property.modifierFlags) + retVal
+
+    return retVal;
+}
+
+function modifierTemplate(modifierFlags: ModifierFlags): string {
+
+    if (!EmitterSettings.emitModifiers) {
+        return "";
+    }
+
+    let retVal = "";
+
+       // UML2: static member should be underlined --> Not supported by nomnoml 
+    if(modifierFlags & ModifierFlags.Static) {
+        retVal = "static " ;
+    }
+
+    if(modifierFlags & ModifierFlags.Private) {
+        retVal = "-" + retVal;
+    } else if(modifierFlags & ModifierFlags.Protected) {
+        retVal = "#" + retVal;
+    } else {
+        retVal = "+" + retVal;
+    }
+
+ 
+
+    return retVal;
 }

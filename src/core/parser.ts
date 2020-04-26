@@ -20,15 +20,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     const methodDeclarations = classDeclaration.getMethods();
     const ctors = classDeclaration.getConstructors();
 
-    let properties = propertyDeclarations.map(property => {
-        const sym = property.getSymbol();
-        if (sym) {
-            return {
-                name: sym.getName(),
-                type: getPropertyTypeName(sym)
-            };
-        }
-    }).filter((p) => p !== undefined) as PropertyDetails[];
+    let properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
 
     if (ctors && ctors.length) {
         //find the properties declared by using a modifier before a constructor paramter
@@ -37,27 +29,12 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
                 if(!param.getModifiers().length) {
                     return undefined; 
                 }
-                const sym = param.getSymbol();
-                if(sym) {
-                    return {
-                        name: sym.getName(),
-                        type: getPropertyTypeName(sym)
-                    }
-                }
+                return parseProperty(param);
             }).filter(p => p !== undefined) as PropertyDetails[];
         properties.push(...ctorProperties);
     }
 
-    const methods = methodDeclarations.map(method => {
-        const sym = method.getSymbol();
-        
-        if (sym) {
-            return {
-                name: sym.getName(),
-                returnType: getMethodTypeName(method)
-            }
-        }
-    }).filter((p) => p !== undefined) as MethodDetails[];
+    const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
     return { className, properties, methods };
 }
@@ -68,29 +45,35 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const propertyDeclarations = interfaceDeclaration.getProperties();
     const methodDeclarations = interfaceDeclaration.getMethods();
 
-  
-    const properties = propertyDeclarations.map(property => {
-        const sym = property.getSymbol();
-        if (sym) {
-            const t = sym.getValueDeclaration()?.getType();
-            return {
-                name: sym.getName(),
-                type: getPropertyTypeName(sym)
-            }
-        }
-    }).filter((p) => p !== undefined) as PropertyDetails[];
-  
-    const methods = methodDeclarations.map(method => {
-        const sym = method.getSymbol();
-        if (sym) {
-            return {
-                name: sym.getName(),
-                returnType: getMethodTypeName(method)
-            }
-        }
-    }).filter((p) => p !== undefined) as MethodDetails[];
+    const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
     return { interfaceName, properties, methods };
+}
+
+function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | SimpleAST.PropertySignature | SimpleAST.ParameterDeclaration) : PropertyDetails | undefined {
+    const sym = propertyDeclaration.getSymbol();
+    
+    if (sym) {
+        return {            
+            modifierFlags: propertyDeclaration.getCombinedModifierFlags(),
+            name: sym.getName(),
+            type: getPropertyTypeName(sym),
+        }
+    }
+
+}
+
+function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.MethodSignature) : MethodDetails | undefined{
+    const sym = methodDeclaration.getSymbol();
+    methodDeclaration.getCombinedModifierFlags
+    if (sym) {
+        return {
+            modifierFlags: methodDeclaration.getCombinedModifierFlags(),
+            name: sym.getName(),
+            returnType: getMethodTypeName(methodDeclaration)
+        }
+    }
 }
 
 export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration ) {

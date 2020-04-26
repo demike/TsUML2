@@ -1,10 +1,16 @@
-export interface MethodDetails {
+import { ModifierFlags } from "typescript";
+
+export interface MemberDetails {
+    modifierFlags: ModifierFlags;
     name: string;
+}
+
+export interface MethodDetails extends MemberDetails{
+ 
     returnType?: string;
 }
 
-export interface PropertyDetails {
-    name: string;
+export interface PropertyDetails extends MemberDetails {
     type?: string;
 }
 
