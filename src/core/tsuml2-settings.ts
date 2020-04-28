@@ -1,4 +1,5 @@
 import { Argv } from "yargs";
+import * as fs  from "fs";
 
 export class TsUML2Settings {
     /**
@@ -32,7 +33,7 @@ export class TsUML2Settings {
      * @param json 
      */
     formJSON(json: string) {
-        Object.apply(this,JSON.parse(json));
+        Object.assign(this,JSON.parse(json));
     }
 
     fromArgs(yargs: Argv<{}>) {
@@ -64,10 +65,6 @@ export class TsUML2Settings {
         }).argv;
 
 
-        
-        if (argv.config) {
-            //parse and apply the config file
-        }
 
         if(argv.glob) {
             this.glob = argv.glob;
@@ -86,6 +83,12 @@ export class TsUML2Settings {
 
         if(argv.propertyTypes !== undefined) {
             this.propertyTypes = argv.propertyTypes;
+        }
+
+        if (argv.config) {
+            //parse and apply the config file
+            const config = fs.readFileSync(argv.config).toString();
+            this.formJSON(config);
         }
 
     }
