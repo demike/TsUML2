@@ -4,23 +4,20 @@ import * as chalk from "chalk";
 import * as yargs from "yargs";
 import { getSVG } from "../core";
 import * as fs from 'fs';
+import { SETTINGS } from "../core/tsuml2-settings";
 
 (async () => {
 
     try {
 
-        if (yargs.argv.help) {
-            console.log(chalk.yellowBright("tsuml --glob ./src/**/*.ts"));
-        }
+        SETTINGS.fromArgs(yargs);
 
-        const pattern: string | undefined = yargs.argv.glob as string;
-        const outFileName: string = yargs.argv.o as any || 'out.svg'
 
-        if (!pattern) {
+        if (SETTINGS.glob.length === 0) {
             console.log(chalk.redBright("Missing --glob"));
         } else {
-            const svg = getSVG("./tsconfig.json", pattern);
-            fs.writeFile(outFileName,svg,(err) => {
+            const svg = getSVG("./tsconfig.json", SETTINGS.glob);
+            fs.writeFile(SETTINGS.outFile,svg,(err) => {
                 if(err) {
                     console.log(chalk.redBright("Error writing file: " + err));
                 }

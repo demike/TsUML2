@@ -2,6 +2,7 @@ import { flatten, join } from "lodash";
 import { renderToSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses } from "./parser";
 import { emitSingleClass, emitSingleInterface, emitHeritageClauses } from "./emitter";
+import { SETTINGS } from "./tsuml2-settings";
 
 function getDsl(tsConfigPath: string, pattern: string) {
   const ast = getAst(tsConfigPath, pattern);
@@ -33,7 +34,7 @@ function getDsl(tsConfigPath: string, pattern: string) {
 }
 
 function getStyling(): string {
-  return '#.interface: fill=lightblue\n';
+  return '#.interface: fill=lightblue\n' + SETTINGS.nomnoml.join("\n");
 }
 
 export function getSVG(tsConfigPath: string, pattern: string) {

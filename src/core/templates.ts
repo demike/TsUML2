@@ -1,6 +1,6 @@
 import { PropertyDetails, MethodDetails} from "./interfaces";
-import { EmitterSettings } from "./emitter-settings";
 import { ModifierFlags } from "typescript";
+import { SETTINGS } from "./tsuml2-settings";
 
 export const templates = {
     composition: "+->",
@@ -31,7 +31,7 @@ export const templates = {
 function methodTemplate(method: MethodDetails): string {
     // TODO go on
     let retVal = method.name + "()";
-    if (method.returnType && EmitterSettings.emitPropertyTypes) {
+    if (method.returnType && SETTINGS.propertyTypes) {
         retVal += ": " + method.returnType;
     }
 
@@ -43,7 +43,7 @@ function methodTemplate(method: MethodDetails): string {
 function propertyTemplate(property: PropertyDetails): string {
     // TODO go on
     let retVal = property.name;
-    if (property.type && EmitterSettings.emitPropertyTypes) {
+    if (property.type && SETTINGS.propertyTypes) {
         retVal += ": " + property.type;
     }
 
@@ -54,7 +54,7 @@ function propertyTemplate(property: PropertyDetails): string {
 
 function modifierTemplate(modifierFlags: ModifierFlags): string {
 
-    if (!EmitterSettings.emitModifiers) {
+    if (!SETTINGS.modifiers) {
         return "";
     }
 
