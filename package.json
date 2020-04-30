@@ -44,5 +44,6 @@
   "homepage": "https://github.com/demike/TsUML2#readme",
   "files": [
     "dist/**/*.js"
+    
   ]
 }
