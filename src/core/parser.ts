@@ -66,7 +66,6 @@ function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | Simp
 
 function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.MethodSignature) : MethodDetails | undefined{
     const sym = methodDeclaration.getSymbol();
-    methodDeclaration.getCombinedModifierFlags
     if (sym) {
         return {
             modifierFlags: methodDeclaration.getCombinedModifierFlags(),
