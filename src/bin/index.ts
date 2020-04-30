@@ -16,7 +16,7 @@ import { SETTINGS } from "../core/tsuml2-settings";
         if (SETTINGS.glob.length === 0) {
             console.log(chalk.redBright("Missing --glob"));
         } else {
-            const svg = getSVG("./tsconfig.json", SETTINGS.glob);
+            const svg = getSVG(SETTINGS.tsconfig, SETTINGS.glob);
             fs.writeFile(SETTINGS.outFile,svg,(err) => {
                 if(err) {
                     console.log(chalk.redBright("Error writing file: " + err));

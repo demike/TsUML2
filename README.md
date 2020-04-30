@@ -32,6 +32,7 @@ tsuml2 --glob ./src/**/!(*.d|*.spec).ts
   --version        Show version number                                 [boolean]
   --glob, -g       pattern to match the source files (i.e.: ./src/**/*.ts)
                                                              [string] [required]
+  --tsconfig       the path to tsconfig.json file    [default: "./tsconfig.svg"]
   --outFile, -o    the path to the output file              [default: "out.svg"]
   --propertyTypes  show property types and method return types
                                                        [boolean] [default: true]
@@ -43,6 +44,19 @@ tsuml2 --glob ./src/**/!(*.d|*.spec).ts
   --config         path to a json config file (command line options can be
                    provided as keys in it)                              [string]
 ```
+
+an example config.json could look like:
+```json
+{
+  "glob": "./src/**/!(*.d|*.spec).ts",
+  "modifiers": false,
+  "nomnoml": ["#arrowSize: 1.5","#.interface: fill=#8f8 dashed"]
+}
+```
+
+> **_NOTE:_** command line arguments override those provided in config.json
+
+
 ## Example
 The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
 

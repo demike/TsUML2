@@ -1,11 +1,18 @@
 import { Argv } from "yargs";
 import * as fs  from "fs";
 
+
 export class TsUML2Settings {
     /**
      * required
      */
     glob: string = ""; 
+
+    /**
+     * the path to the tsconfig.json file
+     */
+    tsconfig: string = "./tsconfig.svg";
+
 
     /**
      * the svg output file (with relative or absolute path)
@@ -43,16 +50,19 @@ export class TsUML2Settings {
             describe: "pattern to match the source files (i.e.: ./src/**/*.ts)",
             string: true,
             required: true
+        }).option('tsconfig',{
+            default: this.tsconfig,
+            describe: "the path to tsconfig.json file"
         }).option('outFile', {
             alias: "o",
             describe: "the path to the output file",
-            default: "out.svg",
+            default: this.outFile,
         }).option('propertyTypes', {
-            default: true,
+            default: this.propertyTypes,
             describe: "show property types and method return types",
             boolean: true
         }).option('modifiers', {
-            default: true,
+            default: this.modifiers,
             describe: "show modifiers like public,protected,private,static",
             boolean: true
         }).option('nomnoml', {
@@ -64,12 +74,21 @@ export class TsUML2Settings {
             string: true
         }).argv;
 
-
+        if (argv.config) {
+            //parse and apply the config file
+            const config = fs.readFileSync(argv.config).toString();
+            this.formJSON(config);
+        }
 
         if(argv.glob) {
             this.glob = argv.glob;
         }
-        if(argv.outFile) {
+
+        if(argv.tsconfig && !(yargs.parsed as any).defaulted.tsconfig) {
+            this.tsconfig = argv.tsconfig;
+        }
+
+        if(argv.outFile && !(yargs.parsed as any).defaulted.outFile) {
             this.outFile = argv.outFile;
         }
        
@@ -77,21 +96,34 @@ export class TsUML2Settings {
             this.nomnoml = argv.nomnoml;
         }
 
-        if(argv.modifiers !== undefined) {
+        if(argv.modifiers && !(yargs.parsed as any).defaulted.modifiers) {
             this.modifiers = argv.modifiers;
         }
 
-        if(argv.propertyTypes !== undefined) {
+        if(argv.propertyTypes && !(yargs.parsed as any).defaulted.propertyTypes) {
             this.propertyTypes = argv.propertyTypes;
         }
-
-        if (argv.config) {
-            //parse and apply the config file
-            const config = fs.readFileSync(argv.config).toString();
-            this.formJSON(config);
-        }
-
     }
 }
 
+/*
+    function isUserSetOption(option: string,yargs: Argv<{}>) {
+        function searchForOption(option:string) {
+          return (process.argv.indexOf(option) > -1);
+        }
+    
+        if (searchForOption(`-${option}`) || searchForOption(`--${option}`))
+          return true;
+    
+        // Handle aliases for same option
+        for (let aliasIndex in yargs.choices().parsed.aliases[option]) {
+          let alias = yargs.choices().parsed.aliases[option][aliasIndex];
+          if (searchForOption(`-${alias}`) || searchForOption(`--${alias}`))
+            return true;
+        }
+    
+        return false;
+    }
+*/
 export const SETTINGS = new TsUML2Settings();
+
