@@ -32,12 +32,14 @@ tsuml2 --glob ./src/**/!(*.d|*.spec).ts
   --version        Show version number                                 [boolean]
   --glob, -g       pattern to match the source files (i.e.: ./src/**/*.ts)
                                                              [string] [required]
-  --tsconfig       the path to tsconfig.json file    [default: "./tsconfig.svg"]
+  --tsconfig       the path to tsconfig.json file   [default: "./tsconfig.json"]
   --outFile, -o    the path to the output file              [default: "out.svg"]
   --propertyTypes  show property types and method return types
                                                        [boolean] [default: true]
   --modifiers      show modifiers like public,protected,private,static
                                                        [boolean] [default: true]
+  --typeLinks      add links for classes, interface, enums that point to the
+                   source files                        [boolean] [default: true]
   --nomnoml        nomnoml layouting and styling options (an array of strings,
                    each representing a nomnoml line), i.e.: --nomnoml
                    "#arrowSize: 1" "#.interface: fill=#8f8 dashed"       [array]
@@ -57,7 +59,7 @@ an example config.json could look like:
 > **_NOTE:_** command line arguments override those provided in config.json
 
 
-## Example
+## Examples
 The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
 
 ![](/assets/uml_diagram.svg?sanitize=true)
@@ -68,3 +70,7 @@ A complex command line parameter example:
 ```
 
 ![](/assets/alt_uml_diagram.svg?sanitize=true)
+
+With type links enabled:
+
+![](/assets/type_links.gif)
