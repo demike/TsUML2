@@ -43,20 +43,17 @@ export interface FileDeclaration {
     fileName: string;
     classes: Clazz[];
     interfaces: Interface[];
+    enums: Enum[];
     heritageClauses: HeritageClause[][];
 }[]
 
-export class Interface {
+export class NamedType {
     public name: string;
     public id: string;
-    properties: PropertyDetails[];
-    methods: MethodDetails[];
 
-    constructor(options: ClassOrIfOptions) {
+    constructor(options: {name: string, id: string}) {
         this.name = options.name;
         this.id = options.id;
-        this.properties = options.properties;
-        this.methods = options.methods;
     }
 
     getRelativeFilePath(fromFile: string) {
@@ -74,10 +71,38 @@ export class Interface {
         return rel;
          
     }
+}
+
+export class Interface extends NamedType {
+
+    properties: PropertyDetails[];
+    methods: MethodDetails[];
+
+    constructor(options: ClassOrIfOptions) {
+        super(options)
+        this.properties = options.properties;
+        this.methods = options.methods;
+    }
 
 }
 
 export class Clazz extends Interface {
+
+}
+
+
+export interface EnumOptions {
+    name: string,
+    id: string,
+    enumItems: string[]
+}
+export class Enum extends NamedType {
+    items: string[] = [];
+
+    constructor(options: EnumOptions) {
+        super(options);
+        this.items = options.enumItems
+    }
 
 }
 

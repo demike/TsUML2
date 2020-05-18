@@ -1,7 +1,7 @@
 import { flatten, join } from "lodash";
 import { renderNomnomlSVG } from "./io";
-import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses } from "./parser";
-import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg } from "./emitter";
+import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses, parseEnum } from "./parser";
+import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum } from "./emitter";
 import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
 import * as chalk from 'chalk';
 import { FileDeclaration } from "./model";
@@ -17,12 +17,14 @@ function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const declarations: FileDeclaration[] = files.map(f => {
     const classes = f.getClasses();
     const interfaces = f.getInterfaces();
+    const enums = f.getEnums();
     const path = f.getFilePath();
     console.log(chalk.yellow(path));
     return {
       fileName: path,
       classes: classes.map(parseClasses),
       interfaces: interfaces.map(parseInterfaces),
+      enums: enums.map(parseEnum),
       heritageClauses: [...classes.map(parseClassHeritageClauses),...interfaces.map(parseInterfaceHeritageClauses)]
     };
   });
@@ -34,15 +36,18 @@ function emit(declarations: FileDeclaration[]) {
     console.log(chalk.yellow(d.fileName));
     const classes = d.classes.map((c) => emitSingleClass(c));
     const interfaces = d.interfaces.map((i) => emitSingleInterface(i));
+    const enums = d.enums.map((i) => emitSingleEnum(i));
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    return [...classes, ...interfaces, ...flatten(heritageClauses)];
+    return [...classes, ...interfaces, ...enums, ...flatten(heritageClauses)];
   });
 
   return getStyling() + join(flatten(entities), "\n");
 }
 
 function getStyling(): string {
-  return '#.interface: fill=lightblue\n' + SETTINGS.nomnoml.join("\n");
+  return '#.interface: fill=lightblue\n' +
+    '#.enumeration: fill=lightgreen\n' +
+    SETTINGS.nomnoml.join("\n");
 }
 
 export function createNomnomlSVG(settings: TsUML2Settings) {

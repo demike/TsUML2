@@ -24,6 +24,12 @@ export const templates = {
         methods: MethodDetails[]
     ) => {
         return `[<interface>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
+    },
+    enum: (
+        name: string,
+        enumItems: string[]
+    ) => {
+      return `[<enumeration>${name}|${enumItems.join(";")}]`;
     }
 };
 

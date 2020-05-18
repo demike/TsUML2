@@ -1,12 +1,14 @@
-<svg version="1.1" baseProfile="full" width="1597" height="540" viewbox="0 0 1597 540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<svg version="1.1" baseProfile="full" width="1610.75" height="540" viewbox="0 0 1610.75 540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
 <title >nomnoml</title>
 <desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
 [&lt;interface&gt;Weapon||+tryHit(): boolean]
 [&lt;interface&gt;Named|+name: string|]
 [&lt;interface&gt;Magic|+kind: string|]
 [&lt;interface&gt;BlackMagic||+paintItBlack(): boolean]
 [&lt;interface&gt;MagicWeapon&lt;MT&gt;|+magic: MT|+tryMagicHit(): boolean]
 [&lt;interface&gt;BlackMagicWeapon||]
+[&lt;enumeration&gt;Gender|Male;Female;Else]
 [Weapon]&lt;:--[Katana]
 [Named]&lt;:--[Katana]
 [Magic]&lt;:--[BlackMagic]
@@ -129,4 +131,10 @@
 <a xlink:href="..\src\demo\viking.ts"><text x="1498" y="236" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text></a>
 <path d="M1411.5 245.5 L1584.5 245.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M1411.5 253.5 L1584.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<rect x="1525.5" y="36.5" height="92" width="73" style="stroke:#33322E;fill:lightgreen;stroke-dasharray:none;"></rect>
+<a xlink:href="..\src\demo\interfaces.ts"><text x="1562" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Gender</text></a>
+<path d="M1525.5 67.5 L1598.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="1533.5" y="89" style="fill: #33322E;font-weight:normal;">Male</text>
+<text x="1533.5" y="104" style="fill: #33322E;font-weight:normal;">Female</text>
+<text x="1533.5" y="119" style="fill: #33322E;font-weight:normal;">Else</text>
 </svg>

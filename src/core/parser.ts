@@ -1,6 +1,6 @@
 import * as SimpleAST from "ts-morph";
 
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum } from "./model";
 
 
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
@@ -86,6 +86,21 @@ function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.
             returnType: getMethodTypeName(methodDeclaration),
         }
     }
+}
+
+export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
+    const enumName = enumDeclaration.getSymbol()!.getName();
+
+    let id = enumDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    if (!id.length) {
+        console.error("missing class id");
+    }
+
+    let enumItems: string[] = []
+
+    enumDeclaration.getMembers().forEach(mem => enumItems.push(mem.getName()))
+
+    return new Enum({ name: enumName, id, enumItems });
 }
 
 export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration ) {

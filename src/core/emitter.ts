@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum } from "./model";
 import { templates }from "./templates";
 
 
@@ -8,6 +8,10 @@ export function emitSingleClass(cls: Clazz) {
 
 export function emitSingleInterface(int: Interface) {
     return templates.interface(int.name, int.properties.map(escapePropertyDetails), int.methods.map(escapeMethodDetails));
+}
+
+export function emitSingleEnum(en: Enum) {
+    return templates.enum(en.name, en.items);
 }
   
 export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
@@ -53,10 +57,12 @@ function escapePropertyDetails(details: PropertyDetails) {
 export function postProcessSvg(svg: string, diagramPath: string, declarations: FileDeclaration[]) {
     const classes: {[key:string]:Clazz} = {};
     const interfaces: {[key:string]:Interface} = {};
+    const enums: {[key: string]:Enum} = {};
 
-    const entities = declarations.map(d => {
+    declarations.map(d => {
         d.classes.forEach(cls => classes[xmlEncode(cls.name)] = cls)
         d.interfaces.forEach(i => interfaces[xmlEncode(i.name)] = i)
+        d.enums.forEach(e => enums[xmlEncode(e.name)] = e);
     });
    
     const rx = />(.*)</;
@@ -65,7 +71,7 @@ export function postProcessSvg(svg: string, diagramPath: string, declarations: F
     for(let line of svg.split('\n')) {
         line = line.trim();
         if(line.startsWith("<text") && (regexResult = rx.exec(line))) {
-            let target = classes[regexResult[1]] || interfaces[regexResult[1]];
+            let target = classes[regexResult[1]] || interfaces[regexResult[1]] || enums[regexResult[1]];
             if(target) {
                 line = `<a xlink:href="${target.getRelativeFilePath(diagramPath)}">${line}</a>`; 
             }
