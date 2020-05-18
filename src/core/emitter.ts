@@ -1,12 +1,13 @@
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType } from "./interfaces";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration } from "./model";
 import { templates }from "./templates";
 
-export function emitSingleClass(name: string, properties: PropertyDetails[], methods: MethodDetails[]) {
-    return templates.class(name, properties.map(escapePropertyDetials), methods.map(escapeMethodDetails));
+
+export function emitSingleClass(cls: Clazz) {
+    return templates.class(cls.name, cls.properties.map(escapePropertyDetails), cls.methods.map(escapeMethodDetails));
 }
 
-export function emitSingleInterface(name: string, properties: PropertyDetails[], methods: MethodDetails[]) {
-    return templates.interface(name, properties.map(escapePropertyDetials), methods.map(escapeMethodDetails));
+export function emitSingleInterface(int: Interface) {
+    return templates.interface(int.name, int.properties.map(escapePropertyDetails), int.methods.map(escapeMethodDetails));
 }
   
 export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
@@ -21,20 +22,56 @@ export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
 }
 
 // utility functions
-function escape(str: string) {
+function escapeNomnoml(str: string) {
     return str.replace(/[|\][]/g, '\\$&');
+}
+
+function xmlEncode(str: string) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;')
 }
 
 function escapeMethodDetails(details: MethodDetails) {
     if(details.returnType) {
-        details.returnType = escape(details.returnType);
+        details.returnType = escapeNomnoml(details.returnType);
     }
     return details;
 }
 
-function escapePropertyDetials(details: PropertyDetails) {
+function escapePropertyDetails(details: PropertyDetails) {
     if(details.type) {
-        details.type = escape(details.type);
+        details.type = escapeNomnoml(details.type);
     }
     return details;
+}
+
+
+export function postProcessSvg(svg: string, diagramPath: string, declarations: FileDeclaration[]) {
+    const classes: {[key:string]:Clazz} = {};
+    const interfaces: {[key:string]:Interface} = {};
+
+    const entities = declarations.map(d => {
+        d.classes.forEach(cls => classes[xmlEncode(cls.name)] = cls)
+        d.interfaces.forEach(i => interfaces[xmlEncode(i.name)] = i)
+    });
+   
+    const rx = />(.*)</;
+    const arOut = []
+    let regexResult: RegExpExecArray | null;
+    for(let line of svg.split('\n')) {
+        line = line.trim();
+        if(line.startsWith("<text") && (regexResult = rx.exec(line))) {
+            let target = classes[regexResult[1]] || interfaces[regexResult[1]];
+            if(target) {
+                line = `<a xlink:href="${target.getRelativeFilePath(diagramPath)}">${line}</a>`; 
+            }
+        }   
+        arOut.push(line + '\n');
+    }
+
+    return arOut.join('');
 }

@@ -1,6 +1,7 @@
-import { Weapon } from "./interfaces";
+import { Weapon, Gender } from "./interfaces";
 
 export class Ninja {
+    public gender: Gender = Gender.Else;
     public static IdCnt=0;
     private _weapon: Weapon;
     public id: number;

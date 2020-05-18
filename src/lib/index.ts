@@ -1,1 +1,1 @@
-export { getSVG } from "../core";
+export { createNomnomlSVG } from "../core";

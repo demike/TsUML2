@@ -1,6 +1,7 @@
 import * as SimpleAST from "ts-morph";
 
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType } from "./interfaces";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz } from "./model";
+
 
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
@@ -20,6 +21,11 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     const methodDeclarations = classDeclaration.getMethods();
     const ctors = classDeclaration.getConstructors();
 
+    let id = classDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    if (!id.length) {
+        console.error("missing class id");
+    }
+
     let properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
 
     if (ctors && ctors.length) {
@@ -36,7 +42,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
 
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
-    return { className, properties, methods };
+    return new Clazz({ name: className, properties, methods, id });
 }
 
 export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
@@ -45,10 +51,16 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const propertyDeclarations = interfaceDeclaration.getProperties();
     const methodDeclarations = interfaceDeclaration.getMethods();
 
+    let id = interfaceDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    if (!id.length) {
+        console.error("missing interface id");
+    }
+
+
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
-    return { interfaceName, properties, methods };
+    return new Interface({ name: interfaceName, properties, methods, id });
 }
 
 function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | SimpleAST.PropertySignature | SimpleAST.ParameterDeclaration) : PropertyDetails | undefined {
@@ -59,6 +71,7 @@ function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | Simp
             modifierFlags: propertyDeclaration.getCombinedModifierFlags(),
             name: sym.getName(),
             type: getPropertyTypeName(sym),
+            typeIds: getTypeIdsFromSymbol(sym)
         }
     }
 
@@ -70,7 +83,7 @@ function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.
         return {
             modifierFlags: methodDeclaration.getCombinedModifierFlags(),
             name: sym.getName(),
-            returnType: getMethodTypeName(methodDeclaration)
+            returnType: getMethodTypeName(methodDeclaration),
         }
     }
 }
@@ -186,6 +199,46 @@ function getTypeAsString(type?: SimpleAST.Type<SimpleAST.ts.Type>): string | und
     }
 
     return name;
+}
+
+/**
+ * return an array of type ids (array because of union / intersection)
+ * @param symbol returns undefined if simple type number ...
+ */
+function getTypeIdsFromSymbol(symbol: SimpleAST.Symbol) : string[] {
+   
+    let valueDecl = symbol.getValueDeclaration();
+    if (!valueDecl) {
+        return [];
+    }
+    let type = valueDecl.getType();
+    return getTypeIdsFromType(type);
+
+}
+
+function getTypeIdsFromType(type?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
+    if (!type) {
+        return [];
+    }
+
+    let ids: (string|undefined)[] = [];
+
+    if(type.isClassOrInterface()) {
+        ids.push(type.getSymbol()?.getFullyQualifiedName());
+    } else if (type.isEnum()) {
+        ids.push(type.getSymbol()?.getFullyQualifiedName());;     
+    } else if (type.isUnionOrIntersection()) {
+        return [];
+        throw new Error("not implemented");
+    } else if (type.isArray()) {
+        return getTypeIdsFromType(type.getTypeArguments()[0]);
+        throw new Error("not implemented");
+    } else if (type.isTypeParameter()) {
+        return [];
+        // throw new Error("not implemented");
+    }
+
+    return ids.filter(id => id !== undefined) as string[] ;
 }
 
 function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments ) {

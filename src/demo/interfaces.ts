@@ -22,3 +22,9 @@ export interface MagicWeapon<MT extends Magic> extends Weapon {
 export interface BlackMagicWeapon extends MagicWeapon<BlackMagic> {
     
 }
+
+export enum Gender {
+    Male,
+    Female,
+    Else
+}

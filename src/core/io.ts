@@ -2,6 +2,6 @@
 //@ts-ignore
 import * as nomnoml from "nomnoml";
 
-export function renderToSVG(dsl: string) {
+export function renderNomnomlSVG(dsl: string) {
     return nomnoml.renderSvg(dsl); 
 };

@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails} from "./interfaces";
+import { PropertyDetails, MethodDetails} from "./model";
 import { ModifierFlags } from "typescript";
 import { SETTINGS } from "./tsuml2-settings";
 
