@@ -62,7 +62,9 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
   //render
   console.log(chalk.yellow("\nrender to svg"));
   let svg = renderNomnomlSVG(dsl);
-  svg = postProcessSvg(svg,settings.outFile, declarations);
+  if(settings.typeLinks) {
+    svg = postProcessSvg(svg,settings.outFile, declarations);
+  }
 
   fs.writeFile(SETTINGS.outFile,svg,(err) => {
     if(err) {

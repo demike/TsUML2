@@ -30,6 +30,11 @@ export class TsUML2Settings {
     modifiers = true;
 
     /**
+     * add type links
+     */
+    typeLinks = true;
+
+    /**
      * nomnoml layouting and styling options
      */
     nomnoml: string[] = [];
@@ -65,6 +70,10 @@ export class TsUML2Settings {
             default: this.modifiers,
             describe: "show modifiers like public,protected,private,static",
             boolean: true
+        }).option('typeLinks', {
+            default: this.typeLinks,
+            describe: "add links for classes, interface, enums that point to the source files",
+            boolean: true
         }).option('nomnoml', {
             describe: "nomnoml layouting and styling options (an array of strings, each representing a nomnoml line), i.e.: --nomnoml \"#arrowSize: 1\" \"#.interface: fill=#8f8 dashed\" ",
             array: true,
@@ -96,12 +105,16 @@ export class TsUML2Settings {
             this.nomnoml = argv.nomnoml;
         }
 
-        if(argv.modifiers && !(yargs.parsed as any).defaulted.modifiers) {
+        if(argv.modifiers != null && !(yargs.parsed as any).defaulted.modifiers) {
             this.modifiers = argv.modifiers;
         }
 
-        if(argv.propertyTypes && !(yargs.parsed as any).defaulted.propertyTypes) {
+        if(argv.propertyTypes != null && !(yargs.parsed as any).defaulted.propertyTypes) {
             this.propertyTypes = argv.propertyTypes;
+        }
+
+        if(argv.typeLinks != null && !(yargs.parsed as any).defaulted.typeLinks) {
+            this.typeLinks = argv.typeLinks;
         }
     }
 }
