@@ -11,7 +11,6 @@ import * as fs from 'fs';
 function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
   const files = ast.getSourceFiles();
-
   // parser
   console.log(chalk.yellow("parsing source files:"));
   const declarations: FileDeclaration[] = files.map(f => {
@@ -54,6 +53,10 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
 
   // parse
   const declarations = parse(settings.tsconfig, settings.glob)
+  if(declarations.length === 0) {
+    console.log(chalk.red("\nno declarations found! tsconfig: " + settings.tsconfig, " glob: " + settings.glob));
+    return;
+  }
 
   // emit
   console.log(chalk.yellow("\nemitting declarations:"));

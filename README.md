@@ -2,8 +2,6 @@
 
 # TsUML2 [![npm version](https://badge.fury.io/js/tsuml2.svg)](https://badge.fury.io/js/tsuml2) [![Known Vulnerabilities](https://snyk.io/test/npm/tsuml2/badge.svg)](https://snyk.io/test/npm/tsuml2)
 
-:construction: WORK IN PROGRESS :construction:
-
 Generate UML diagram for your TypeScript applications powered by nomnoml.
 
 TsUML2 works offline, so no third party servers are involved.

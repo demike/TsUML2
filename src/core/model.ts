@@ -1,5 +1,6 @@
 import { ModifierFlags } from "typescript";
 import { relative, resolve, dirname } from "path";
+import chalk = require("chalk");
 
 export interface MemberDetails {
     modifierFlags: ModifierFlags;
@@ -60,7 +61,8 @@ export class NamedType {
         const rx = /"(.*)"/;
         const result = rx.exec(this.id);
         if(!result) {
-            throw new Error("Could not compute path to class / interface definition");
+            console.log(chalk.redBright("Could not compute path to class / interface definition: " + this.id));
+            return "";
         }
         fromFile = resolve(dirname(fromFile));
         const toFile = resolve(result[1] + '.ts');
