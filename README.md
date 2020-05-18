@@ -69,6 +69,6 @@ A complex command line parameter example:
 
 ![](/assets/alt_uml_diagram.svg?sanitize=true)
 
-With type links enabled:
+With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
 
 ![](/assets/type_links.gif)
