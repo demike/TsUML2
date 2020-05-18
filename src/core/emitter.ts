@@ -73,7 +73,8 @@ export function postProcessSvg(svg: string, diagramPath: string, declarations: F
         if(line.startsWith("<text") && (regexResult = rx.exec(line))) {
             let target = classes[regexResult[1]] || interfaces[regexResult[1]] || enums[regexResult[1]];
             if(target) {
-                line = `<a xlink:href="${target.getRelativeFilePath(diagramPath)}">${line}</a>`; 
+                const relPath = target.getRelativeFilePath(diagramPath);
+                line = `<a id="${relPath}.${xmlEncode(target.name)}" xlink:href="${relPath}">${line}</a>`; 
             }
         }   
         arOut.push(line + '\n');

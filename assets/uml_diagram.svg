@@ -54,61 +54,61 @@
 <path d="M1458 136.5 L1498 171.5 L1498 214.5 L1498 214.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M1471.5 141.3 L1468 145.3 L1464.5 149.3 L1458 136.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
 <rect x="338.5" y="47.5" height="70" width="187" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="432" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Weapon</text></a>
+<a id="..\src\demo\interfaces.ts.Weapon" xlink:href="..\src\demo\interfaces.ts"><text x="432" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Weapon</text></a>
 <path d="M338.5 78.5 L525.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M338.5 86.5 L525.5 86.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="346.5" y="108" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
 <rect x="615.5" y="47.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="685.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Named</text></a>
+<a id="..\src\demo\interfaces.ts.Named" xlink:href="..\src\demo\interfaces.ts"><text x="685.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Named</text></a>
 <path d="M615.5 78.5 L755.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="623.5" y="100" style="fill: #33322E;font-weight:normal;">+name: string</text>
 <path d="M615.5 109.5 L755.5 109.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="65.5" y="47.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Magic</text></a>
+<a id="..\src\demo\interfaces.ts.Magic" xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Magic</text></a>
 <path d="M65.5 78.5 L205.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="73.5" y="100" style="fill: #33322E;font-weight:normal;">+kind: string</text>
 <path d="M65.5 109.5 L205.5 109.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="13.5" y="203.5" height="70" width="244" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="225" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagic</text></a>
+<a id="..\src\demo\interfaces.ts.BlackMagic" xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="225" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagic</text></a>
 <path d="M13.5 234.5 L257.5 234.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M13.5 242.5 L257.5 242.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="21.5" y="264" style="fill: #33322E;font-weight:normal;">+paintItBlack(): boolean</text>
 <rect x="297.5" y="191.5" height="93" width="239" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="417" y="213" style="fill: #33322E;font-weight:normal;text-anchor: middle;">MagicWeapon&lt;MT&gt;</text></a>
+<a id="..\src\demo\interfaces.ts.MagicWeapon&lt;MT&gt;" xlink:href="..\src\demo\interfaces.ts"><text x="417" y="213" style="fill: #33322E;font-weight:normal;text-anchor: middle;">MagicWeapon&lt;MT&gt;</text></a>
 <path d="M297.5 222.5 L536.5 222.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="305.5" y="244" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
 <path d="M297.5 253.5 L536.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="305.5" y="275" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
 <rect x="200.5" y="347.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="289" y="369" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text></a>
+<a id="..\src\demo\interfaces.ts.BlackMagicWeapon" xlink:href="..\src\demo\interfaces.ts"><text x="289" y="369" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text></a>
 <path d="M200.5 378.5 L377.5 378.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M200.5 386.5 L377.5 386.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="795.5" y="32.5" height="100" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\katana.ts"><text x="903.5" y="54" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text></a>
+<a id="..\src\demo\katana.ts.BaseWeapon" xlink:href="..\src\demo\katana.ts"><text x="903.5" y="54" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text></a>
 <path d="M795.5 63.5 L1011.5 63.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="803.5" y="85" style="fill: #33322E;font-weight:normal;">+damage: number</text>
 <text x="803.5" y="100" style="fill: #33322E;font-weight:normal;">#durability: number</text>
 <text x="803.5" y="115" style="fill: #33322E;font-weight:normal;">+attributes: string[]</text>
 <path d="M795.5 124.5 L1011.5 124.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="614.5" y="191.5" height="93" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\katana.ts"><text x="708" y="213" style="fill: #33322E;text-anchor: middle;">Katana</text></a>
+<a id="..\src\demo\katana.ts.Katana" xlink:href="..\src\demo\katana.ts"><text x="708" y="213" style="fill: #33322E;text-anchor: middle;">Katana</text></a>
 <path d="M614.5 222.5 L801.5 222.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="622.5" y="244" style="fill: #33322E;font-weight:normal;">+name: string</text>
 <path d="M614.5 253.5 L801.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="622.5" y="275" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
 <rect x="563.5" y="324.5" height="93" width="239" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\katana.ts"><text x="683" y="346" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text></a>
+<a id="..\src\demo\katana.ts.MagicKatana&lt;MT&gt;" xlink:href="..\src\demo\katana.ts"><text x="683" y="346" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text></a>
 <path d="M563.5 355.5 L802.5 355.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="571.5" y="377" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
 <path d="M563.5 386.5 L802.5 386.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="571.5" y="408" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
 <rect x="459.5" y="457.5" height="70" width="287" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\katana.ts"><text x="603" y="479" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text></a>
+<a id="..\src\demo\katana.ts.BlackMagicKatana" xlink:href="..\src\demo\katana.ts"><text x="603" y="479" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text></a>
 <path d="M459.5 488.5 L746.5 488.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M459.5 496.5 L746.5 496.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="467.5" y="518" style="fill: #33322E;font-weight:normal;">+tryBlackMagicHit(): boolean</text>
 <rect x="1051.5" y="13.5" height="138" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\ninja.ts"><text x="1159.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text></a>
+<a id="..\src\demo\ninja.ts.Ninja" xlink:href="..\src\demo\ninja.ts"><text x="1159.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text></a>
 <path d="M1051.5 44.5 L1267.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="1059.5" y="66" style="fill: #33322E;font-weight:normal;">+gender: Gender</text>
 <text x="1059.5" y="81" style="fill: #33322E;font-weight:normal;">+static IdCnt: number</text>
@@ -117,22 +117,22 @@
 <path d="M1051.5 120.5 L1267.5 120.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="1059.5" y="142" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
 <rect x="1307.5" y="28.5" height="108" width="178" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\viking.ts"><text x="1396.5" y="50" style="fill: #33322E;text-anchor: middle;">Viking&lt;WT&gt;</text></a>
+<a id="..\src\demo\viking.ts.Viking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="1396.5" y="50" style="fill: #33322E;text-anchor: middle;">Viking&lt;WT&gt;</text></a>
 <path d="M1307.5 59.5 L1485.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="1315.5" y="81" style="fill: #33322E;font-weight:normal;">+gender: Gender</text>
 <text x="1315.5" y="96" style="fill: #33322E;font-weight:normal;">+weapon: WT</text>
 <path d="M1307.5 105.5 L1485.5 105.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="1315.5" y="127" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
 <rect x="1178.5" y="214.5" height="47" width="154" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\viking.ts"><text x="1255.5" y="236" style="fill: #33322E;text-anchor: middle;">UberViking&lt;WT&gt;</text></a>
+<a id="..\src\demo\viking.ts.UberViking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="1255.5" y="236" style="fill: #33322E;text-anchor: middle;">UberViking&lt;WT&gt;</text></a>
 <path d="M1178.5 245.5 L1332.5 245.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M1178.5 253.5 L1332.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="1411.5" y="214.5" height="47" width="173" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\viking.ts"><text x="1498" y="236" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text></a>
+<a id="..\src\demo\viking.ts.VikingWithKatana" xlink:href="..\src\demo\viking.ts"><text x="1498" y="236" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text></a>
 <path d="M1411.5 245.5 L1584.5 245.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <path d="M1411.5 253.5 L1584.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <rect x="1525.5" y="36.5" height="92" width="73" style="stroke:#33322E;fill:lightgreen;stroke-dasharray:none;"></rect>
-<a xlink:href="..\src\demo\interfaces.ts"><text x="1562" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Gender</text></a>
+<a id="..\src\demo\interfaces.ts.Gender" xlink:href="..\src\demo\interfaces.ts"><text x="1562" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Gender</text></a>
 <path d="M1525.5 67.5 L1598.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
 <text x="1533.5" y="89" style="fill: #33322E;font-weight:normal;">Male</text>
 <text x="1533.5" y="104" style="fill: #33322E;font-weight:normal;">Female</text>
