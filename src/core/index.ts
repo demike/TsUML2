@@ -1,4 +1,3 @@
-import { flatten, join } from "lodash";
 import { renderNomnomlSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses, parseEnum } from "./parser";
 import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum } from "./emitter";
@@ -36,10 +35,10 @@ function emit(declarations: FileDeclaration[]) {
     const interfaces = d.interfaces.map((i) => emitSingleInterface(i));
     const enums = d.enums.map((i) => emitSingleEnum(i));
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    return [...classes, ...interfaces, ...enums, ...flatten(heritageClauses)];
+    return [...classes, ...interfaces, ...enums, ...heritageClauses.flat()];
   });
 
-  return getStyling() + join(flatten(entities), "\n");
+  return getStyling() + entities.flat().join("\n");
 }
 
 function getStyling(): string {
