@@ -7,7 +7,6 @@ import * as chalk from 'chalk';
 import { FileDeclaration } from "./model";
 import * as fs from 'fs';
 
-
 function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
   const files = ast.getSourceFiles();

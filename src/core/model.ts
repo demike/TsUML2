@@ -92,7 +92,6 @@ export class Clazz extends Interface {
 
 }
 
-
 export interface EnumOptions {
     name: string,
     id: string,

@@ -6,7 +6,6 @@ import { createNomnomlSVG } from "../core";
 import { SETTINGS } from "../core/tsuml2-settings";
 
 (async () => {
-
     try {
 
         SETTINGS.fromArgs(yargs);
@@ -20,5 +19,4 @@ import { SETTINGS } from "../core/tsuml2-settings";
     } catch(e) {
         console.log(chalk.redBright(e),e);
     }
-
 })();

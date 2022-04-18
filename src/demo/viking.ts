@@ -1,6 +1,7 @@
 import { Weapon, Gender } from "./interfaces";
 import { Katana } from "./katana";
 
+
 export class Viking<WT extends Weapon> {
     public gender: Gender = Gender.Else;
     public weapon: WT

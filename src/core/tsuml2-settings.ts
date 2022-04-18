@@ -1,7 +1,6 @@
 import { Argv } from "yargs";
 import * as fs  from "fs";
 
-
 export class TsUML2Settings {
     /**
      * required

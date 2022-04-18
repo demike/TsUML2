@@ -33,7 +33,6 @@ export const templates = {
     }
 };
 
-
 function methodTemplate(method: MethodDetails): string {
     // TODO go on
     let retVal = method.name + "()";
