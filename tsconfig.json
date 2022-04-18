@@ -5,6 +5,7 @@
     "lib": ["dom", "es2019"],
     "strict": true,
     "outDir": "dist",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "esModuleInterop": true
+  },
 }

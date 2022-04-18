@@ -4,7 +4,7 @@ import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Int
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
         tsConfigFilePath: tsConfigPath,
-        addFilesFromTsConfig: !sourceFilesPathsGlob
+        skipAddingFilesFromTsConfig: !!sourceFilesPathsGlob
     });
     if (sourceFilesPathsGlob) {
         ast.addSourceFilesAtPaths(sourceFilesPathsGlob);

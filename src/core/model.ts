@@ -1,6 +1,6 @@
 import { ModifierFlags } from "typescript";
 import { relative, resolve, dirname } from "path";
-import chalk = require("chalk");
+import chalk from "chalk";
 
 export interface MemberDetails {
     modifierFlags: ModifierFlags;

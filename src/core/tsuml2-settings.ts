@@ -47,7 +47,7 @@ export class TsUML2Settings {
         Object.assign(this,JSON.parse(json));
     }
 
-    fromArgs(yargs: Argv<{}>) {
+    fromArgs(yargs: Argv) {
 
         const argv = yargs.option('glob', {
             alias: "g",
@@ -80,7 +80,7 @@ export class TsUML2Settings {
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
-        }).argv;
+        }).argv as Partial<TsUML2Settings & { config: string}>;
 
         if (argv.config) {
             //parse and apply the config file

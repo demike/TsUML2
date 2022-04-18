@@ -2,7 +2,7 @@ import { renderNomnomlSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses, parseEnum } from "./parser";
 import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum } from "./emitter";
 import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { FileDeclaration } from "./model";
 import * as fs from 'fs';
 

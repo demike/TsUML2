@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
-import * as chalk from "chalk";
-import * as yargs from "yargs";
+import chalk from "chalk";
+import yargs from "yargs";
 import { createNomnomlSVG } from "../core";
 import { SETTINGS } from "../core/tsuml2-settings";
 
