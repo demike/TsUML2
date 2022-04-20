@@ -19,6 +19,13 @@ npm install -g tsuml2
 ```
 tsuml2 --glob "./src/**/*.ts" 
 ```
+By default tsuml2 assumes that the required `tsconfig.json` file resides in the current directoy
+if this is not the case use the tsconfig parameter: 
+```sh
+--tsconfig "./somewhere/tsconfig.alt.json"
+```
+
+
 To avoid getting unwanted interfaces / classes you might want to exclude d.ts and spec.ts files:
 ```
 tsuml2 --glob "./src/**/!(*.d|*.spec).ts"

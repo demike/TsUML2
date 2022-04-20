@@ -12,7 +12,7 @@
     "@types/yargs": "^17.0.10"
   },
   "dependencies": {
-    "chalk": "^5.0.1",
+    "chalk": "^4.1.2",
     "glob": "^8.0.1",
     "nomnoml": "^1.5.1",
     "ts-morph": "^14.0.0",
