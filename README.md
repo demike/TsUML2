@@ -27,29 +27,32 @@ if this is not the case use the tsconfig parameter:
 
 
 To avoid getting unwanted interfaces / classes you might want to exclude d.ts and spec.ts files:
-```
+```sh
 tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
 ```
 
 ### Options
 ```
-  --help           Show help                                           [boolean]
-  --version        Show version number                                 [boolean]
-  --glob, -g       pattern to match the source files (i.e.: ./src/**/*.ts)
+      --help           Show help                                       [boolean]
+      --version        Show version number                             [boolean]
+  -g, --glob           pattern to match the source files (i.e.: ./src/**/*.ts)
                                                              [string] [required]
-  --tsconfig       the path to tsconfig.json file   [default: "./tsconfig.json"]
-  --outFile, -o    the path to the output file              [default: "out.svg"]
-  --propertyTypes  show property types and method return types
+      --tsconfig       the path to tsconfig.json file
+                                                    [default: "./tsconfig.json"]
+  -o, --outFile        the path to the output file          [default: "out.svg"]
+      --propertyTypes  show property types and method return types
                                                        [boolean] [default: true]
-  --modifiers      show modifiers like public,protected,private,static
+      --modifiers      show modifiers like public,protected,private,static
                                                        [boolean] [default: true]
-  --typeLinks      add links for classes, interface, enums that point to the
-                   source files                        [boolean] [default: true]
-  --nomnoml        nomnoml layouting and styling options (an array of strings,
-                   each representing a nomnoml line), i.e.: --nomnoml
-                   "#arrowSize: 1" "#.interface: fill=#8f8 dashed"       [array]
-  --config         path to a json config file (command line options can be
-                   provided as keys in it)                              [string]
+      --typeLinks      add links for classes, interface, enums that point to the
+                       source files                    [boolean] [default: true]
+      --nomnoml        nomnoml layouting and styling options (an array of
+                       strings, each representing a nomnoml line), i.e.:
+                       --nomnoml "#arrowSize: 1" "#.interface: fill=#8f8
+                       dashed"                                           [array]
+      --outDsl         the path to the output DSL file (nomnoml)        [string]
+      --config         path to a json config file (command line options can be
+                       provided as keys in it)                          [string]
 ```
 
 an example config.json could look like:
@@ -65,17 +68,61 @@ an example config.json could look like:
 
 
 ## Examples
+### Demo Diagram
+
+```sh
+tsuml2 --glob "./src/demo/**/*.ts" -o "./assets/uml_diagram.svg"
+```
+
 The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
 
 ![](/assets/uml_diagram.svg?sanitize=true)
 
-A complex command line parameter example:
+### A complex command line parameter example:
 ```
 ./tsuml2 --glob=./src/demo/**/*.ts --nomnoml "#arrowSize: 1.5" "#.interface: fill=#8f8 dashed" --modifiers false --propertyTypes false
 ```
 
 ![](/assets/alt_uml_diagram.svg?sanitize=true)
 
-With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
+### With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
 
 ![](/assets/type_links.gif)
+
+### Generate nomnoml DSL output
+
+```sh
+tsuml2 --glob "./src/demo/**/*.ts" --outDsl  "./assets/uml_diagram.dsl"
+```
+results in the following nomnoml code stored in `uml_diagram.dsl`:
+```nomnoml
+#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+[<interface>Weapon||+tryHit(): boolean]
+[<interface>Named|+name: string|]
+[<interface>Magic|+kind: string|]
+[<interface>BlackMagic||+paintItBlack(): boolean]
+[<interface>MagicWeapon<MT>|+magic: MT|+tryMagicHit(): boolean]
+[<interface>BlackMagicWeapon||]
+[<enumeration>Gender|Male;Female;Else]
+[Magic]<:--[BlackMagic]
+[Weapon]<:--[MagicWeapon<MT>]
+[MagicWeapon<MT>]<:--[BlackMagicWeapon]
+[BaseWeapon|+damage: number;#durability: number;+attributes: string\[\]|]
+[Katana|+name: string|+tryHit(): boolean]
+[MagicKatana<MT>|+magic: MT|+tryMagicHit(): boolean]
+[BlackMagicKatana||+tryBlackMagicHit(): boolean]
+[BaseWeapon]<:-[Katana]
+[Weapon]<:--[Katana]
+[Named]<:--[Katana]
+[Katana]<:-[MagicKatana<MT>]
+[MagicWeapon<MT>]<:--[MagicKatana<MT>]
+[MagicKatana<MT>]<:-[BlackMagicKatana]
+[MagicWeapon<MT>]<:--[BlackMagicKatana]
+[Ninja|+gender: Gender;+static IdCnt: number;-_weapon: Weapon;+id: number|+fight(): boolean]
+[Viking<WT>|+gender: Gender;+weapon: WT|+fight(): boolean]
+[UberViking<WT>||]
+[VikingWithKatana||]
+[Viking<WT>]<:-[UberViking<WT>]
+[Viking<WT>]<:-[VikingWithKatana]
+```

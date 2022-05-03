@@ -40,6 +40,12 @@ export class TsUML2Settings {
 
 
     /**
+     * output file contain the DSL (nomnoml)
+     */
+    outDsl: string = ""
+
+
+    /**
      * parses a json file and merges in the provided options
      * @param json 
      */
@@ -77,6 +83,10 @@ export class TsUML2Settings {
             describe: "nomnoml layouting and styling options (an array of strings, each representing a nomnoml line), i.e.: --nomnoml \"#arrowSize: 1\" \"#.interface: fill=#8f8 dashed\" ",
             array: true,
             string: true
+        }).option('outDsl', {
+            describe: "the path to the output DSL file (nomnoml)",
+            string: true,
+            required: false,
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
@@ -114,6 +124,10 @@ export class TsUML2Settings {
 
         if(argv.typeLinks != null && !(yargs.parsed as any).defaulted.typeLinks) {
             this.typeLinks = argv.typeLinks;
+        }
+
+        if(argv.outDsl != null && !(yargs.parsed as any).defaulted.outDsl) {
+            this.outDsl = argv.outDsl;
         }
     }
 }

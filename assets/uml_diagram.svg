@@ -1,5 +1,4 @@
-<svg version="1.1" baseProfile="full" width="1610.75" height="540" viewbox="0 0 1610.75 540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
-<title >nomnoml</title>
+<svg version="1.1" baseProfile="full" width="1445.0" height="570.0" viewbox="0 0 1445 570" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
 <desc >#.interface: fill=lightblue
 #.enumeration: fill=lightgreen
 [&lt;interface&gt;Weapon||+tryHit(): boolean]
@@ -9,132 +8,437 @@
 [&lt;interface&gt;MagicWeapon&lt;MT&gt;|+magic: MT|+tryMagicHit(): boolean]
 [&lt;interface&gt;BlackMagicWeapon||]
 [&lt;enumeration&gt;Gender|Male;Female;Else]
-[Weapon]&lt;:--[Katana]
-[Named]&lt;:--[Katana]
 [Magic]&lt;:--[BlackMagic]
 [Weapon]&lt;:--[MagicWeapon&lt;MT&gt;]
-[MagicWeapon&lt;MT&gt;]&lt;:--[MagicKatana&lt;MT&gt;]
-[MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicKatana]
 [MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicWeapon]
 [BaseWeapon|+damage: number;#durability: number;+attributes: string\[\]|]
 [Katana|+name: string|+tryHit(): boolean]
 [MagicKatana&lt;MT&gt;|+magic: MT|+tryMagicHit(): boolean]
 [BlackMagicKatana||+tryBlackMagicHit(): boolean]
 [BaseWeapon]&lt;:-[Katana]
+[Weapon]&lt;:--[Katana]
+[Named]&lt;:--[Katana]
 [Katana]&lt;:-[MagicKatana&lt;MT&gt;]
+[MagicWeapon&lt;MT&gt;]&lt;:--[MagicKatana&lt;MT&gt;]
 [MagicKatana&lt;MT&gt;]&lt;:-[BlackMagicKatana]
+[MagicWeapon&lt;MT&gt;]&lt;:--[BlackMagicKatana]
 [Ninja|+gender: Gender;+static IdCnt: number;-_weapon: Weapon;+id: number|+fight(): boolean]
 [Viking&lt;WT&gt;|+gender: Gender;+weapon: WT|+fight(): boolean]
 [UberViking&lt;WT&gt;||]
 [VikingWithKatana||]
 [Viking&lt;WT&gt;]&lt;:-[UberViking&lt;WT&gt;]
 [Viking&lt;WT&gt;]&lt;:-[VikingWithKatana]</desc>
-<path d="M483.9 117.5 L563.5 171.5 L614 194.8 L614 194.8 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M497.9 120.6 L494.9 125 L491.9 129.4 L483.9 117.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M685.3 117.5 L685.3 171.5 L691.9 191.5 L691.9 191.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M690.6 130.8 L685.3 130.8 L679.9 130.8 L685.3 117.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M135.5 117.5 L135.5 171.5 L135.5 203 L135.5 203 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M140.8 130.8 L135.5 130.8 L130.2 130.8 L135.5 117.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M426.3 117.5 L417 171.5 L417 191.5 L417 191.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M429.3 131.5 L424 130.6 L418.7 129.7 L426.3 117.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M505.5 284.5 L543.5 304.5 L585.4 324.5 L585.4 324.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M519.7 286 L517.3 290.7 L514.8 295.4 L505.5 284.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M417 284.5 L417 304.5 L417 371 L417 371 L417 437.5 L417 437.5 L484.6 457.5 L484.6 457.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M422.3 297.8 L417 297.8 L411.7 297.8 L417 284.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M327.1 284.5 L288.5 304.5 L288.5 347.5 L288.5 347.5 " style="stroke:#33322E;fill:none;stroke-dasharray:6 6;"></path>
-<path d="M317.8 295.4 L315.3 290.6 L312.9 285.9 L327.1 284.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M903.3 132.5 L903.3 171.5 L801 206.2 L801 206.2 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M908.6 145.8 L903.3 145.8 L897.9 145.8 L903.3 132.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M707.5 284.5 L707.5 304.5 L700.1 324.5 L700.1 324.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M712.8 297.8 L707.5 297.8 L702.2 297.8 L707.5 284.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M682.8 417.5 L682.8 437.5 L653.8 457.5 L653.8 457.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M688.1 430.8 L682.8 430.8 L677.4 430.8 L682.8 417.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M1310.5 136.5 L1255 171.5 L1255 214.5 L1255 214.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M1302.1 148.1 L1299.3 143.6 L1296.4 139.1 L1310.5 136.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<path d="M1458 136.5 L1498 171.5 L1498 214.5 L1498 214.5 " style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M1471.5 141.3 L1468 145.3 L1464.5 149.3 L1458 136.5 Z" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></path>
-<rect x="338.5" y="47.5" height="70" width="187" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.Weapon" xlink:href="..\src\demo\interfaces.ts"><text x="432" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Weapon</text></a>
-<path d="M338.5 78.5 L525.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M338.5 86.5 L525.5 86.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="346.5" y="108" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
-<rect x="615.5" y="47.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.Named" xlink:href="..\src\demo\interfaces.ts"><text x="685.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Named</text></a>
-<path d="M615.5 78.5 L755.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="623.5" y="100" style="fill: #33322E;font-weight:normal;">+name: string</text>
-<path d="M615.5 109.5 L755.5 109.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="65.5" y="47.5" height="70" width="140" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.Magic" xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="69" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Magic</text></a>
-<path d="M65.5 78.5 L205.5 78.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="73.5" y="100" style="fill: #33322E;font-weight:normal;">+kind: string</text>
-<path d="M65.5 109.5 L205.5 109.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="13.5" y="203.5" height="70" width="244" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.BlackMagic" xlink:href="..\src\demo\interfaces.ts"><text x="135.5" y="225" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagic</text></a>
-<path d="M13.5 234.5 L257.5 234.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M13.5 242.5 L257.5 242.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="21.5" y="264" style="fill: #33322E;font-weight:normal;">+paintItBlack(): boolean</text>
-<rect x="297.5" y="191.5" height="93" width="239" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.MagicWeapon&lt;MT&gt;" xlink:href="..\src\demo\interfaces.ts"><text x="417" y="213" style="fill: #33322E;font-weight:normal;text-anchor: middle;">MagicWeapon&lt;MT&gt;</text></a>
-<path d="M297.5 222.5 L536.5 222.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="305.5" y="244" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
-<path d="M297.5 253.5 L536.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="305.5" y="275" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
-<rect x="200.5" y="347.5" height="47" width="177" style="stroke:#33322E;fill:lightblue;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.BlackMagicWeapon" xlink:href="..\src\demo\interfaces.ts"><text x="289" y="369" style="fill: #33322E;font-weight:normal;text-anchor: middle;">BlackMagicWeapon</text></a>
-<path d="M200.5 378.5 L377.5 378.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M200.5 386.5 L377.5 386.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="795.5" y="32.5" height="100" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\katana.ts.BaseWeapon" xlink:href="..\src\demo\katana.ts"><text x="903.5" y="54" style="fill: #33322E;text-anchor: middle;">BaseWeapon</text></a>
-<path d="M795.5 63.5 L1011.5 63.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="803.5" y="85" style="fill: #33322E;font-weight:normal;">+damage: number</text>
-<text x="803.5" y="100" style="fill: #33322E;font-weight:normal;">#durability: number</text>
-<text x="803.5" y="115" style="fill: #33322E;font-weight:normal;">+attributes: string[]</text>
-<path d="M795.5 124.5 L1011.5 124.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="614.5" y="191.5" height="93" width="187" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\katana.ts.Katana" xlink:href="..\src\demo\katana.ts"><text x="708" y="213" style="fill: #33322E;text-anchor: middle;">Katana</text></a>
-<path d="M614.5 222.5 L801.5 222.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="622.5" y="244" style="fill: #33322E;font-weight:normal;">+name: string</text>
-<path d="M614.5 253.5 L801.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="622.5" y="275" style="fill: #33322E;font-weight:normal;">+tryHit(): boolean</text>
-<rect x="563.5" y="324.5" height="93" width="239" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\katana.ts.MagicKatana&lt;MT&gt;" xlink:href="..\src\demo\katana.ts"><text x="683" y="346" style="fill: #33322E;text-anchor: middle;">MagicKatana&lt;MT&gt;</text></a>
-<path d="M563.5 355.5 L802.5 355.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="571.5" y="377" style="fill: #33322E;font-weight:normal;">+magic: MT</text>
-<path d="M563.5 386.5 L802.5 386.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="571.5" y="408" style="fill: #33322E;font-weight:normal;">+tryMagicHit(): boolean</text>
-<rect x="459.5" y="457.5" height="70" width="287" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\katana.ts.BlackMagicKatana" xlink:href="..\src\demo\katana.ts"><text x="603" y="479" style="fill: #33322E;text-anchor: middle;">BlackMagicKatana</text></a>
-<path d="M459.5 488.5 L746.5 488.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M459.5 496.5 L746.5 496.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="467.5" y="518" style="fill: #33322E;font-weight:normal;">+tryBlackMagicHit(): boolean</text>
-<rect x="1051.5" y="13.5" height="138" width="216" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\ninja.ts.Ninja" xlink:href="..\src\demo\ninja.ts"><text x="1159.5" y="35" style="fill: #33322E;text-anchor: middle;">Ninja</text></a>
-<path d="M1051.5 44.5 L1267.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="1059.5" y="66" style="fill: #33322E;font-weight:normal;">+gender: Gender</text>
-<text x="1059.5" y="81" style="fill: #33322E;font-weight:normal;">+static IdCnt: number</text>
-<text x="1059.5" y="96" style="fill: #33322E;font-weight:normal;">-_weapon: Weapon</text>
-<text x="1059.5" y="111" style="fill: #33322E;font-weight:normal;">+id: number</text>
-<path d="M1051.5 120.5 L1267.5 120.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="1059.5" y="142" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
-<rect x="1307.5" y="28.5" height="108" width="178" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\viking.ts.Viking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="1396.5" y="50" style="fill: #33322E;text-anchor: middle;">Viking&lt;WT&gt;</text></a>
-<path d="M1307.5 59.5 L1485.5 59.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="1315.5" y="81" style="fill: #33322E;font-weight:normal;">+gender: Gender</text>
-<text x="1315.5" y="96" style="fill: #33322E;font-weight:normal;">+weapon: WT</text>
-<path d="M1307.5 105.5 L1485.5 105.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="1315.5" y="127" style="fill: #33322E;font-weight:normal;">+fight(): boolean</text>
-<rect x="1178.5" y="214.5" height="47" width="154" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\viking.ts.UberViking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="1255.5" y="236" style="fill: #33322E;text-anchor: middle;">UberViking&lt;WT&gt;</text></a>
-<path d="M1178.5 245.5 L1332.5 245.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M1178.5 253.5 L1332.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="1411.5" y="214.5" height="47" width="173" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\viking.ts.VikingWithKatana" xlink:href="..\src\demo\viking.ts"><text x="1498" y="236" style="fill: #33322E;text-anchor: middle;">VikingWithKatana</text></a>
-<path d="M1411.5 245.5 L1584.5 245.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<path d="M1411.5 253.5 L1584.5 253.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<rect x="1525.5" y="36.5" height="92" width="73" style="stroke:#33322E;fill:lightgreen;stroke-dasharray:none;"></rect>
-<a id="..\src\demo\interfaces.ts.Gender" xlink:href="..\src\demo\interfaces.ts"><text x="1562" y="58" style="fill: #33322E;font-weight:normal;text-anchor: middle;">Gender</text></a>
-<path d="M1525.5 67.5 L1598.5 67.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
-<text x="1533.5" y="89" style="fill: #33322E;font-weight:normal;">Male</text>
-<text x="1533.5" y="104" style="fill: #33322E;font-weight:normal;">Female</text>
-<text x="1533.5" y="119" style="fill: #33322E;font-weight:normal;">Else</text>
+<g stroke-width="1.0" text-align="left" font="12pt Helvetica, Arial, sans-serif" font-size="12pt" font-family="Helvetica" font-weight="normal" font-style="normal">
+<g transform="translate(0.5, 0.5)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" stroke-width="3.0" stroke-linejoin="round" stroke-linecap="round" stroke="#33322E">
+<g stroke="transparent" fill="transparent">
+<rect x="0.0" y="0.0" height="570.0" width="1445.0" stroke="none"></rect>
+</g>
+<g transform="translate(8, 8)" fill="#33322E">
+<g transform="translate(20, 20)" fill="#eee8d5" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal">
+<g stroke-dasharray="6 6">
+<path d="M102.0 117.3 L102 158 L102 189.5 L102.0 189.5 " fill="none"></path>
+</g>
+<path d="M107.3 117.3 L102.0 117.3 L96.7 117.3 L102.0 104.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M473.7 105.2 L344 158 L344 178 L344.0 178.0 " fill="none"></path>
+</g>
+<path d="M475.7 110.1 L473.7 105.2 L471.6 100.3 L486.0 100.2 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M244.1 277.2 L218 291 L218 334 L218.0 334.0 " fill="none"></path>
+</g>
+<path d="M246.6 281.9 L244.1 277.2 L241.6 272.5 L255.9 271.0 Z"></path>
+<path d="M774.0 132.3 L774 158 L730.25 182.1943866943867 L730.3 182.2 " fill="none"></path>
+<path d="M779.3 132.3 L774.0 132.3 L768.7 132.3 L774.0 119.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M606.6 113.5 L650.75 158 L651.6522556390977 178 L651.7 178.0 " fill="none"></path>
+</g>
+<path d="M610.4 109.7 L606.6 113.5 L602.8 117.2 L597.2 104.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M428.1 113.5 L472.25 158 L577.25 196.4710743801653 L577.3 196.5 " fill="none"></path>
+</g>
+<path d="M431.9 109.7 L428.1 113.5 L424.3 117.2 L418.7 104.0 Z"></path>
+<path d="M653.8 284.3 L653.75 291 L647.734962406015 311 L647.7 311.0 " fill="none"></path>
+<path d="M659.1 284.3 L653.8 284.3 L648.4 284.3 L653.8 271.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M431.1 278.0 L452.25 291 L533.75 320.8608815426997 L533.8 320.9 " fill="none"></path>
+</g>
+<path d="M433.8 273.4 L431.1 278.0 L428.3 282.5 L419.7 271.0 Z"></path>
+<path d="M633.8 417.3 L633.75 424 L608.2954545454545 444 L608.3 444.0 " fill="none"></path>
+<path d="M639.1 417.3 L633.8 417.3 L628.4 417.3 L633.8 404.0 Z"></path>
+<g stroke-dasharray="6 6">
+<path d="M344.0 284.3 L344 291 L344 357.5 L344 357.5 L344 424 L344 424 L442.25 448.59044368600684 L442.3 448.6 " fill="none"></path>
+</g>
+<path d="M349.3 284.3 L344.0 284.3 L338.7 284.3 L344.0 271.0 Z"></path>
+<path d="M1116.9 131.1 L1081.5 158 L1081.5 201 L1081.5 201.0 " fill="none"></path>
+<path d="M1120.1 135.3 L1116.9 131.1 L1113.7 126.8 L1127.5 123.0 Z"></path>
+<path d="M1266.4 132.1 L1294.25 158 L1294.25 201 L1294.3 201.0 " fill="none"></path>
+<path d="M1270.0 128.2 L1266.4 132.1 L1262.7 136.0 L1256.6 123.0 Z"></path>
+<g data-name="Weapon">
+<g fill="lightblue" stroke="#33322E" data-name="Weapon">
+<rect x="486.0" y="34.0" height="70.0" width="153.0" data-name="Weapon"></rect>
+<path d="M486.0 65.0 L639.0 65.0" fill="none" data-name="Weapon"></path>
+<path d="M486.0 73.0 L639.0 73.0" fill="none" data-name="Weapon"></path>
+</g>
+<g transform="translate(486, 34)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Weapon">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Weapon">
+<a id="..\src\demo\interfaces.ts.Weapon" xlink:href="..\src\demo\interfaces.ts"><text x="68.5" y="13.5" stroke="none" text-anchor="middle" data-name="Weapon">Weapon</text></a>
+
+</g>
+</g>
+<g transform="translate(486, 65)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Weapon">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Weapon">
+
+</g>
+</g>
+<g transform="translate(486, 73)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Weapon">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Weapon">
+<text x="0.0" y="13.5" stroke="none" data-name="Weapon">+tryHit(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="Named">
+<g fill="lightblue" stroke="#33322E" data-name="Named">
+<rect x="322.0" y="34.0" height="70.0" width="124.0" data-name="Named"></rect>
+<path d="M322.0 65.0 L446.0 65.0" fill="none" data-name="Named"></path>
+<path d="M322.0 96.0 L446.0 96.0" fill="none" data-name="Named"></path>
+</g>
+<g transform="translate(322, 34)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Named">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Named">
+<a id="..\src\demo\interfaces.ts.Named" xlink:href="..\src\demo\interfaces.ts"><text x="54.0" y="13.5" stroke="none" text-anchor="middle" data-name="Named">Named</text></a>
+
+</g>
+</g>
+<g transform="translate(322, 65)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Named">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Named">
+<text x="0.0" y="13.5" stroke="none" data-name="Named">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(322, 96)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Named">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Named">
+
+</g>
+</g>
+</g>
+<g data-name="Magic">
+<g fill="lightblue" stroke="#33322E" data-name="Magic">
+<rect x="46.0" y="34.0" height="70.0" width="113.0" data-name="Magic"></rect>
+<path d="M46.0 65.0 L159.0 65.0" fill="none" data-name="Magic"></path>
+<path d="M46.0 96.0 L159.0 96.0" fill="none" data-name="Magic"></path>
+</g>
+<g transform="translate(46, 34)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Magic">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Magic">
+<a id="..\src\demo\interfaces.ts.Magic" xlink:href="..\src\demo\interfaces.ts"><text x="48.5" y="13.5" stroke="none" text-anchor="middle" data-name="Magic">Magic</text></a>
+
+</g>
+</g>
+<g transform="translate(46, 65)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Magic">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Magic">
+<text x="0.0" y="13.5" stroke="none" data-name="Magic">+kind: string</text>
+
+</g>
+</g>
+<g transform="translate(46, 96)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Magic">
+<g transform="translate(8, 8)" fill="#33322E" data-name="Magic">
+
+</g>
+</g>
+</g>
+<g data-name="BlackMagic">
+<g fill="lightblue" stroke="#33322E" data-name="BlackMagic">
+<rect x="0.0" y="190.0" height="70.0" width="204.0" data-name="BlackMagic"></rect>
+<path d="M0.0 221.0 L204.0 221.0" fill="none" data-name="BlackMagic"></path>
+<path d="M0.0 229.0 L204.0 229.0" fill="none" data-name="BlackMagic"></path>
+</g>
+<g transform="translate(0, 190)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagic">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BlackMagic">
+<a id="..\src\demo\interfaces.ts.BlackMagic" xlink:href="..\src\demo\interfaces.ts"><text x="94.0" y="13.5" stroke="none" text-anchor="middle" data-name="BlackMagic">BlackMagic</text></a>
+
+</g>
+</g>
+<g transform="translate(0, 221)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagic">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BlackMagic">
+
+</g>
+</g>
+<g transform="translate(0, 229)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagic">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BlackMagic">
+<text x="0.0" y="13.5" stroke="none" data-name="BlackMagic">+paintItBlack(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="MagicWeapon&lt;MT&gt;">
+<g fill="lightblue" stroke="#33322E" data-name="MagicWeapon&lt;MT&gt;">
+<rect x="244.0" y="178.0" height="93.0" width="200.0" data-name="MagicWeapon&lt;MT&gt;"></rect>
+<path d="M244.0 209.0 L444.0 209.0" fill="none" data-name="MagicWeapon&lt;MT&gt;"></path>
+<path d="M244.0 240.0 L444.0 240.0" fill="none" data-name="MagicWeapon&lt;MT&gt;"></path>
+</g>
+<g transform="translate(244, 178)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MagicWeapon&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MagicWeapon&lt;MT&gt;">
+<a id="..\src\demo\interfaces.ts.MagicWeapon&lt;MT&gt;" xlink:href="..\src\demo\interfaces.ts"><text x="92.0" y="13.5" stroke="none" text-anchor="middle" data-name="MagicWeapon&lt;MT&gt;">MagicWeapon&lt;MT&gt;</text></a>
+
+</g>
+</g>
+<g transform="translate(244, 209)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MagicWeapon&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MagicWeapon&lt;MT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="MagicWeapon&lt;MT&gt;">+magic: MT</text>
+
+</g>
+</g>
+<g transform="translate(244, 240)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MagicWeapon&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MagicWeapon&lt;MT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="MagicWeapon&lt;MT&gt;">+tryMagicHit(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="BlackMagicWeapon">
+<g fill="lightblue" stroke="#33322E" data-name="BlackMagicWeapon">
+<rect x="132.0" y="334.0" height="47.0" width="172.0" data-name="BlackMagicWeapon"></rect>
+<path d="M132.0 365.0 L304.0 365.0" fill="none" data-name="BlackMagicWeapon"></path>
+<path d="M132.0 373.0 L304.0 373.0" fill="none" data-name="BlackMagicWeapon"></path>
+</g>
+<g transform="translate(132, 334)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagicWeapon">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BlackMagicWeapon">
+<a id="..\src\demo\interfaces.ts.BlackMagicWeapon" xlink:href="..\src\demo\interfaces.ts"><text x="78.0" y="13.5" stroke="none" text-anchor="middle" data-name="BlackMagicWeapon">BlackMagicWeapon</text></a>
+
+</g>
+</g>
+<g transform="translate(132, 365)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagicWeapon">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BlackMagicWeapon">
+
+</g>
+</g>
+<g transform="translate(132, 373)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagicWeapon">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BlackMagicWeapon">
+
+</g>
+</g>
+</g>
+<g data-name="BaseWeapon">
+<g fill="#eee8d5" stroke="#33322E" data-name="BaseWeapon">
+<rect x="690.0" y="19.0" height="100.0" width="168.0" data-name="BaseWeapon"></rect>
+<path d="M690.0 50.0 L858.0 50.0" fill="none" data-name="BaseWeapon"></path>
+<path d="M690.0 111.0 L858.0 111.0" fill="none" data-name="BaseWeapon"></path>
+</g>
+<g transform="translate(690, 19)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BaseWeapon">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BaseWeapon">
+<a id="..\src\demo\katana.ts.BaseWeapon" xlink:href="..\src\demo\katana.ts"><text x="76.0" y="13.5" stroke="none" text-anchor="middle" data-name="BaseWeapon">BaseWeapon</text></a>
+
+</g>
+</g>
+<g transform="translate(690, 50)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BaseWeapon">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BaseWeapon">
+<text x="0.0" y="13.5" stroke="none" data-name="BaseWeapon">+damage: number</text>
+<text x="0.0" y="28.5" stroke="none" data-name="BaseWeapon">#durability: number</text>
+<text x="0.0" y="43.5" stroke="none" data-name="BaseWeapon">+attributes: string[]</text>
+
+</g>
+</g>
+<g transform="translate(690, 111)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BaseWeapon">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BaseWeapon">
+
+</g>
+</g>
+</g>
+<g data-name="Katana">
+<g fill="#eee8d5" stroke="#33322E" data-name="Katana">
+<rect x="577.0" y="178.0" height="93.0" width="153.0" data-name="Katana"></rect>
+<path d="M577.0 209.0 L730.0 209.0" fill="none" data-name="Katana"></path>
+<path d="M577.0 240.0 L730.0 240.0" fill="none" data-name="Katana"></path>
+</g>
+<g transform="translate(577, 178)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Katana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Katana">
+<a id="..\src\demo\katana.ts.Katana" xlink:href="..\src\demo\katana.ts"><text x="68.5" y="13.5" stroke="none" text-anchor="middle" data-name="Katana">Katana</text></a>
+
+</g>
+</g>
+<g transform="translate(577, 209)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Katana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Katana">
+<text x="0.0" y="13.5" stroke="none" data-name="Katana">+name: string</text>
+
+</g>
+</g>
+<g transform="translate(577, 240)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Katana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Katana">
+<text x="0.0" y="13.5" stroke="none" data-name="Katana">+tryHit(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="MagicKatana&lt;MT&gt;">
+<g fill="#eee8d5" stroke="#33322E" data-name="MagicKatana&lt;MT&gt;">
+<rect x="534.0" y="311.0" height="93.0" width="200.0" data-name="MagicKatana&lt;MT&gt;"></rect>
+<path d="M534.0 342.0 L734.0 342.0" fill="none" data-name="MagicKatana&lt;MT&gt;"></path>
+<path d="M534.0 373.0 L734.0 373.0" fill="none" data-name="MagicKatana&lt;MT&gt;"></path>
+</g>
+<g transform="translate(534, 311)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="MagicKatana&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="MagicKatana&lt;MT&gt;">
+<a id="..\src\demo\katana.ts.MagicKatana&lt;MT&gt;" xlink:href="..\src\demo\katana.ts"><text x="92.0" y="13.5" stroke="none" text-anchor="middle" data-name="MagicKatana&lt;MT&gt;">MagicKatana&lt;MT&gt;</text></a>
+
+</g>
+</g>
+<g transform="translate(534, 342)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MagicKatana&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MagicKatana&lt;MT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="MagicKatana&lt;MT&gt;">+magic: MT</text>
+
+</g>
+</g>
+<g transform="translate(534, 373)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="MagicKatana&lt;MT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="MagicKatana&lt;MT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="MagicKatana&lt;MT&gt;">+tryMagicHit(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="BlackMagicKatana">
+<g fill="#eee8d5" stroke="#33322E" data-name="BlackMagicKatana">
+<rect x="442.0" y="444.0" height="70.0" width="243.0" data-name="BlackMagicKatana"></rect>
+<path d="M442.0 475.0 L685.0 475.0" fill="none" data-name="BlackMagicKatana"></path>
+<path d="M442.0 483.0 L685.0 483.0" fill="none" data-name="BlackMagicKatana"></path>
+</g>
+<g transform="translate(442, 444)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="BlackMagicKatana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="BlackMagicKatana">
+<a id="..\src\demo\katana.ts.BlackMagicKatana" xlink:href="..\src\demo\katana.ts"><text x="113.5" y="13.5" stroke="none" text-anchor="middle" data-name="BlackMagicKatana">BlackMagicKatana</text></a>
+
+</g>
+</g>
+<g transform="translate(442, 475)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagicKatana">
+<g transform="translate(8, 8)" fill="#33322E" data-name="BlackMagicKatana">
+
+</g>
+</g>
+<g transform="translate(442, 483)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="BlackMagicKatana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="BlackMagicKatana">
+<text x="0.0" y="13.5" stroke="none" data-name="BlackMagicKatana">+tryBlackMagicHit(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="Ninja">
+<g fill="#eee8d5" stroke="#33322E" data-name="Ninja">
+<rect x="898.0" y="0.0" height="138.0" width="185.0" data-name="Ninja"></rect>
+<path d="M898.0 31.0 L1083.0 31.0" fill="none" data-name="Ninja"></path>
+<path d="M898.0 107.0 L1083.0 107.0" fill="none" data-name="Ninja"></path>
+</g>
+<g transform="translate(898, 0)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Ninja">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Ninja">
+<a id="..\src\demo\ninja.ts.Ninja" xlink:href="..\src\demo\ninja.ts"><text x="84.5" y="13.5" stroke="none" text-anchor="middle" data-name="Ninja">Ninja</text></a>
+
+</g>
+</g>
+<g transform="translate(898, 31)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Ninja">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Ninja">
+<text x="0.0" y="13.5" stroke="none" data-name="Ninja">+gender: Gender</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Ninja">+static IdCnt: number</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Ninja">-_weapon: Weapon</text>
+<text x="0.0" y="58.5" stroke="none" data-name="Ninja">+id: number</text>
+
+</g>
+</g>
+<g transform="translate(898, 107)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Ninja">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Ninja">
+<text x="0.0" y="13.5" stroke="none" data-name="Ninja">+fight(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="Viking&lt;WT&gt;">
+<g fill="#eee8d5" stroke="#33322E" data-name="Viking&lt;WT&gt;">
+<rect x="1123.0" y="15.0" height="108.0" width="151.0" data-name="Viking&lt;WT&gt;"></rect>
+<path d="M1123.0 46.0 L1274.0 46.0" fill="none" data-name="Viking&lt;WT&gt;"></path>
+<path d="M1123.0 92.0 L1274.0 92.0" fill="none" data-name="Viking&lt;WT&gt;"></path>
+</g>
+<g transform="translate(1123, 15)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="Viking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Viking&lt;WT&gt;">
+<a id="..\src\demo\viking.ts.Viking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="67.5" y="13.5" stroke="none" text-anchor="middle" data-name="Viking&lt;WT&gt;">Viking&lt;WT&gt;</text></a>
+
+</g>
+</g>
+<g transform="translate(1123, 46)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Viking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Viking&lt;WT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="Viking&lt;WT&gt;">+gender: Gender</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Viking&lt;WT&gt;">+weapon: WT</text>
+
+</g>
+</g>
+<g transform="translate(1123, 92)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Viking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Viking&lt;WT&gt;">
+<text x="0.0" y="13.5" stroke="none" data-name="Viking&lt;WT&gt;">+fight(): boolean</text>
+
+</g>
+</g>
+</g>
+<g data-name="UberViking&lt;WT&gt;">
+<g fill="#eee8d5" stroke="#33322E" data-name="UberViking&lt;WT&gt;">
+<rect x="1008.0" y="201.0" height="47.0" width="148.0" data-name="UberViking&lt;WT&gt;"></rect>
+<path d="M1008.0 232.0 L1156.0 232.0" fill="none" data-name="UberViking&lt;WT&gt;"></path>
+<path d="M1008.0 240.0 L1156.0 240.0" fill="none" data-name="UberViking&lt;WT&gt;"></path>
+</g>
+<g transform="translate(1008, 201)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="UberViking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="UberViking&lt;WT&gt;">
+<a id="..\src\demo\viking.ts.UberViking&lt;WT&gt;" xlink:href="..\src\demo\viking.ts"><text x="66.0" y="13.5" stroke="none" text-anchor="middle" data-name="UberViking&lt;WT&gt;">UberViking&lt;WT&gt;</text></a>
+
+</g>
+</g>
+<g transform="translate(1008, 232)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UberViking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UberViking&lt;WT&gt;">
+
+</g>
+</g>
+<g transform="translate(1008, 240)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="UberViking&lt;WT&gt;">
+<g transform="translate(8, 8)" fill="#33322E" data-name="UberViking&lt;WT&gt;">
+
+</g>
+</g>
+</g>
+<g data-name="VikingWithKatana">
+<g fill="#eee8d5" stroke="#33322E" data-name="VikingWithKatana">
+<rect x="1217.0" y="201.0" height="47.0" width="155.0" data-name="VikingWithKatana"></rect>
+<path d="M1217.0 232.0 L1372.0 232.0" fill="none" data-name="VikingWithKatana"></path>
+<path d="M1217.0 240.0 L1372.0 240.0" fill="none" data-name="VikingWithKatana"></path>
+</g>
+<g transform="translate(1217, 201)" font-family="Helvetica" font-size="12pt" font-weight="bold" font-style="normal" data-name="VikingWithKatana">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="VikingWithKatana">
+<a id="..\src\demo\viking.ts.VikingWithKatana" xlink:href="..\src\demo\viking.ts"><text x="69.5" y="13.5" stroke="none" text-anchor="middle" data-name="VikingWithKatana">VikingWithKatana</text></a>
+
+</g>
+</g>
+<g transform="translate(1217, 232)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VikingWithKatana">
+<g transform="translate(8, 8)" fill="#33322E" data-name="VikingWithKatana">
+
+</g>
+</g>
+<g transform="translate(1217, 240)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="VikingWithKatana">
+<g transform="translate(8, 8)" fill="#33322E" data-name="VikingWithKatana">
+
+</g>
+</g>
+</g>
+<g data-name="Gender">
+<g fill="lightgreen" stroke="#33322E" data-name="Gender">
+<rect x="1314.0" y="23.0" height="92.0" width="75.0" data-name="Gender"></rect>
+<path d="M1314.0 54.0 L1389.0 54.0" fill="none" data-name="Gender"></path>
+</g>
+<g transform="translate(1314, 23)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Gender">
+<g transform="translate(8, 8)" fill="#33322E" text-align="center" data-name="Gender">
+<a id="..\src\demo\interfaces.ts.Gender" xlink:href="..\src\demo\interfaces.ts"><text x="29.5" y="13.5" stroke="none" text-anchor="middle" data-name="Gender">Gender</text></a>
+
+</g>
+</g>
+<g transform="translate(1314, 54)" font-family="Helvetica" font-size="12pt" font-weight="normal" font-style="normal" data-name="Gender">
+<g transform="translate(8, 8)" fill="#33322E" text-align="left" data-name="Gender">
+<text x="0.0" y="13.5" stroke="none" data-name="Gender">Male</text>
+<text x="0.0" y="28.5" stroke="none" data-name="Gender">Female</text>
+<text x="0.0" y="43.5" stroke="none" data-name="Gender">Else</text>
+
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
 </svg>

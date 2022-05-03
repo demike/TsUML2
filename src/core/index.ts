@@ -60,13 +60,24 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting declarations:"));
   const dsl = emit(declarations);
 
+  if(SETTINGS.outDsl !== "") {
+    console.log(chalk.green("\nwriting DSL"));
+    fs.writeFile(SETTINGS.outDsl,dsl,(err) => {
+      if(err) {
+          console.log(chalk.redBright("Error writing DSL file: " + err));
+      }
+    });
+  }
+
   //render
   console.log(chalk.yellow("\nrender to svg"));
   let svg = renderNomnomlSVG(dsl);
   if(settings.typeLinks) {
+    console.log(chalk.yellow("\nadding type links to svg"));
     svg = postProcessSvg(svg,settings.outFile, declarations);
   }
 
+  console.log(chalk.green("\nwriting SVG"));
   fs.writeFile(SETTINGS.outFile,svg,(err) => {
     if(err) {
         console.log(chalk.redBright("Error writing file: " + err));
