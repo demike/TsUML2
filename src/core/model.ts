@@ -45,6 +45,7 @@ export interface FileDeclaration {
     classes: Clazz[];
     interfaces: Interface[];
     enums: Enum[];
+    types: TypeAlias[];
     heritageClauses: HeritageClause[][];
 }[]
 
@@ -85,6 +86,10 @@ export class Interface extends NamedType {
         this.properties = options.properties;
         this.methods = options.methods;
     }
+
+}
+
+export class TypeAlias extends Interface {
 
 }
 

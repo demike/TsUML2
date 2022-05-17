@@ -1,10 +1,17 @@
-import { Weapon, Named, MagicWeapon, Magic, BlackMagic } from "./interfaces";
+import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability } from "./interfaces";
 
 
-export class BaseWeapon {
-    damage = 25;
-    protected durability: number = 100;
-    public attributes: string[] = ["explosive", "bouncing"]
+export class BaseWeapon implements Durable {
+    protected damage = 25;
+    durability: number = 100;
+    magicDurability: MagicDurability = {
+        fire: 100,
+        water: 100,
+    }
+    public attributes: string[] = ["explosive", "bouncing"];
+    refresh(): void {
+       // DO Something 
+    }
 }
 
 export class Katana extends BaseWeapon implements Weapon, Named  {
@@ -12,6 +19,8 @@ export class Katana extends BaseWeapon implements Weapon, Named  {
     public tryHit(fromDistance: number) {
         return fromDistance <= 2;
     }
+
+    public doIt() {}
 }
 
 export class MagicKatana<MT extends Magic> extends Katana implements MagicWeapon<MT> {

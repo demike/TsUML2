@@ -11,6 +11,17 @@ export interface Magic {
     kind: string;
 }
 
+export type MagicDurability = {
+    fire: number;
+    water: number
+}
+
+export type Durable = {
+    durability: number;
+    magicDurability: MagicDurability;
+    refresh(): void;
+}
+
 export interface BlackMagic extends Magic {
     paintItBlack(): boolean;
 }

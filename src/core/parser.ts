@@ -1,5 +1,5 @@
 import * as SimpleAST from "ts-morph";
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "./model";
 
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
@@ -60,6 +60,39 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
   
     return new Interface({ name: interfaceName, properties, methods, id });
 }
+
+export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
+
+    const name = getClassOrInterfaceName(typeDeclaration) || 'undefined';
+    const t = typeDeclaration.getType();
+    const typeNode = typeDeclaration.getTypeNode();
+
+    let propertyDeclarations: SimpleAST.PropertySignature[] = [];
+    let methodDeclarations: SimpleAST.MethodSignature[] = [];
+
+    if(typeNode instanceof SimpleAST.TypeLiteralNode) {
+        propertyDeclarations = typeNode.getProperties();
+        methodDeclarations = typeNode.getMethods();
+    } else {
+        // no structured type --> lets skip that (for now)
+        return; 
+    }
+    
+  
+
+    let id = typeDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    if (!id.length) {
+        console.error("missing interface id");
+    }
+
+    const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
+
+
+    return new TypeAlias({ name, id, methods, properties });
+    
+}
+
 
 function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | SimpleAST.PropertySignature | SimpleAST.ParameterDeclaration) : PropertyDetails | undefined {
     const sym = propertyDeclaration.getSymbol();
@@ -267,6 +300,9 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
 
         if (classOrIf instanceof SimpleAST.Type) {
             name = classOrIf.getSymbol()!.getName();
+            if(name === "__type") {
+                name = classOrIf.getAliasSymbol()!.getName();
+            }
             generics = classOrIf.getTypeArguments().map(arg => arg.getSymbol()!.getName());
         } else {
             //interface or class declaration or TypeAliasDeclaration

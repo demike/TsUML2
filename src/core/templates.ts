@@ -25,6 +25,13 @@ export const templates = {
     ) => {
         return `[<interface>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
     },
+    type: (
+        name: string,
+        props: PropertyDetails[],
+        methods: MethodDetails[]
+    ) => {
+        return `[<type>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
+    },
     enum: (
         name: string,
         enumItems: string[]

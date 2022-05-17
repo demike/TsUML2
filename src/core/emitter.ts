@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias } from "./model";
 import { templates }from "./templates";
 
 export function emitSingleClass(cls: Clazz) {
@@ -7,6 +7,10 @@ export function emitSingleClass(cls: Clazz) {
 
 export function emitSingleInterface(int: Interface) {
     return templates.interface(int.name, int.properties.map(escapePropertyDetails), int.methods.map(escapeMethodDetails));
+}
+
+export function emitSingleType(t: TypeAlias) {
+    return templates.type(t.name, t.properties.map(escapePropertyDetails), t.methods.map(escapeMethodDetails));
 }
 
 export function emitSingleEnum(en: Enum) {
@@ -57,11 +61,13 @@ export function postProcessSvg(svg: string, diagramPath: string, declarations: F
     const classes: {[key:string]:Clazz} = {};
     const interfaces: {[key:string]:Interface} = {};
     const enums: {[key: string]:Enum} = {};
+    const types: {[key: string]:TypeAlias} = {};
 
     declarations.map(d => {
-        d.classes.forEach(cls => classes[xmlEncode(cls.name)] = cls)
-        d.interfaces.forEach(i => interfaces[xmlEncode(i.name)] = i)
+        d.classes.forEach(cls => classes[xmlEncode(cls.name)] = cls);
+        d.interfaces.forEach(i => interfaces[xmlEncode(i.name)] = i);
         d.enums.forEach(e => enums[xmlEncode(e.name)] = e);
+        d.types.forEach(t => types[xmlEncode(t.name)] = t);
     });
    
     const rx = />(.*)</;
@@ -70,7 +76,7 @@ export function postProcessSvg(svg: string, diagramPath: string, declarations: F
     for(let line of svg.split('\n')) {
         line = line.trim();
         if(line.startsWith("<text") && (regexResult = rx.exec(line))) {
-            let target = classes[regexResult[1]] || interfaces[regexResult[1]] || enums[regexResult[1]];
+            let target = classes[regexResult[1]] || interfaces[regexResult[1]] || enums[regexResult[1]] || types[regexResult[1]];
             if(target) {
                 const relPath = target.getRelativeFilePath(diagramPath);
                 line = `<a id="${relPath}.${xmlEncode(target.name)}" xlink:href="${relPath}">${line}</a>`; 
