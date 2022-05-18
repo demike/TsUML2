@@ -39,9 +39,17 @@ function emit(declarations: FileDeclaration[]) {
     const types = d.types.map((t) => emitSingleType(t));
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
     return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat()];
-  });
+  
+  }).flat();
 
-  return getStyling() + entities.flat().join("\n");
+
+  if(entities.length === 0) {
+    const errorMsg = "Could not process any class / interface / enum / type";
+    console.log(chalk.red(errorMsg));
+    entities.push(`[${errorMsg}]`);
+  }
+
+  return getStyling() + entities.join("\n");
 }
 
 function getStyling(): string {
