@@ -36,7 +36,7 @@ jobs:
       - name: npm ci and npm run build
         run: |
           npm ci
-          - run: npm run-script build
+          npm run build
 
       # set the npm package version to the release tag version
       - name: Check package version
