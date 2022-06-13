@@ -1,0 +1,65 @@
+name: Release
+
+# trigger a release:
+# minor:
+# npm version minor -m "Release %s" && git push --tags
+# patch:
+# npm version patch -m "Release %s" && git push --tags
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+' # Push events to any matching semantic tag. For example, 1.10.1 or 2.0.0.
+        # For more details, see https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
+        # and https://docs.npmjs.com/about-semantic-versioning
+
+jobs:
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      # build application
+      - name: npm ci and npm run build
+        run: |
+          npm ci
+          - run: npm run-script build
+
+      # set the npm package version to the release tag version
+      - name: Check package version
+        uses: technote-space/package-version-check-action@v1
+        with:
+          COMMIT_DISABLED: 1
+          PACKAGE_DIR: './'
+
+      # create a github release
+      - name: create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          generate_release_notes: true
+          name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      # publish to npm
+      - name: publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
