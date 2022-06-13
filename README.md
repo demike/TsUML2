@@ -83,18 +83,18 @@ tsuml2 --glob "./src/demo/**/*.ts" -o "./assets/uml_diagram.svg"
 
 The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
 
-![](/assets/uml_diagram.svg?sanitize=true)
+![uml diagram example](/assets/uml_diagram.svg?sanitize=true)
 
 ### A complex command line parameter example:
 ```
 ./tsuml2 --glob=./src/demo/**/*.ts --nomnoml "#arrowSize: 1.5" "#.interface: fill=#8f8 dashed" --modifiers false --propertyTypes false
 ```
 
-![](/assets/alt_uml_diagram.svg?sanitize=true)
+![alternative diagram style](/assets/alt_uml_diagram.svg?sanitize=true)
 
 ### With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
 
-![](/assets/type_links.gif)
+![type links](/assets/type_links.gif)
 
 ### Generate nomnoml DSL output
 
@@ -149,4 +149,4 @@ Use the `-m` parameter to enable output of member associations.
 tsuml2 --glob "./src/demo/**/*.ts" -m -o "./assets/uml_diagram.svg"
 ```
 
-![](/assets/member_associations.png)
+![member associations](/assets/member_associations.png)
