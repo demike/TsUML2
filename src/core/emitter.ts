@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
 import { templates }from "./templates";
 
 export function emitSingleClass(cls: Clazz) {
@@ -26,6 +26,10 @@ export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
         }
 
     });
+}
+
+export function emitMemberAssociations(associations?: MemberAssociation[]) {
+    return associations ? associations.map(templates.memberAssociation) : [];
 }
 
 // utility functions

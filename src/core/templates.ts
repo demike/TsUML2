@@ -1,4 +1,4 @@
-import { PropertyDetails, MethodDetails} from "./model";
+import { PropertyDetails, MethodDetails, MemberAssociation} from "./model";
 import { ModifierFlags } from "typescript";
 import { SETTINGS } from "./tsuml2-settings";
 
@@ -37,7 +37,8 @@ export const templates = {
         enumItems: string[]
     ) => {
       return `[<enumeration>${name}|${enumItems.join(";")}]`;
-    }
+    },
+    memberAssociation: memberAssociation
 };
 
 function methodTemplate(method: MethodDetails): string {
@@ -88,4 +89,9 @@ function modifierTemplate(modifierFlags: ModifierFlags): string {
  
 
     return retVal;
+}
+
+
+function memberAssociation(association: MemberAssociation) {
+    return `${templates.plainClassOrInterface(association.a.name)} ${association.a.multiplicity ?? ''} - ${association.b.multiplicity ?? ''} ${templates.plainClassOrInterface(association.b.name)}`;
 }

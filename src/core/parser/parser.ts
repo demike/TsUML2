@@ -1,5 +1,5 @@
 import * as SimpleAST from "ts-morph";
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "./model";
+import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "../model";
 
 export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
@@ -40,7 +40,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
 
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
-    return new Clazz({ name: className, properties, methods, id });
+    return new Clazz({ name: className, properties, methods, id, heritageClauses: parseClassHeritageClauses(classDeclaration) });
 }
 
 export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
@@ -58,7 +58,7 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
-    return new Interface({ name: interfaceName, properties, methods, id });
+    return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration) });
 }
 
 export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
@@ -82,7 +82,7 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
 
     let id = typeDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
     if (!id.length) {
-        console.error("missing interface id");
+        console.error("missing type id");
     }
 
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
@@ -136,7 +136,8 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
 
 export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration ) {
 
-    const className = getClassOrInterfaceName(classDeclaration)
+    const className = getClassOrInterfaceName(classDeclaration);
+    const classTypeId = classDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
     const baseClass =  classDeclaration.getBaseClass();
     const interfaces = classDeclaration.getImplements();
  
@@ -148,11 +149,13 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
     }
 
     if (className && baseClass) {
-        const baseClassName = getClassOrInterfaceName(baseClass)
+        const baseClassName = getClassOrInterfaceName(baseClass);
         if(baseClassName) {
             heritageClauses.push({
                         clause: baseClassName,
+                        clauseTypeId: baseClass.getSymbol()?.getFullyQualifiedName()!,
                         className,
+                        classTypeId,
                         type: HeritageClauseType.Extends
             });
         }
@@ -168,7 +171,9 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
             heritageClauses.push(
                 {
                     clause: ifName,
+                    clauseTypeId: getTypeIdsFromType(interf.getType())?.[0]!,
                     className,
+                    classTypeId,
                     type: HeritageClauseType.Implements
                 }
             );
@@ -180,7 +185,8 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
 
 export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
-    const ifName = getClassOrInterfaceName(interfaceDeclaration)
+    const ifName = getClassOrInterfaceName(interfaceDeclaration);
+    const classTypeId = interfaceDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
     const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
 
     let heritageClauses: HeritageClause[] = [];
@@ -196,7 +202,9 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
                 heritageClauses.push(
                     {
                         clause: bdName,
+                        clauseTypeId: getTypeIdsFromType(bd.getType())?.[0]!,
                         className: ifName,
+                        classTypeId,
                         type: HeritageClauseType.Implements
                     }
                 );
@@ -265,26 +273,33 @@ function getTypeIdsFromSymbol(symbol: SimpleAST.Symbol) : string[] {
 
 }
 
-function getTypeIdsFromType(type?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
-    if (!type) {
+function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
+    if (!t) {
         return [];
     }
 
     let ids: (string|undefined)[] = [];
 
-    if(type.isClassOrInterface()) {
-        ids.push(type.getSymbol()?.getFullyQualifiedName());
-    } else if (type.isEnum()) {
-        ids.push(type.getSymbol()?.getFullyQualifiedName());;     
-    } else if (type.isUnionOrIntersection()) {
-        return [];
-        throw new Error("not implemented");
-    } else if (type.isArray()) {
-        return getTypeIdsFromType(type.getTypeArguments()[0]);
-        throw new Error("not implemented");
-    } else if (type.isTypeParameter()) {
+    if(t.isClassOrInterface()) {
+        ids.push(t.getSymbol()?.getFullyQualifiedName());
+    } else if (t.isEnum()) {
+        ids.push(t.getSymbol()?.getFullyQualifiedName());    
+    } else if (t.isUnionOrIntersection()) {
+        ids = [...(t.getUnionTypes()), ...(t.getIntersectionTypes())].map(getTypeIdsFromType).flat();
+       // throw new Error("not implemented");
+    } else if (t.isArray()) {
+        return getTypeIdsFromType(t.getTypeArguments()[0]);
+       // throw new Error("not implemented");
+    } else if (t.isAnonymous()) {
+        // an anonymous type
+        ids.push(t.getAliasSymbol()?.getFullyQualifiedName());
+    } else if (t.isTypeParameter()) {
         return [];
         // throw new Error("not implemented");
+    } else {
+        if((t as any).getSymbol) {
+            ids.push((t as SimpleAST.Type<SimpleAST.ts.Type>).getSymbol()?.getFullyQualifiedName());
+        }
     }
 
     return ids.filter(id => id !== undefined) as string[] ;

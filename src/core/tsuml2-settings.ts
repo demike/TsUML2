@@ -44,6 +44,11 @@ export class TsUML2Settings {
      */
     outDsl: string = ""
 
+    /**
+     * show associations between classes, interfaces, types and their member types
+     */
+    memberAssociations = false
+
 
     /**
      * parses a json file and merges in the provided options
@@ -56,16 +61,16 @@ export class TsUML2Settings {
     fromArgs(yargs: Argv) {
 
         const argv = yargs.option('glob', {
-            alias: "g",
             describe: "pattern to match the source files (i.e.: ./src/**/*.ts)",
+            alias: "g",
             string: true,
             required: true
         }).option('tsconfig',{
             default: this.tsconfig,
             describe: "the path to tsconfig.json file"
         }).option('outFile', {
-            alias: "o",
             describe: "the path to the output file",
+            alias: "o",
             default: this.outFile,
         }).option('propertyTypes', {
             default: this.propertyTypes,
@@ -87,6 +92,12 @@ export class TsUML2Settings {
             describe: "the path to the output DSL file (nomnoml)",
             string: true,
             required: false,
+        }).option('memberAssociations', {
+            describe: "show associations between classes, interfaces, types and their member types",
+            alias: 'm',
+            boolean: true,
+            required: false,
+            default: this.memberAssociations
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
@@ -128,6 +139,10 @@ export class TsUML2Settings {
 
         if(argv.outDsl != null && !(yargs.parsed as any).defaulted.outDsl) {
             this.outDsl = argv.outDsl;
+        }
+
+        if(argv.memberAssociations != null && !(yargs.parsed as any).defaulted.memberAssociations) {
+            this.memberAssociations = argv.memberAssociations;
         }
     }
 }

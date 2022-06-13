@@ -1,4 +1,3 @@
-
 export interface Weapon {
     tryHit(fromDistance: number): boolean;
 }
@@ -35,8 +34,15 @@ export interface BlackMagicWeapon extends MagicWeapon<BlackMagic> {
     
 }
 
+
 export enum Gender {
     Male,
     Female,
     Else
+}
+
+export interface Attribute<T = any> {
+    id: string;
+    value: T;
+    description?: string;
 }

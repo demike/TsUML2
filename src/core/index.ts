@@ -1,10 +1,11 @@
 import { renderNomnomlSVG } from "./io";
-import { getAst, parseClasses, parseInterfaces, parseClassHeritageClauses, parseInterfaceHeritageClauses, parseEnum, parseTypes } from "./parser";
-import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum, emitSingleType } from "./emitter";
+import { getAst, parseClasses, parseInterfaces, parseEnum, parseTypes } from "./parser/parser";
+import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum, emitSingleType, emitMemberAssociations } from "./emitter";
 import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
 import chalk from 'chalk';
 import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs';
+import { parseAssociations } from "./parser";
 
 function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
@@ -18,15 +19,26 @@ function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
     const types = f.getTypeAliases();
     const path = f.getFilePath();
     console.log(chalk.yellow(path));
+
+    const classDeclarations = classes.map(parseClasses);
+    const interfaceDeclarations = interfaces.map(parseInterfaces);
     return {
       fileName: path,
-      classes: classes.map(parseClasses),
-      interfaces: interfaces.map(parseInterfaces),
+      classes: classDeclarations,
+      interfaces: interfaceDeclarations,
       types: types.map(parseTypes).filter(t => t !== undefined) as TypeAlias[],
       enums: enums.map(parseEnum),
-      heritageClauses: [...classes.map(parseClassHeritageClauses),...interfaces.map(parseInterfaceHeritageClauses)]
+      heritageClauses: [
+        ...classDeclarations.filter(decl => decl.heritageClauses.length > 0).map(decl => decl.heritageClauses),
+        ...interfaceDeclarations.filter(decl => decl.heritageClauses.length > 0).map(decl => decl.heritageClauses)
+      ]
     };
   });
+
+  if(SETTINGS.memberAssociations) {
+    parseAssociations(declarations);
+  }
+
   return declarations;
 }
 
@@ -38,7 +50,8 @@ function emit(declarations: FileDeclaration[]) {
     const enums = d.enums.map((i) => emitSingleEnum(i));
     const types = d.types.map((t) => emitSingleType(t));
     const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat()];
+    const memberAssociations = emitMemberAssociations(d.memberAssociations);
+    return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat(), ...memberAssociations];
   
   }).flat();
 

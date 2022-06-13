@@ -25,8 +25,10 @@ export enum HeritageClauseType {
 
 export interface HeritageClause {
     clause: string;
+    clauseTypeId: string
     className: string;
-    type: HeritageClauseType
+    classTypeId: string;
+    type: HeritageClauseType;
 }
 
 
@@ -34,7 +36,8 @@ export interface ClassOrIfOptions {
     name: string,
     id: string,
     properties: PropertyDetails[],
-    methods: MethodDetails[]
+    methods: MethodDetails[],
+    heritageClauses?: HeritageClause[]
 }
 
 export interface FileDeclaration {
@@ -47,6 +50,7 @@ export interface FileDeclaration {
     enums: Enum[];
     types: TypeAlias[];
     heritageClauses: HeritageClause[][];
+    memberAssociations?: MemberAssociation[];
 }[]
 
 export class NamedType {
@@ -80,11 +84,13 @@ export class Interface extends NamedType {
 
     properties: PropertyDetails[];
     methods: MethodDetails[];
+    heritageClauses: HeritageClause[];
 
     constructor(options: ClassOrIfOptions) {
         super(options)
         this.properties = options.properties;
         this.methods = options.methods;
+        this.heritageClauses = options.heritageClauses || [];
     }
 
 }
@@ -110,6 +116,25 @@ export class Enum extends NamedType {
         this.items = options.enumItems
     }
 
+}
+
+
+
+export enum AssociationType {
+    Association
+}
+export class MemberAssociation {
+    constructor(
+        public readonly a: AssociationEnd, 
+        public readonly b: AssociationEnd, 
+        public readonly associationType: AssociationType = AssociationType.Association,
+        public inerhited = false) {}
+}
+
+export interface AssociationEnd {
+    typeId: string;
+    name:string
+    multiplicity?: "0..*"|undefined;
 }
 
 

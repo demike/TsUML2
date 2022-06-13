@@ -1,4 +1,4 @@
-import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability } from "./interfaces";
+import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability, Attribute } from "./interfaces";
 
 
 export class BaseWeapon implements Durable {
@@ -8,7 +8,7 @@ export class BaseWeapon implements Durable {
         fire: 100,
         water: 100,
     }
-    public attributes: string[] = ["explosive", "bouncing"];
+    public attributes: Attribute[] = [{id: "explosive", value: 10}, {id: "bouncing", value: 20}];
     refresh(): void {
        // DO Something 
     }

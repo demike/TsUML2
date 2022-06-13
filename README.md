@@ -38,26 +38,28 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
 
 ### Options
 ```
-      --help           Show help                                       [boolean]
-      --version        Show version number                             [boolean]
-  -g, --glob           pattern to match the source files (i.e.: ./src/**/*.ts)
-                                                             [string] [required]
-      --tsconfig       the path to tsconfig.json file
+      --help                Show help                                  [boolean]
+      --version             Show version number                        [boolean]
+  -g, --glob                pattern to match the source files (i.e.:
+                            ./src/**/*.ts)                   [string] [required]
+      --tsconfig            the path to tsconfig.json file
                                                     [default: "./tsconfig.json"]
-  -o, --outFile        the path to the output file          [default: "out.svg"]
-      --propertyTypes  show property types and method return types
+  -o, --outFile             the path to the output file     [default: "out.svg"]
+      --propertyTypes       show property types and method return types
                                                        [boolean] [default: true]
-      --modifiers      show modifiers like public,protected,private,static
+      --modifiers           show modifiers like public,protected,private,static
                                                        [boolean] [default: true]
-      --typeLinks      add links for classes, interface, enums that point to the
-                       source files                    [boolean] [default: true]
-      --nomnoml        nomnoml layouting and styling options (an array of
-                       strings, each representing a nomnoml line), i.e.:
-                       --nomnoml "#arrowSize: 1" "#.interface: fill=#8f8
-                       dashed"                                           [array]
-      --outDsl         the path to the output DSL file (nomnoml)        [string]
-      --config         path to a json config file (command line options can be
-                       provided as keys in it)                          [string]
+      --typeLinks           add links for classes, interface, enums that point
+                            to the source files        [boolean] [default: true]
+      --nomnoml             nomnoml layouting and styling options (an array of
+                            strings, each representing a nomnoml line), i.e.:
+                            --nomnoml "#arrowSize: 1" "#.interface: fill=#8f8
+                            dashed"                                      [array]
+      --outDsl              the path to the output DSL file (nomnoml)   [string]
+  -m, --memberAssociations  show associations between classes, interfaces, types
+                            and their member types    [boolean] [default: false]
+      --config              path to a json config file (command line options can
+                            be provided as keys in it)                  [string]
 ```
 
 an example config.json could look like:
@@ -135,3 +137,16 @@ results in the following nomnoml code stored in `uml_diagram.dsl`:
 [Viking<WT>]<:-[UberViking<WT>]
 [Viking<WT>]<:-[VikingWithKatana]
 ```
+
+### With member associations enabled:
+Associations between class / interfaces / types and their members
+are represented by lines without arrows.
+The associations also include multiplicity ("0..*").
+
+Use the `-m` parameter to enable output of member associations.
+ 
+```sh
+tsuml2 --glob "./src/demo/**/*.ts" -m -o "./assets/uml_diagram.svg"
+```
+
+![](/assets/member_associations.png)
