@@ -138,6 +138,17 @@ results in the following nomnoml code stored in `uml_diagram.dsl`:
 [Viking<WT>]<:-[VikingWithKatana]
 ```
 
+
+### Use in Node Applications:
+
+
+```js
+ const {createNomnomlSVG} = require('tsuml2')
+
+
+ createNomnomlSVG({glob: `./src/app/**/!(*.d|*.spec).ts`,outFile: 'd:/apps/src/demo.svg'}); 
+```
+
 ### With member associations enabled:
 Associations between class / interfaces / types and their members
 are represented by lines without arrows.
