@@ -1,5 +1,4 @@
-import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability, Attribute } from "./interfaces";
-
+import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability, Attribute as Attr } from "./interfaces";
 
 export class BaseWeapon implements Durable {
     protected damage = 25;
@@ -8,7 +7,7 @@ export class BaseWeapon implements Durable {
         fire: 100,
         water: 100,
     }
-    public attributes: Attribute[] = [{id: "explosive", value: 10}, {id: "bouncing", value: 20}];
+    public attributes: Attr[] = [{id: "explosive", value: 10}, {id: "bouncing", value: 20}]; // Test member Alias (import as)
     refresh(): void {
        // DO Something 
     }
@@ -39,4 +38,10 @@ export class BlackMagicKatana extends MagicKatana<BlackMagic> implements MagicWe
     tryBlackMagicHit(): boolean {
         throw new Error("Method not implemented.");
     }
+}
+
+
+// test alias
+export interface AttributeWithDefault<T = any> extends Attr<T> {
+    default: T;
 }
