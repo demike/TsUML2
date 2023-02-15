@@ -46,3 +46,9 @@ export interface Attribute<T = any> {
     value: T;
     description?: string;
 }
+
+// for testing default exports
+export default interface Mountable<T = any> {
+    mount(): void;
+    unmount(): void;
+}

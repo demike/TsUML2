@@ -1,6 +1,7 @@
+import EquipmentPart from "./equipment";
 import { Weapon, Named, MagicWeapon, Magic, BlackMagic, Durable, MagicDurability, Attribute as Attr } from "./interfaces";
 
-export class BaseWeapon implements Durable {
+export class BaseWeapon extends EquipmentPart<number> implements Durable {
     protected damage = 25;
     durability: number = 100;
     magicDurability: MagicDurability = {

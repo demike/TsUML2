@@ -317,6 +317,11 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
             name = classOrIf.getSymbol()!.getName();
             if(name === "__type") {
                 name = classOrIf.getAliasSymbol()!.getName();
+            } else if(name === 'default') {
+                const decl = classOrIf.getSymbol()?.getDeclarations()[0];
+                if(decl && SimpleAST.Node.isInterfaceDeclaration( decl) || SimpleAST.Node.isClassDeclaration(decl)) {
+                    name = decl.getName() ?? name;
+                }
             }
             generics = classOrIf.getTypeArguments().map(arg => arg.getSymbol()!.getName());
         } else {
@@ -324,7 +329,8 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
             if(!classOrIf.getTypeParameters) {
                 return undefined; // some weird thing with mapped types i.e: Partial (TODO: investigate this further)
             }
-            name = classOrIf.getSymbol()!.getName();
+            
+            name = classOrIf.getName() ?? /* should not happen */classOrIf.getSymbol()!.getName();
             generics= classOrIf.getTypeParameters().map((param) => param.getName()); 
         }
         
