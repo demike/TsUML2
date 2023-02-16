@@ -218,7 +218,7 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
 
 // utility functions
 
-function getPropertyTypeName(propertySymbol: SimpleAST.Symbol) {
+function getPropertyTypeName(propertySymbol: SimpleAST.Symbol) {  
     const t = propertySymbol.getValueDeclaration()?.getType();
     if (!t) {
         return undefined;
@@ -235,27 +235,10 @@ function getTypeAsString(type?: SimpleAST.Type<SimpleAST.ts.Type>): string | und
         return undefined;
     }
 
-    let name;
-    if( type.isArray()) {
-        const typeArgs = type.getTypeArguments();
-        if(typeArgs.length > 0) {
-            let elType = type.getTypeArguments()[0];
-            name = getTypeAsString(elType);
-        }
-        
-        if(name) {
-            return name + "[]"
-        }
-        return "[]"
-        
-    } else {
-        // might be a combination of types  MyType | undefined
-        // getText and remove the import("abc.def.ts"). parts
-        name = type?.getText();
-        name = name.replace(/import\([\d\D]*?\)\./g,'');
-    }
-
-    return name;
+    // might be a combination of types  MyType | undefined
+    // getText and remove the import("abc.def.ts"). parts
+    let name = type?.getText(undefined, SimpleAST.TypeFormatFlags.NoTypeReduction /* resolve 'default' to the actual type */);
+    return name.replace(/import\([\d\D]*?\)\./g,''); //  TODO: potentially unnecessary
 }
 
 /**
