@@ -290,15 +290,15 @@ function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
 
 function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments | SimpleAST.Type ) {
     try {
-        let name: string;
+        let name: string | undefined;
         let generics: string[] = [];
         if (classOrIf instanceof SimpleAST.ExpressionWithTypeArguments) {
             return classOrIf.getText();
         }
 
         if (classOrIf instanceof SimpleAST.Type) {
-            name = classOrIf.getSymbol()!.getName();
-            if(name === "__type") {
+            name = classOrIf.getSymbol()?.getName();
+            if(name === "__type" || name === undefined) {
                 name = classOrIf.getAliasSymbol()!.getName();
             } else if(name === 'default') {
                 const decl = classOrIf.getSymbol()?.getDeclarations()[0];
