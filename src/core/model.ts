@@ -16,6 +16,7 @@ export interface MethodDetails extends MemberDetails{
 export interface PropertyDetails extends MemberDetails {
     type?: string;
     typeIds: string[];
+    optional: boolean;
 }
 
 export enum HeritageClauseType {
