@@ -7,6 +7,8 @@ export class Viking<WT extends Weapon> {
     public age: (10 | 20)[] = [];
     public gender: Gender = Gender.Else;
     public weapon: WT
+    public secondWeapon?: WT
+    public thridWeapon?: WT
     public constructor(weapon: WT) {
         this.weapon = weapon;
     }
