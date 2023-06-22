@@ -57,7 +57,11 @@ function propertyTemplate(property: PropertyDetails): string {
     // TODO go on
     let retVal = property.name;
     if (property.type && SETTINGS.propertyTypes) {
+        if(property?.optional) {
+            retVal += "?";
+        }
         retVal += ": " + property.type;
+        
     }
 
     retVal = modifierTemplate(property.modifierFlags) + retVal

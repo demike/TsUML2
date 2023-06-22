@@ -4,6 +4,8 @@ export class Ninja {
     public gender: Gender = Gender.Else;
     public static IdCnt=0;
     private _weapon: Weapon;
+    public secondWeapon?: Weapon;
+    public thridWeapon?: Weapon;
     public id: number;
     public constructor(weapon: Weapon) {
         this.id = Ninja.IdCnt++;

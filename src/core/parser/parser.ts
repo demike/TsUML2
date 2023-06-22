@@ -56,6 +56,14 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
 
 
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    properties.forEach((property) => {
+        const propertyDeclaration = propertyDeclarations.find((p) => p.getSymbol()?.getName() === property.name);
+        
+        if (propertyDeclaration?.hasQuestionToken()) {
+          property.optional = true;
+
+        }
+      });
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
     return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration) });
@@ -102,7 +110,8 @@ function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | Simp
             modifierFlags: propertyDeclaration.getCombinedModifierFlags(),
             name: sym.getName(),
             type: getPropertyTypeName(sym),
-            typeIds: getTypeIdsFromSymbol(sym)
+            typeIds: getTypeIdsFromSymbol(sym),
+            optional: false,
         }
     }
 
