@@ -85,7 +85,7 @@ function modifierTemplate(modifierFlags: ModifierFlags): string {
     if(modifierFlags & ModifierFlags.Private) {
         retVal = "-" + retVal;
     } else if(modifierFlags & ModifierFlags.Protected) {
-        retVal = "#" + retVal;
+        retVal = "\\#" + retVal;
     } else {
         retVal = "+" + retVal;
     }
