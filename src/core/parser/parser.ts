@@ -19,7 +19,9 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     const methodDeclarations = classDeclaration.getMethods();
     const ctors = classDeclaration.getConstructors();
 
-    let id = classDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    const sourceFile = classDeclaration.getSourceFile();
+    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${className}`;
+
     if (!id.length) {
         console.error("missing class id");
     }
@@ -49,7 +51,9 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const propertyDeclarations = interfaceDeclaration.getProperties();
     const methodDeclarations = interfaceDeclaration.getMethods();
 
-    let id = interfaceDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    const sourceFile = interfaceDeclaration.getSourceFile();
+    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${interfaceName}`;
+
     if (!id.length) {
         console.error("missing interface id");
     }
@@ -78,9 +82,10 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
         return; 
     }
     
-  
+    const sourceFile = typeDeclaration.getSourceFile();
+    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${name}`;
 
-    let id = typeDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+
     if (!id.length) {
         console.error("missing type id");
     }
@@ -129,7 +134,9 @@ function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.
 export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     const enumName = enumDeclaration.getSymbol()!.getName();
 
-    let id = enumDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    const sourceFile = enumDeclaration.getSourceFile();
+    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${enumName}`;
+
     if (!id.length) {
         console.error("missing class id");
     }
