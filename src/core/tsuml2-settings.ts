@@ -42,7 +42,12 @@ export class TsUML2Settings {
     /**
      * output file contain the DSL (nomnoml)
      */
-    outDsl: string = ""
+    outDsl: string = "";
+
+    /**
+     * output file containing mermaid DSL
+     */
+    outMermaidDsl: string = "";
 
     /**
      * show associations between classes, interfaces, types and their member types

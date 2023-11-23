@@ -1,40 +1,38 @@
-import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
-import { templates }from "./templates";
+import { HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
 
-export function emitSingleClass(cls: Clazz) {
-    return templates.class(cls.name, cls.properties.map(escapePropertyDetails), cls.methods.map(escapeMethodDetails));
+import { Template } from "./renderer/template";
+export class Emitter {
+    constructor(protected template: Template) {}
+public emitSingleClass(cls: Clazz) {
+    return this.template.class(cls.name, cls.properties, cls.methods);
 }
 
-export function emitSingleInterface(int: Interface) {
-    return templates.interface(int.name, int.properties.map(escapePropertyDetails), int.methods.map(escapeMethodDetails));
+public emitSingleInterface(int: Interface) {
+    return this.template.interface(int.name, int.properties, int.methods);
 }
 
-export function emitSingleType(t: TypeAlias) {
-    return templates.type(t.name, t.properties.map(escapePropertyDetails), t.methods.map(escapeMethodDetails));
+public emitSingleType(t: TypeAlias) {
+    return this.template.type(t.name, t.properties, t.methods);
 }
 
-export function emitSingleEnum(en: Enum) {
-    return templates.enum(en.name, en.items);
+public emitSingleEnum(en: Enum) {
+    return this.template.enum(en.name, en.items);
 }
   
-export function emitHeritageClauses(heritageClauses: HeritageClause[]) {
+public emitHeritageClauses(heritageClauses: HeritageClause[]) {
     return heritageClauses.map((heritageClause) => {
         if(heritageClause.type === HeritageClauseType.Extends) {
-           return templates.extends(heritageClause.clause, heritageClause.className);
+           return this.template.extends(heritageClause.clause, heritageClause.className);
         } else {
-           return templates.implements(heritageClause.clause, heritageClause.className);
+           return this.template.implements(heritageClause.clause, heritageClause.className);
         }
 
     });
 }
 
-export function emitMemberAssociations(associations?: MemberAssociation[]) {
-    return associations ? associations.map(templates.memberAssociation) : [];
+public emitMemberAssociations(associations?: MemberAssociation[]) {
+    return associations ? associations.map(this.template.memberAssociation) : [];
 }
-
-// utility functions
-function escapeNomnoml(str: string) {
-    return str.replace(/[|\][\#]/g, '\\$&');
 }
 
 function xmlEncode(str: string) {
@@ -45,21 +43,6 @@ function xmlEncode(str: string) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&apos;')
 }
-
-function escapeMethodDetails(details: MethodDetails) {
-    if(details.returnType) {
-        details.returnType = escapeNomnoml(details.returnType);
-    }
-    return details;
-}
-
-function escapePropertyDetails(details: PropertyDetails) {
-    if(details.type) {
-        details.type = escapeNomnoml(details.type);
-    }
-    return details;
-}
-
 
 export function postProcessSvg(svg: string, diagramPath: string, declarations: FileDeclaration[]) {
     const classes: {[key:string]:Clazz} = {};

@@ -1,11 +1,13 @@
 import { renderNomnomlSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseEnum, parseTypes } from "./parser/parser";
-import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum, emitSingleType, emitMemberAssociations } from "./emitter";
+import { postProcessSvg, Emitter } from "./emitter";
+import { nomnomlTemplate } from  './renderer/nomnoml-template';
 import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
 import chalk from 'chalk';
 import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs';
 import { parseAssociations } from "./parser";
+import { Template } from "./renderer/template";
 
 function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
@@ -42,15 +44,15 @@ function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   return declarations;
 }
 
-function emit(declarations: FileDeclaration[]) {
+function emit(declarations: FileDeclaration[], emitter: Emitter) {
   const entities = declarations.map(d => {
     console.log(chalk.yellow(d.fileName));
-    const classes = d.classes.map((c) => emitSingleClass(c));
-    const interfaces = d.interfaces.map((i) => emitSingleInterface(i));
-    const enums = d.enums.map((i) => emitSingleEnum(i));
-    const types = d.types.map((t) => emitSingleType(t));
-    const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    const memberAssociations = emitMemberAssociations(d.memberAssociations);
+    const classes = d.classes.map((c) => emitter.emitSingleClass(c));
+    const interfaces = d.interfaces.map((i) => emitter.emitSingleInterface(i));
+    const enums = d.enums.map((i) => emitter.emitSingleEnum(i));
+    const types = d.types.map((t) => emitter.emitSingleType(t));
+    const heritageClauses = d.heritageClauses.map((clause) => emitter.emitHeritageClauses(clause));
+    const memberAssociations = emitter.emitMemberAssociations(d.memberAssociations);
     return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat(), ...memberAssociations];
   
   }).flat();
@@ -83,7 +85,7 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
 
   // emit
   console.log(chalk.yellow("\nemitting declarations:"));
-  const dsl = emit(declarations);
+  const dsl = emit(declarations, new Emitter(nomnomlTemplate));
   const outDSL = settings.outDsl || SETTINGS.outDsl;
   if(outDSL !== "") {
     console.log(chalk.green("\nwriting DSL"));
@@ -95,7 +97,7 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
   }
 
   //render
-  const outFile = settings.outFile || SETTINGS.outFile
+  const outFile = settings.outFile || SETTINGS.outFile;
   console.log(chalk.yellow("\nrender to svg"));
   let svg = renderNomnomlSVG(dsl);
   if(settings.typeLinks) {

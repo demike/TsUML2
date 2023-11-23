@@ -1,20 +1,20 @@
-import { PropertyDetails, MethodDetails, MemberAssociation} from "./model";
+import { PropertyDetails, MethodDetails, MemberAssociation} from "../model";
 import { ModifierFlags } from "typescript";
-import { SETTINGS } from "./tsuml2-settings";
+import { SETTINGS } from "../tsuml2-settings";
+import { Template } from "./template";
 
-export const templates = {
+export const nomnomlTemplate: Template = {
     composition: "+->",
     implements: (interf: string, implementation: string) => {
         return (
-            `${templates.plainClassOrInterface(interf)}<:--${templates.plainClassOrInterface(implementation)}`
+            `${nomnomlTemplate.plainClassOrInterface(interf)}<:--${nomnomlTemplate.plainClassOrInterface(implementation)}`
         );
     },
     extends: (base: string, derived: string) => {
-      return `${templates.plainClassOrInterface(base)}<:-${templates.plainClassOrInterface(derived)}`;
+      return `${nomnomlTemplate.plainClassOrInterface(base)}<:-${nomnomlTemplate.plainClassOrInterface(derived)}`;
     },
     plainClassOrInterface: (name: string) => `[${name}]`,
-    colorClass: (name: string) => `[${name}]`,
-    colorInterface: (name: string) => `[${name}]`,
+    
     class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
         return `[${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
     },
@@ -42,7 +42,8 @@ export const templates = {
 };
 
 function methodTemplate(method: MethodDetails): string {
-    // TODO go on
+    method = escapeMethodDetails(method);
+
     let retVal = method.name + "()";
     if (method.returnType && SETTINGS.propertyTypes) {
         retVal += ": " + method.returnType;
@@ -54,7 +55,8 @@ function methodTemplate(method: MethodDetails): string {
 } 
 
 function propertyTemplate(property: PropertyDetails): string {
-    // TODO go on
+    property = escapePropertyDetails(property)
+
     let retVal = property.name;
     if (property.type && SETTINGS.propertyTypes) {
         if(property?.optional) {
@@ -82,6 +84,10 @@ function modifierTemplate(modifierFlags: ModifierFlags): string {
         retVal = "static " ;
     }
 
+    if(modifierFlags & ModifierFlags.Abstract) {
+        retVal = "abstract " ;
+    }
+
     if(modifierFlags & ModifierFlags.Private) {
         retVal = "-" + retVal;
     } else if(modifierFlags & ModifierFlags.Protected) {
@@ -97,5 +103,26 @@ function modifierTemplate(modifierFlags: ModifierFlags): string {
 
 
 function memberAssociation(association: MemberAssociation) {
-    return `${templates.plainClassOrInterface(association.a.name)} ${association.a.multiplicity ?? ''} - ${association.b.multiplicity ?? ''} ${templates.plainClassOrInterface(association.b.name)}`;
+    return `${nomnomlTemplate.plainClassOrInterface(association.a.name)} ${association.a.multiplicity ?? ''} - ${association.b.multiplicity ?? ''} ${nomnomlTemplate.plainClassOrInterface(association.b.name)}`;
+}
+
+
+// utility functions
+function escapeNomnoml(str: string) {
+    return str.replace(/[|\][\#]/g, '\\$&');
+}
+
+
+function escapeMethodDetails(details: MethodDetails) {
+    if(details.returnType) {
+        details.returnType = escapeNomnoml(details.returnType);
+    }
+    return details;
+}
+
+function escapePropertyDetails(details: PropertyDetails) {
+    if(details.type) {
+        details.type = escapeNomnoml(details.type);
+    }
+    return details;
 }
