@@ -74,35 +74,16 @@ an example config.json could look like:
 
 > **_NOTE:_** command line arguments override those provided in config.json
 
-
-## Examples
-### Demo Diagram
-
-```sh
-tsuml2 --glob "./src/demo/**/*.ts" -o "./assets/uml_diagram.svg"
-```
-
-The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
-
-![uml diagram example](/assets/uml_diagram.svg)
-
-### A complex command line parameter example:
-```
-./tsuml2 --glob=./src/demo/**/*.ts --nomnoml "#arrowSize: 1.5" "#.interface: fill=#8f8 dashed" --modifiers false --propertyTypes false
-```
-
-![alternative diagram style](/assets/alt_uml_diagram.svg)
-
-### With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
-
-![type links](/assets/type_links.gif)
+## Direct output of nomnoml and mermaid code
+You can output the diagram not only as svg but also
+as _nomnoml_ and _mermaid_ code.
 
 ### Generate nomnoml DSL output
 
 ```sh
-tsuml2 --glob "./src/demo/**/*.ts" --outDsl  "./assets/uml_diagram.dsl"
+tsuml2 --glob "./src/demo/**/*.ts" --outDsl  "./assets/nomnoml_diagram.dsl"
 ```
-results in the following nomnoml code stored in `uml_diagram.dsl`:
+results in the following nomnoml code stored in `nomnoml_diagram.dsl`:
 ```nomnoml
 #.interface: fill=lightblue
 #.enumeration: fill=lightgreen
@@ -139,16 +120,204 @@ results in the following nomnoml code stored in `uml_diagram.dsl`:
 [Viking<WT>]<:-[VikingWithKatana]
 ```
 
+### Generate mermaid DSL output
 
-### Use in Node Applications:
+```sh
+tsuml2 --glob "./src/demo/**/*.ts" --outMermaidDsl  "./assets/mermaid_diagram.dsl"
+```
+stores the mermaid code to `mermaid_diagram.dsl`.
+
+> **_Note:_** You can use it directly in github markdown!
+
+```mermaid
+
+classDiagram
+class EquipmentPart~T~{
+            +id: string
++name?: string
++content?: T
+            +mount() void
++unmount() void
+        }
+Mountable~T~<|..EquipmentPart~T~
+class Weapon {
+            <<interface>>
+            
+            +tryHit() boolean
+        }
+class Named {
+            <<interface>>
+            +name: string
+            
+        }
+class Magic {
+            <<interface>>
+            +kind: string
+            
+        }
+class BlackMagic {
+            <<interface>>
+            
+            +paintItBlack() boolean
+        }
+class MagicWeapon~MT~ {
+            <<interface>>
+            +magic: MT
+            +tryMagicHit() boolean
+        }
+class BlackMagicWeapon {
+            <<interface>>
+            
+            
+        }
+class Attribute~T~ {
+            <<interface>>
+            +id: string
++value: T
++description?: string
+            
+        }
+class Mountable~T~ {
+            <<interface>>
+            
+            +mount() void
++unmount() void
+        }
+class Gender {
+        <<enumeration>>
+        Male
+Female
+Else
+      }
+class MagicDurability {
+            <<type>>
+            +fire: number
++water: number
+            
+        }
+class Durable {
+            <<type>>
+            +durability: number
++magicDurability: MagicDurability
+            +refresh() void
+        }
+Magic<|..BlackMagic
+Weapon<|..MagicWeapon~MT~
+MagicWeapon~MT~<|..BlackMagicWeapon
+Durable  --  MagicDurability
+class BaseWeapon{
+            #damage: number
++durability: number
++magicDurability: MagicDurability
++attributes: Attribute~any~[]
+            +refresh() void
+        }
+class Katana{
+            +name: string
+            +tryHit() boolean
++doIt() void
+        }
+class MagicKatana~MT~{
+            +magic: MT
+            +tryMagicHit() boolean
+        }
+class BlackMagicKatana{
+            
+            +tryBlackMagicHit() boolean
+        }
+class AttributeWithDefault~T~ {
+            <<interface>>
+            +default: T
+            
+        }
+EquipmentPart~T~<|--BaseWeapon
+Durable<|..BaseWeapon
+BaseWeapon<|--Katana
+Weapon<|..Katana
+Named<|..Katana
+Katana<|--MagicKatana~MT~
+MagicWeapon~MT~<|..MagicKatana~MT~
+MagicKatana~MT~<|--BlackMagicKatana
+MagicWeapon~MT~<|..BlackMagicKatana
+Attribute~T~<|..AttributeWithDefault~T~
+class Ninja{
+            +gender: Gender
++IdCnt: number$
+-_weapon: Weapon
+#secondaryWeapon?: Weapon
+-blockade?: Blockade
++id: number
+            +fight() boolean
+        }
+class Blockade {
+            <<interface>>
+            +magic: number
++physical: number
+            
+        }
+Ninja  --  Gender
+Ninja  --  Weapon
+Ninja  --  Weapon
+class Viking~WT~{
+            +age: (10 | 20)[]
++gender: Gender
++weapon: WT
++secondaryWeapon?: WT
++bag: EquipmentPart~any~[]
+            +fight() boolean
+        }
+class UberViking~WT~{
+            +belt?: EquipmentPart~any~
+            
+        }
+class VikingWithKatana{
+            
+            
+        }
+class MagicViking{
+            +secondaryWeapon?: MagicKatana~BlackMagic~
+            
+        }
+Viking~WT~<|--UberViking~WT~
+Viking~WT~<|--VikingWithKatana
+Viking~WT~<|--MagicViking
+Viking~WT~  --  Gender
+```
+
+## Usage in Node Applications:
 
 
 ```js
- const {createNomnomlSVG} = require('tsuml2')
+ const {createDiagram} = require('tsuml2')
 
 
- createNomnomlSVG({glob: `./src/app/**/!(*.d|*.spec).ts`,outFile: 'd:/apps/src/demo.svg'}); 
+ createDiagram({glob: `./src/app/**/!(*.d|*.spec).ts`,outFile: 'd:/apps/src/demo.svg'}); 
 ```
+
+
+
+## Examples
+### Demo Diagram
+
+```sh
+tsuml2 --glob "./src/demo/**/*.ts" -o "./assets/uml_diagram.svg"
+```
+
+The diagram generated for the code under the [demo folder](https://github.com/demike/TsUML2/tree/master/src/demo) looks as follows:
+
+![uml diagram example](/assets/uml_diagram.svg)
+
+### A complex command line parameter example:
+```
+./tsuml2 --glob=./src/demo/**/*.ts --nomnoml "#arrowSize: 1.5" "#.interface: fill=#8f8 dashed" --modifiers false --propertyTypes false
+```
+
+![alternative diagram style](/assets/alt_uml_diagram.svg)
+
+### With type links enabled: [live example](https://raw.githubusercontent.com/demike/TsUML2/master/assets/uml_diagram.svg)
+
+![type links](/assets/type_links.gif)
+
 
 ### With member associations enabled:
 Associations between class / interfaces / types and their members
