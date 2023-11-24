@@ -1,11 +1,26 @@
 import { renderNomnomlSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseEnum, parseTypes } from "./parser/parser";
-import { emitSingleClass, emitSingleInterface, emitHeritageClauses, postProcessSvg, emitSingleEnum, emitSingleType, emitMemberAssociations } from "./emitter";
+import { postProcessSvg, Emitter, emit } from "./emitter";
+import { nomnomlTemplate } from  './renderer/nomnoml-template';
 import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
 import chalk from 'chalk';
 import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs';
 import { parseAssociations } from "./parser";
+import { mermaidTemplate } from "./renderer/mermaid-template";
+
+export function createDiagram(settings: TsUML2Settings) {
+  // parse
+  const declarations = parse(settings.tsconfig, settings.glob)
+  if(declarations.length === 0) {
+    console.log(chalk.red("\nno declarations found! tsconfig: " + settings.tsconfig, " glob: " + settings.glob));
+    return;
+  }
+
+    // emit
+    createMermaidDSL(declarations, settings);
+    createNomnomlSVG(declarations, settings);
+}
 
 function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
@@ -42,64 +57,35 @@ function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   return declarations;
 }
 
-function emit(declarations: FileDeclaration[]) {
-  const entities = declarations.map(d => {
-    console.log(chalk.yellow(d.fileName));
-    const classes = d.classes.map((c) => emitSingleClass(c));
-    const interfaces = d.interfaces.map((i) => emitSingleInterface(i));
-    const enums = d.enums.map((i) => emitSingleEnum(i));
-    const types = d.types.map((t) => emitSingleType(t));
-    const heritageClauses = d.heritageClauses.map(emitHeritageClauses);
-    const memberAssociations = emitMemberAssociations(d.memberAssociations);
-    return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat(), ...memberAssociations];
-  
-  }).flat();
+export function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Settings) {
+  const outDSL = settings.outDsl ;
+  const outFile = settings.outFile;
 
-
-  if(entities.length === 0) {
-    const errorMsg = "Could not process any class / interface / enum / type";
-    console.log(chalk.red(errorMsg));
-    entities.push(`[${errorMsg}]`);
-  }
-
-  return getStyling() + entities.join("\n");
-}
-
-function getStyling(): string {
-  return '#.interface: fill=lightblue\n' +
-    '#.enumeration: fill=lightgreen\n' +
-    '#.type: fill=lightgray\n' +
-    SETTINGS.nomnoml.join("\n");
-}
-
-export function createNomnomlSVG(settings: TsUML2Settings) {
-
-  // parse
-  const declarations = parse(settings.tsconfig, settings.glob)
-  if(declarations.length === 0) {
-    console.log(chalk.red("\nno declarations found! tsconfig: " + settings.tsconfig, " glob: " + settings.glob));
+  if(outDSL === "" && outFile === "" ) {
     return;
   }
 
-  // emit
-  console.log(chalk.yellow("\nemitting declarations:"));
-  const dsl = emit(declarations);
-  const outDSL = settings.outDsl || SETTINGS.outDsl;
+  console.log(chalk.yellow("\nemitting nomnoml declarations:"));
+  const dsl = getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(nomnomlTemplate));
+  
   if(outDSL !== "") {
-    console.log(chalk.green("\nwriting DSL"));
+    console.log(chalk.green("\nwriting nomnoml DSL"));
     fs.writeFile(outDSL,dsl,(err) => {
       if(err) {
-          console.log(chalk.redBright("Error writing DSL file: " + err));
+          console.log(chalk.redBright("Error writing nomnoml DSL file: " + err));
       }
     });
   }
 
+  if(outFile === "") {
+    return;
+  }
+
   //render
-  const outFile = settings.outFile || SETTINGS.outFile
   console.log(chalk.yellow("\nrender to svg"));
   let svg = renderNomnomlSVG(dsl);
   if(settings.typeLinks) {
-    console.log(chalk.yellow("\nadding type links to svg"));
+    console.log(chalk.yellow("adding type links to svg"));
     svg = postProcessSvg(svg,outFile, declarations);
   }
 
@@ -111,4 +97,34 @@ export function createNomnomlSVG(settings: TsUML2Settings) {
   });
 
   return svg;
+}
+
+export function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+  if(!settings.outMermaidDsl) {
+    return;
+  }
+
+  console.log(chalk.yellow("\nemitting mermaid declarations:"));
+  const dsl = getMermaidDSLHeader(settings) + emit(declarations, new Emitter(mermaidTemplate));
+  
+  console.log(chalk.green("\nwriting mermaid DSL"));
+  fs.writeFile(settings.outMermaidDsl,dsl,(err) => {
+    if(err) {
+      console.log(chalk.redBright("Error writing mermaid DSL file: " + err));
+    }
+  });
+
+}
+
+
+
+function getNomnomlDSLHeader(settings: TsUML2Settings): string {
+  return '#.interface: fill=lightblue\n' +
+    '#.enumeration: fill=lightgreen\n' +
+    '#.type: fill=lightgray\n' +
+    settings.nomnoml.join("\n");
+}
+
+function getMermaidDSLHeader(settings: TsUML2Settings): string {
+  return '\nclassDiagram\n'; 
 }
