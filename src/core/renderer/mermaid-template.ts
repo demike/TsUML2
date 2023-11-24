@@ -15,7 +15,7 @@ export const  mermaidTemplate: Template = {
     },
     plainClassOrInterface: (name: string) => escapeMermaid(name),
     class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
-        return `class ${name}{
+        return `class ${escapeMermaid(name)}{
             ${props.map(propertyTemplate).join("\n")}
             ${methods.map(methodTemplate).join("\n")}
         }`;

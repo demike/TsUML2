@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
 
 import { Template } from "./renderer/template";
@@ -34,6 +35,33 @@ public emitMemberAssociations(associations?: MemberAssociation[]) {
     return associations ? associations.map(this.template.memberAssociation) : [];
 }
 }
+
+
+export function emit(declarations: FileDeclaration[], emitter: Emitter) {
+    const entities = declarations.map(d => {
+      console.log(chalk.yellow(d.fileName));
+      const classes = d.classes.map((c) => emitter.emitSingleClass(c));
+      const interfaces = d.interfaces.map((i) => emitter.emitSingleInterface(i));
+      const enums = d.enums.map((i) => emitter.emitSingleEnum(i));
+      const types = d.types.map((t) => emitter.emitSingleType(t));
+      const heritageClauses = d.heritageClauses.map((clause) => emitter.emitHeritageClauses(clause));
+      const memberAssociations = emitter.emitMemberAssociations(d.memberAssociations);
+      return [...classes, ...interfaces, ...enums, ...types, ...heritageClauses.flat(), ...memberAssociations];
+    
+    }).flat();
+  
+  
+    if(entities.length === 0) {
+      const errorMsg = "Could not process any class / interface / enum / type";
+      console.log(chalk.red(errorMsg));
+      entities.push(`[${errorMsg}]`);
+    }
+  
+    return entities.join("\n");
+  }
+
+
+
 
 function xmlEncode(str: string) {
     return str

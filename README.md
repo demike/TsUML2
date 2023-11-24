@@ -56,6 +56,7 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
                             --nomnoml "#arrowSize: 1" "#.interface: fill=#8f8
                             dashed"                                      [array]
       --outDsl              the path to the output DSL file (nomnoml)   [string]
+      --outMermaidDsl       the path to the output mermaid DSL file     [string]
   -m, --memberAssociations  show associations between classes, interfaces, types
                             and their member types    [boolean] [default: false]
       --config              path to a json config file (command line options can

@@ -59,7 +59,7 @@ export class TsUML2Settings {
      * parses a json file and merges in the provided options
      * @param json 
      */
-    formJSON(json: string) {
+    fromJSON(json: string) {
         Object.assign(this,JSON.parse(json));
     }
 
@@ -97,6 +97,10 @@ export class TsUML2Settings {
             describe: "the path to the output DSL file (nomnoml)",
             string: true,
             required: false,
+        }).option('outMermaidDsl', {
+            describe: "the path to the output mermaid DSL file",
+            string: true,
+            required: false,
         }).option('memberAssociations', {
             describe: "show associations between classes, interfaces, types and their member types",
             alias: 'm',
@@ -111,7 +115,7 @@ export class TsUML2Settings {
         if (argv.config) {
             //parse and apply the config file
             const config = fs.readFileSync(argv.config).toString();
-            this.formJSON(config);
+            this.fromJSON(config);
         }
 
         if(argv.glob) {
@@ -144,6 +148,10 @@ export class TsUML2Settings {
 
         if(argv.outDsl != null && !(yargs.parsed as any).defaulted.outDsl) {
             this.outDsl = argv.outDsl;
+        }
+
+        if(argv.outMermaidDsl != null && !(yargs.parsed as any).defaulted.outMermaidDsl) {
+            this.outMermaidDsl = argv.outMermaidDsl;
         }
 
         if(argv.memberAssociations != null && !(yargs.parsed as any).defaulted.memberAssociations) {
