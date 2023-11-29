@@ -72,6 +72,13 @@ function xmlEncode(str: string) {
         .replace(/'/g, '&apos;')
 }
 
+/**
+ * add type links to the svg
+ * @param svg 
+ * @param diagramPath 
+ * @param declarations 
+ * @returns 
+ */
 export function postProcessSvg(svg: string, diagramPath: string, declarations: FileDeclaration[]) {
     const classes: {[key:string]:Clazz} = {};
     const interfaces: {[key:string]:Interface} = {};

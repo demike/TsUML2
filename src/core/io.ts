@@ -1,6 +1,11 @@
 //@ts-ignore
 import * as nomnoml from "nomnoml";
 
-export function renderNomnomlSVG(dsl: string) {
-    return nomnoml.renderSvg(dsl); 
+/**
+ * render an svg from nomnoml DSL
+ * @param nomnomlDSL 
+ * @returns a string representing the svg
+ */
+export function renderNomnomlSVG(nomnomlDSL: string) {
+    return nomnoml.renderSvg(nomnomlDSL); 
 };
