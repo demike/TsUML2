@@ -8,7 +8,6 @@ export interface Named {
 
 export interface Magic {
     kind: string;
-    test?: string;
 }
 
 export type MagicDurability = {
