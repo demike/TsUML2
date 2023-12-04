@@ -74,12 +74,13 @@ function xmlEncode(str: string) {
 
 /**
  * add type links to the svg
+ * if a diagram path is given paths relative to the diagram will be generated for the links
  * @param svg 
- * @param diagramPath 
+ * @param diagramPath
  * @param declarations 
  * @returns 
  */
-export function postProcessSvg(svg: string, diagramPath: string, declarations: FileDeclaration[]) {
+export function postProcessSvg(svg: string, diagramPath: string | undefined | null, declarations: FileDeclaration[]) {
     const classes: {[key:string]:Clazz} = {};
     const interfaces: {[key:string]:Interface} = {};
     const enums: {[key: string]:Enum} = {};

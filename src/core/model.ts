@@ -63,17 +63,20 @@ export class NamedType {
         this.id = options.id;
     }
 
-    getRelativeFilePath(fromFile: string) {
+    getRelativeFilePath(fromFile?: string | null) {
         const rx = /"(.*)"/;
         const result = rx.exec(this.id);
         if(!result) {
             console.log(chalk.redBright("Could not compute path to class / interface definition: " + this.id));
             return "";
         }
-        fromFile = resolve(dirname(fromFile));
+
         const toFile = resolve(result[1] + '.ts');
-        
-        
+        if(!fromFile) {
+            // return the absolute path if no fromFile is given
+            return toFile;
+        }
+        fromFile = resolve(dirname(fromFile));
         let rel = relative(fromFile,toFile);
         
         return rel;

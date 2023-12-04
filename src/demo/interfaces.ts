@@ -8,6 +8,7 @@ export interface Named {
 
 export interface Magic {
     kind: string;
+    test?: string;
 }
 
 export type MagicDurability = {
@@ -31,7 +32,7 @@ export interface MagicWeapon<MT extends Magic> extends Weapon {
 }
 
 export interface BlackMagicWeapon extends MagicWeapon<BlackMagic> {
-    
+    spells: string;
 }
 
 
