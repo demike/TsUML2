@@ -55,13 +55,12 @@ export const  mermaidTemplate: Template = {
 };
 
 function propertyTemplate(property: PropertyDetails): string {
-    escapePropertyDetails(property);
     let retVal = property.name;
     if (property.type && SETTINGS.propertyTypes) {
         if(property?.optional) {
             retVal += "?";
         }
-        retVal += ": " + property.type;
+        retVal += ": " + escapeMermaid(property.type);
         
     }
 
@@ -70,10 +69,9 @@ function propertyTemplate(property: PropertyDetails): string {
 
 
 function methodTemplate(method: MethodDetails): string {
-    escapeMethodDetails(method);
     let retVal = method.name + "()";
     if (method.returnType && SETTINGS.propertyTypes) {
-        retVal += " " + method.returnType;
+        retVal += " " + escapeMermaid(method.returnType);
     }
 
     return applyModifiers(method.modifierFlags, retVal);
@@ -120,19 +118,4 @@ function memberAssociation(association: MemberAssociation) {
 // utility functions
 function escapeMermaid(str: string) {
     return str.replace(/[<>]/g,'~')
-}
-
-
-function escapeMethodDetails(details: MethodDetails) {
-    if(details.returnType) {
-        details.returnType = escapeMermaid(details.returnType);
-    }
-    return details;
-}
-
-function escapePropertyDetails(details: PropertyDetails) {
-    if(details.type) {
-        details.type = escapeMermaid(details.type);
-    }
-    return details;
 }
