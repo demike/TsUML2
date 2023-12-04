@@ -121,6 +121,7 @@ function escapeMethodDetails(details: MethodDetails) {
 }
 
 function escapePropertyDetails(details: PropertyDetails) {
+    details.name = escapeNomnoml(details.name);
     if(details.type) {
         details.type = escapeNomnoml(details.type);
     }

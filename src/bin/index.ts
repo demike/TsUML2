@@ -1,14 +1,14 @@
 #! /usr/bin/env node
 
 import chalk from "chalk";
-import yargs from "yargs";
 import { createDiagram } from "../core";
 import { SETTINGS } from "../core/tsuml2-settings";
+import { parseSettingsFromArgs } from "../core/parse-settings";
 
 (async () => {
     try {
 
-        SETTINGS.fromArgs(yargs);
+        parseSettingsFromArgs(SETTINGS);
 
         if (SETTINGS.glob.length === 0) {
             console.log(chalk.redBright("Missing --glob"));

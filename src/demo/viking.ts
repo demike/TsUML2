@@ -30,4 +30,5 @@ export class VikingWithKatana extends Viking<Katana> {
 // Alias Test
 export class MagicViking extends Viking<MK<BM>> {
     public secondaryWeapon?: MK<BM>;
+    public "superMagic[Name]"?: string;
 }

@@ -11,7 +11,7 @@ import { mermaidTemplate } from "./renderer/mermaid-template";
 
 export function createDiagram(settings: TsUML2Settings) {
   // parse
-  const declarations = parse(settings.tsconfig, settings.glob)
+  const declarations = parseProject(settings.tsconfig, settings.glob)
   if(declarations.length === 0) {
     console.log(chalk.red("\nno declarations found! tsconfig: " + settings.tsconfig, " glob: " + settings.glob));
     return;
@@ -22,7 +22,13 @@ export function createDiagram(settings: TsUML2Settings) {
     createNomnomlSVG(declarations, settings);
 }
 
-function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
+/**
+ * parse a typescript project
+ * @param tsConfigPath path to a tsconfig.json file
+ * @param pattern the glob pattern defining a scope for typescript files to include (i.e.: a subfolder of the project)
+ * @returns 
+ */
+export function parseProject(tsConfigPath: string, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
   const files = ast.getSourceFiles();
   // parser
@@ -57,7 +63,8 @@ function parse(tsConfigPath: string, pattern: string): FileDeclaration[] {
   return declarations;
 }
 
-export function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Settings) {
+
+function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Settings) {
   const outDSL = settings.outDsl ;
   const outFile = settings.outFile;
 
@@ -65,16 +72,9 @@ export function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUM
     return;
   }
 
-  console.log(chalk.yellow("\nemitting nomnoml declarations:"));
-  const dsl = getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(nomnomlTemplate));
-  
+  const dsl = getNomnomlDSL(declarations,settings);
   if(outDSL !== "") {
-    console.log(chalk.green("\nwriting nomnoml DSL"));
-    fs.writeFile(outDSL,dsl,(err) => {
-      if(err) {
-          console.log(chalk.redBright("Error writing nomnoml DSL file: " + err));
-      }
-    });
+    writeDsl(dsl, outDSL, 'nomnoml');
   }
 
   if(outFile === "") {
@@ -99,21 +99,35 @@ export function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUM
   return svg;
 }
 
-export function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   if(!settings.outMermaidDsl) {
     return;
   }
+  const dsl = getMermaidDSL(declarations,settings);
+  writeDsl(dsl, settings.outMermaidDsl, 'mermaid');
+  return dsl;
+}
 
+/**
+ * get the nomnoml DSL representing the class diagram as a string
+ * @param declarations 
+ * @param settings 
+ * @returns 
+ */
+export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+  console.log(chalk.yellow("\nemitting nomnoml declarations:"));
+  return getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(nomnomlTemplate));
+}
+
+/**
+ * get the mermaid DSL representing the class diagram as a string
+ * @param declarations 
+ * @param settings 
+ * @returns 
+ */
+export function getMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting mermaid declarations:"));
-  const dsl = getMermaidDSLHeader(settings) + emit(declarations, new Emitter(mermaidTemplate));
-  
-  console.log(chalk.green("\nwriting mermaid DSL"));
-  fs.writeFile(settings.outMermaidDsl,dsl,(err) => {
-    if(err) {
-      console.log(chalk.redBright("Error writing mermaid DSL file: " + err));
-    }
-  });
-
+  return getMermaidDSLHeader(settings) + emit(declarations, new Emitter(mermaidTemplate));
 }
 
 
@@ -127,4 +141,14 @@ function getNomnomlDSLHeader(settings: TsUML2Settings): string {
 
 function getMermaidDSLHeader(settings: TsUML2Settings): string {
   return '\nclassDiagram\n'; 
+}
+
+
+function writeDsl(dsl: string, fileName: string, dslType: 'mermaid'| 'nomnoml') {
+  console.log(chalk.green(`\nwriting ${dslType} DSL`));
+  fs.writeFile(fileName,dsl,(err) => {
+    if(err) {
+        console.log(chalk.redBright(`Error writing ${dslType} DSL file: ${err}`));
+    }
+  });
 }
