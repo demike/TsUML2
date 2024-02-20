@@ -59,6 +59,8 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
       --outMermaidDsl       the path to the output mermaid DSL file     [string]
   -m, --memberAssociations  show associations between classes, interfaces, types
                             and their member types    [boolean] [default: false]
+      --exportedTypesOnly   show only exported types, classes, interfaces, enums
+                                                      [boolean] [default: false]
       --config              path to a json config file (command line options can
                             be provided as keys in it)                  [string]
 ```

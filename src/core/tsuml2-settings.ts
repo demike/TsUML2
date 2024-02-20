@@ -49,7 +49,12 @@ export class TsUML2Settings {
     /**
      * show associations between classes, interfaces, types and their member types
      */
-    memberAssociations = false
+    memberAssociations = false;
+
+    /**
+     * show only exported types, classes, interfaces, enums
+     */
+    exportedTypesOnly = false;
 }
 
 /*
