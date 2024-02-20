@@ -20,7 +20,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     const ctors = classDeclaration.getConstructors();
 
     const sourceFile = classDeclaration.getSourceFile();
-    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${className}`;
+    let id = getTypeIdFromTypeName(sourceFile, className);
 
     if (!id.length) {
         console.error("missing class id");
@@ -52,8 +52,7 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const methodDeclarations = interfaceDeclaration.getMethods();
 
     const sourceFile = interfaceDeclaration.getSourceFile();
-    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${interfaceName}`;
-
+    let id = getTypeIdFromTypeName(sourceFile, interfaceName);
     if (!id.length) {
         console.error("missing interface id");
     }
@@ -83,8 +82,7 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
     }
     
     const sourceFile = typeDeclaration.getSourceFile();
-    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${name}`;
-
+    let id = getTypeIdFromTypeName(sourceFile,name);
 
     if (!id.length) {
         console.error("missing type id");
@@ -126,7 +124,7 @@ function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.
         return {
             modifierFlags: methodDeclaration.getCombinedModifierFlags(),
             name: sym.getName(),
-            returnType: getMethodTypeName(methodDeclaration),
+            returnType: getMethodReturnTypeName(methodDeclaration),
         }
     }
 }
@@ -135,8 +133,7 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     const enumName = enumDeclaration.getSymbol()!.getName();
 
     const sourceFile = enumDeclaration.getSourceFile();
-    let id = `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${enumName}`;
-
+    let id = getTypeIdFromTypeName(sourceFile, enumName);
     if (!id.length) {
         console.error("missing class id");
     }
@@ -151,7 +148,7 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
 export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration ) {
 
     const className = getClassOrInterfaceName(classDeclaration);
-    const classTypeId = classDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    const classTypeId = getFullyQualifiedNameNormalized(classDeclaration.getSymbol()) ?? "";
     const baseClass =  classDeclaration.getBaseClass();
     const interfaces = classDeclaration.getImplements();
  
@@ -167,7 +164,7 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
         if(baseClassName) {
             heritageClauses.push({
                         clause: baseClassName,
-                        clauseTypeId: baseClass.getSymbol()?.getFullyQualifiedName()!,
+                        clauseTypeId: getFullyQualifiedNameNormalized(baseClass.getSymbol())!,
                         className,
                         classTypeId,
                         type: HeritageClauseType.Extends
@@ -200,7 +197,7 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
 export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
     const ifName = getClassOrInterfaceName(interfaceDeclaration);
-    const classTypeId = interfaceDeclaration.getSymbol()?.getFullyQualifiedName() ?? "";
+    const classTypeId = getFullyQualifiedNameNormalized(interfaceDeclaration.getSymbol()) ?? "";
     const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
 
     let heritageClauses: HeritageClause[] = [];
@@ -240,7 +237,7 @@ function getPropertyTypeName(propertySymbol: SimpleAST.Symbol) {
     return getTypeAsString(t);
 }
 
-function getMethodTypeName(method: SimpleAST.MethodSignature | SimpleAST.MethodDeclaration) {
+function getMethodReturnTypeName(method: SimpleAST.MethodSignature | SimpleAST.MethodDeclaration) {
     return getTypeAsString(method.getReturnType());
 }
 
@@ -260,7 +257,7 @@ function getTypeAsString(type?: SimpleAST.Type<SimpleAST.ts.Type>): string | und
  * @param symbol returns undefined if simple type number ...
  */
 function getTypeIdsFromSymbol(symbol: SimpleAST.Symbol) : string[] {
-   
+    
     let valueDecl = symbol.getValueDeclaration();
     if (!valueDecl) {
         return [];
@@ -278,9 +275,9 @@ function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
     let ids: (string|undefined)[] = [];
 
     if(t.isClassOrInterface()) {
-        ids.push(t.getSymbol()?.getFullyQualifiedName());
+        ids.push(getFullyQualifiedNameNormalized(t.getSymbol()));
     } else if (t.isEnum()) {
-        ids.push(t.getSymbol()?.getFullyQualifiedName());    
+        ids.push(getFullyQualifiedNameNormalized(t.getSymbol()));    
     } else if (t.isUnionOrIntersection()) {
         ids = [...(t.getUnionTypes()), ...(t.getIntersectionTypes())].map(getTypeIdsFromType).flat();
        // throw new Error("not implemented");
@@ -289,13 +286,13 @@ function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
        // throw new Error("not implemented");
     } else if (t.isAnonymous()) {
         // an anonymous type
-        ids.push(t.getAliasSymbol()?.getFullyQualifiedName());
+        ids.push(getFullyQualifiedNameNormalized(t.getAliasSymbol()));
     } else if (t.isTypeParameter()) {
         return [];
         // throw new Error("not implemented");
     } else {
         if((t as any).getSymbol) {
-            ids.push((t as SimpleAST.Type<SimpleAST.ts.Type>).getSymbol()?.getFullyQualifiedName());
+            ids.push(getFullyQualifiedNameNormalized((t as SimpleAST.Type<SimpleAST.ts.Type>).getSymbol()));
         }
     }
 
@@ -342,5 +339,39 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
         console.log(err);
         return undefined;
     }
+}
+
+
+/**
+ * Returns a unique id for a type composed of the source file and the type name
+ * in case the typeName is already a unique one that already starts with the source file. 
+ * 
+ * The output corresponds to getFullyQualifiedName() calls on exported types/interfaces/classes/enums
+ * @param sourceFile 
+ * @param typeName   name of the class, interface, type, enum ...
+ */
+function getTypeIdFromTypeName(sourceFile: SimpleAST.SourceFile, typeName: string ) {
+    if(typeName.startsWith('"')) {
+        //it is already a unique id starting with the source file
+        return typeName;
+    }
+    return `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${typeName}`;
+}
+
+
+/**
+ * normalize the fully qualified name of a symbol to include the module path also for non-exported symbols
+ * @param symbol 
+ */
+function getFullyQualifiedNameNormalized(symbol?: SimpleAST.Symbol) { 
+    if(!symbol) {
+        return;
+    }
+    let fullyQualifiedName = symbol.getFullyQualifiedName();
+    if (!fullyQualifiedName.startsWith('"')) {
+        const file = symbol.getDeclarations()[0].getSourceFile();
+        fullyQualifiedName = getTypeIdFromTypeName(file,fullyQualifiedName);
+    }
+    return fullyQualifiedName;
 }
 
