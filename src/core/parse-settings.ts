@@ -55,6 +55,11 @@ import * as fs  from "fs";
             boolean: true,
             required: false,
             default: settings.memberAssociations
+        }).option('exportedTypesOnly', {
+            describe: "show only exported types, classes, interfaces, enums",
+            boolean: true,
+            required: false,
+            default: settings.exportedTypesOnly
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
@@ -104,5 +109,9 @@ import * as fs  from "fs";
 
         if(argv.memberAssociations != null && !(yargs.parsed as any).defaulted.memberAssociations) {
             settings.memberAssociations = argv.memberAssociations;
+        }
+
+        if(argv.exportedTypesOnly != null && !(yargs.parsed as any).defaulted.exportedTypesOnly) {
+            settings.exportedTypesOnly = argv.exportedTypesOnly;
         }
     }

@@ -8,6 +8,7 @@ import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs';
 import { parseAssociations } from "./parser";
 import { mermaidTemplate } from "./renderer/mermaid-template";
+import { ExportGetableNode } from "ts-morph";
 
 export function createDiagram(settings: TsUML2Settings) {
   // parse
@@ -34,12 +35,19 @@ export function parseProject(tsConfigPath: string, pattern: string): FileDeclara
   // parser
   console.log(chalk.yellow("parsing source files:"));
   const declarations: FileDeclaration[] = files.map(f => {
-    const classes = f.getClasses();
-    const interfaces = f.getInterfaces();
-    const enums = f.getEnums();
-    const types = f.getTypeAliases();
+    let classes = f.getClasses();
+    let interfaces = f.getInterfaces();
+    let enums = f.getEnums();
+    let types = f.getTypeAliases();
     const path = f.getFilePath();
     console.log(chalk.yellow(path));
+
+    if(SETTINGS.exportedTypesOnly) {
+      classes = removeNonExportedNodes(classes);
+      interfaces = removeNonExportedNodes(interfaces);
+      enums = removeNonExportedNodes(enums);
+      types = removeNonExportedNodes(types);
+    }
 
     const classDeclarations = classes.map(parseClasses);
     const interfaceDeclarations = interfaces.map(parseInterfaces);
@@ -151,4 +159,9 @@ function writeDsl(dsl: string, fileName: string, dslType: 'mermaid'| 'nomnoml') 
         console.log(chalk.redBright(`Error writing ${dslType} DSL file: ${err}`));
     }
   });
+}
+
+
+function removeNonExportedNodes<T extends ExportGetableNode>(nodes: T[] ): T[] {
+  return nodes.filter(n => n.isExported());
 }
