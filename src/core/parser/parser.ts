@@ -1,7 +1,7 @@
 import * as SimpleAST from "ts-morph";
 import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "../model";
 
-export function getAst(tsConfigPath: string, sourceFilesPathsGlob?: string) {
+export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
         tsConfigFilePath: tsConfigPath,
         skipAddingFilesFromTsConfig: !!sourceFilesPathsGlob

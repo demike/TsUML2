@@ -94,7 +94,7 @@ export function postProcessSvg(svg: string, diagramPath: string | undefined | nu
     });
    
     const rx = />(.*)</;
-    const arOut = []
+    const arOut: string[] = [];
     let regexResult: RegExpExecArray | null;
     for(let line of svg.split('\n')) {
         line = line.trim();

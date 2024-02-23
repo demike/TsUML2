@@ -29,7 +29,7 @@ export function createDiagram(settings: TsUML2Settings) {
  * @param pattern the glob pattern defining a scope for typescript files to include (i.e.: a subfolder of the project)
  * @returns 
  */
-export function parseProject(tsConfigPath: string, pattern: string): FileDeclaration[] {
+export function parseProject(tsConfigPath: string | undefined, pattern: string): FileDeclaration[] {
   const ast = getAst(tsConfigPath, pattern);
   const files = ast.getSourceFiles();
   // parser

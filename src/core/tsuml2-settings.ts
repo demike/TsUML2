@@ -7,7 +7,7 @@ export class TsUML2Settings {
     /**
      * the path to the tsconfig.json file
      */
-    tsconfig: string = "./tsconfig.json";
+    tsconfig?: string; // = "./tsconfig.json";
 
 
     /**
