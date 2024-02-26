@@ -2,18 +2,19 @@
 
 import chalk from "chalk";
 import { createDiagram } from "../core";
-import { SETTINGS } from "../core/tsuml2-settings";
+import { TsUML2Settings } from "../core/tsuml2-settings";
 import { parseSettingsFromArgs } from "../core/parse-settings";
 
 (async () => {
     try {
 
-        parseSettingsFromArgs(SETTINGS);
+        const settings = new TsUML2Settings();
+        parseSettingsFromArgs(settings);
 
-        if (SETTINGS.glob.length === 0) {
+        if (settings.glob.length === 0) {
             console.log(chalk.redBright("Missing --glob"));
         } else {
-            createDiagram(SETTINGS);
+            createDiagram(settings);
         }
 
     } catch(e) {
