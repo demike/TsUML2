@@ -1,118 +1,125 @@
 
 import { ModifierFlags } from 'typescript';
 import { MemberAssociation, MethodDetails, PropertyDetails } from '../model';
-import { SETTINGS } from '../tsuml2-settings';
+import { TsUML2Settings } from '../tsuml2-settings';
 import { Template } from './template';
-export const  mermaidTemplate: Template = {
-    composition: "+->",
-    implements: (interf: string, implementation: string) => {
+export class  MermaidTemplate implements Template {
+    public readonly composition = "+->";
+
+    constructor(private settings: TsUML2Settings) {}
+
+    public implements(interf: string, implementation: string) {
         return (
-            `${mermaidTemplate.plainClassOrInterface(interf)}<|..${mermaidTemplate.plainClassOrInterface(implementation)}`
+            `${this.plainClassOrInterface(interf)}<|..${this.plainClassOrInterface(implementation)}`
         );
-    },
-    extends: (base: string, derived: string) => {
-      return `${mermaidTemplate.plainClassOrInterface(base)}<|--${mermaidTemplate.plainClassOrInterface(derived)}`;
-    },
-    plainClassOrInterface: (name: string) => escapeMermaid(name),
-    class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
+    }
+
+    public extends(base: string, derived: string) {
+      return `${this.plainClassOrInterface(base)}<|--${this.plainClassOrInterface(derived)}`;
+    }
+
+    public plainClassOrInterface(name: string) { return escapeMermaid(name) }
+
+    public class(name: string, props: PropertyDetails[], methods: MethodDetails[]) {
         return `class ${escapeMermaid(name)}{
-            ${props.map(propertyTemplate).join("\n")}
-            ${methods.map(methodTemplate).join("\n")}
+            ${props.map(p => this.propertyTemplate(p)).join("\n")}
+            ${methods.map(m => this.methodTemplate(m)).join("\n")}
         }`;
-    },
-    interface: (
+    }
+
+    public interface(
         name: string,
         props: PropertyDetails[],
         methods: MethodDetails[]
-    ) => {
+    ) {
         return `class ${escapeMermaid(name)} {
             <<interface>>
-            ${props.map(propertyTemplate).join("\n")}
-            ${methods.map(methodTemplate).join("\n")}
+            ${props.map(p => this.propertyTemplate(p)).join("\n")}
+            ${methods.map(m => this.methodTemplate(m)).join("\n")}
         }`;
-    },
-    type: (
+    };
+
+    public type(
         name: string,
         props: PropertyDetails[],
         methods: MethodDetails[]
-    ) => {
+    ) {
         return `class ${escapeMermaid(name)} {
             <<type>>
-            ${props.map(propertyTemplate).join("\n")}
-            ${methods.map(methodTemplate).join("\n")}
+            ${props.map(p => this.propertyTemplate(p)).join("\n")}
+            ${methods.map(m => this.methodTemplate(m)).join("\n")}
         }`;
-    },
-    enum: (
+    }
+
+    public enum(
         name: string,
         enumItems: string[]
-    ) => {
+    ) {
       return `class ${escapeMermaid(name)} {
         <<enumeration>>
         ${enumItems.join("\n")}
       }`;
-    },
-    memberAssociation: memberAssociation
-};
+    }
 
-function propertyTemplate(property: PropertyDetails): string {
-    let retVal = property.name;
-    if (property.type && SETTINGS.propertyTypes) {
-        if(property?.optional) {
-            retVal += "?";
+    public memberAssociation(association: MemberAssociation) {
+        const multiplicityA = association.a.multiplicity ? `"${association.a.multiplicity}"` : "";
+        const multiplicityB = association.b.multiplicity ? `"${association.b.multiplicity}"` : "";
+        return `${this.plainClassOrInterface(association.a.name)} ${multiplicityA} -- ${multiplicityB} ${this.plainClassOrInterface(association.b.name)}`;
+    }
+
+    private propertyTemplate(property: PropertyDetails): string {
+        let retVal = property.name;
+        if (property.type && this.settings.propertyTypes) {
+            if(property?.optional) {
+                retVal += "?";
+            }
+            retVal += ": " + escapeMermaid(property.type);
+            
         }
-        retVal += ": " + escapeMermaid(property.type);
-        
+    
+        return this.applyModifiers(property.modifierFlags,retVal);
     }
 
-    return applyModifiers(property.modifierFlags,retVal);
-}
-
-
-function methodTemplate(method: MethodDetails): string {
-    let retVal = method.name + "()";
-    if (method.returnType && SETTINGS.propertyTypes) {
-        retVal += " " + escapeMermaid(method.returnType);
+    private methodTemplate(method: MethodDetails): string {
+        let retVal = method.name + "()";
+        if (method.returnType && this.settings.propertyTypes) {
+            retVal += " " + escapeMermaid(method.returnType);
+        }
+    
+        return this.applyModifiers(method.modifierFlags, retVal);
     }
+    
+    private applyModifiers(modifierFlags: ModifierFlags, method: string): string {
 
-    return applyModifiers(method.modifierFlags, retVal);
-} 
-
-
-function applyModifiers(modifierFlags: ModifierFlags, method: string): string {
-
-    if (!SETTINGS.modifiers) {
-        return method;
+        if (!this.settings.modifiers) {
+            return method;
+        }
+    
+        let retVal = "";
+    
+        if(modifierFlags & ModifierFlags.Private) {
+            retVal = "-" ;
+        } else if(modifierFlags & ModifierFlags.Protected) {
+            retVal = "#";
+        } else {
+            retVal = "+";
+        }
+    
+        retVal += method;
+    
+        // UML2: static member will be underlined 
+        if(modifierFlags & ModifierFlags.Static) {
+            retVal = retVal + "$" ;
+        }
+    
+        // abstract member will be italic
+        if(modifierFlags & ModifierFlags.Abstract) {
+            retVal = retVal + "*" ;
+        }
+    
+        return retVal;
     }
-
-    let retVal = "";
-
-    if(modifierFlags & ModifierFlags.Private) {
-        retVal = "-" ;
-    } else if(modifierFlags & ModifierFlags.Protected) {
-        retVal = "#";
-    } else {
-        retVal = "+";
-    }
-
-    retVal += method;
-
-    // UML2: static member will be underlined 
-    if(modifierFlags & ModifierFlags.Static) {
-        retVal = retVal + "$" ;
-    }
-
-    // abstract member will be italic
-    if(modifierFlags & ModifierFlags.Abstract) {
-        retVal = retVal + "*" ;
-    }
-
-    return retVal;
-}
-
-function memberAssociation(association: MemberAssociation) {
-    const multiplicityA = association.a.multiplicity ? `"${association.a.multiplicity}"` : "";
-    const multiplicityB = association.b.multiplicity ? `"${association.b.multiplicity}"` : "";
-    return `${mermaidTemplate.plainClassOrInterface(association.a.name)} ${multiplicityA} -- ${multiplicityB} ${mermaidTemplate.plainClassOrInterface(association.b.name)}`;
+    
 }
 
 // utility functions

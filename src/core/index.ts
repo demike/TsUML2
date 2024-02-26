@@ -1,18 +1,18 @@
 import { renderNomnomlSVG } from "./io";
 import { getAst, parseClasses, parseInterfaces, parseEnum, parseTypes } from "./parser/parser";
 import { postProcessSvg, Emitter, emit } from "./emitter";
-import { nomnomlTemplate } from  './renderer/nomnoml-template';
-import { SETTINGS, TsUML2Settings } from "./tsuml2-settings";
+import { NomnomlTemplate } from  './renderer/nomnoml-template';
+import { TsUML2Settings } from "./tsuml2-settings";
 import chalk from 'chalk';
 import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs';
 import { parseAssociations } from "./parser";
-import { mermaidTemplate } from "./renderer/mermaid-template";
+import { MermaidTemplate } from "./renderer/mermaid-template";
 import { ExportGetableNode } from "ts-morph";
 
 export function createDiagram(settings: TsUML2Settings) {
   // parse
-  const declarations = parseProject(settings.tsconfig, settings.glob)
+  const declarations = parseProject(settings)
   if(declarations.length === 0) {
     console.log(chalk.red("\nno declarations found! tsconfig: " + settings.tsconfig, " glob: " + settings.glob));
     return;
@@ -25,12 +25,11 @@ export function createDiagram(settings: TsUML2Settings) {
 
 /**
  * parse a typescript project
- * @param tsConfigPath path to a tsconfig.json file
- * @param pattern the glob pattern defining a scope for typescript files to include (i.e.: a subfolder of the project)
+ * @param settings tsuml2 settings
  * @returns 
  */
-export function parseProject(tsConfigPath: string | undefined, pattern: string): FileDeclaration[] {
-  const ast = getAst(tsConfigPath, pattern);
+export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
+  const ast = getAst(settings.tsconfig, settings.glob);
   const files = ast.getSourceFiles();
   // parser
   console.log(chalk.yellow("parsing source files:"));
@@ -42,7 +41,7 @@ export function parseProject(tsConfigPath: string | undefined, pattern: string):
     const path = f.getFilePath();
     console.log(chalk.yellow(path));
 
-    if(SETTINGS.exportedTypesOnly) {
+    if(settings.exportedTypesOnly) {
       classes = removeNonExportedNodes(classes);
       interfaces = removeNonExportedNodes(interfaces);
       enums = removeNonExportedNodes(enums);
@@ -64,7 +63,7 @@ export function parseProject(tsConfigPath: string | undefined, pattern: string):
     };
   });
 
-  if(SETTINGS.memberAssociations) {
+  if(settings.memberAssociations) {
     parseAssociations(declarations);
   }
 
@@ -124,7 +123,7 @@ function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Setti
  */
 export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting nomnoml declarations:"));
-  return getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(nomnomlTemplate));
+  return getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(new NomnomlTemplate(settings)));
 }
 
 /**
@@ -135,7 +134,7 @@ export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2S
  */
 export function getMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting mermaid declarations:"));
-  return getMermaidDSLHeader(settings) + emit(declarations, new Emitter(mermaidTemplate));
+  return getMermaidDSLHeader(settings) + emit(declarations, new Emitter(new MermaidTemplate(settings)));
 }
 
 

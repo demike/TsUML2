@@ -32,7 +32,7 @@ public emitHeritageClauses(heritageClauses: HeritageClause[]) {
 }
 
 public emitMemberAssociations(associations?: MemberAssociation[]) {
-    return associations ? associations.map(this.template.memberAssociation) : [];
+    return associations ? associations.map(a => this.template.memberAssociation(a)) : [];
 }
 }
 

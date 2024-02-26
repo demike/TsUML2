@@ -1,5 +1,6 @@
 export class TsUML2Settings {
     /**
+     * the glob pattern defining a scope for typescript files to include (i.e.: a subfolder of the project)
      * required
      */
     glob: string = ""; 
@@ -76,5 +77,4 @@ export class TsUML2Settings {
         return false;
     }
 */
-export const SETTINGS = new TsUML2Settings();
 

@@ -1,110 +1,114 @@
 import { PropertyDetails, MethodDetails, MemberAssociation} from "../model";
 import { ModifierFlags } from "typescript";
-import { SETTINGS } from "../tsuml2-settings";
+import { TsUML2Settings } from "../tsuml2-settings";
 import { Template } from "./template";
 
-export const nomnomlTemplate: Template = {
-    composition: "+->",
-    implements: (interf: string, implementation: string) => {
-        return (
-            `${nomnomlTemplate.plainClassOrInterface(interf)}<:--${nomnomlTemplate.plainClassOrInterface(implementation)}`
-        );
-    },
-    extends: (base: string, derived: string) => {
-      return `${nomnomlTemplate.plainClassOrInterface(base)}<:-${nomnomlTemplate.plainClassOrInterface(derived)}`;
-    },
-    plainClassOrInterface: (name: string) => `[${name}]`,
+export class NomnomlTemplate implements Template {
+    public readonly composition = "+->";
+
+    constructor(private settings: TsUML2Settings) {}
+
+    public implements (interf: string, implementation: string) {
+        return `${this.plainClassOrInterface(interf)}<:--${this.plainClassOrInterface(implementation)}`;
+    }
     
-    class: (name: string, props: PropertyDetails[], methods: MethodDetails[]) => {
-        return `[${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
-    },
-    interface: (
+    public extends (base: string, derived: string) {
+      return `${this.plainClassOrInterface(base)}<:-${this.plainClassOrInterface(derived)}`;
+    }
+
+    public plainClassOrInterface(name: string) {return `[${name}]`}
+    
+    public class(name: string, props: PropertyDetails[], methods: MethodDetails[]) {
+        return `[${name}|${props.map(p => this.propertyTemplate(p)).join(";")}|${methods.map(m => this.methodTemplate(m)).join(";")}]`;
+    }
+
+    public interface(
         name: string,
         props: PropertyDetails[],
         methods: MethodDetails[]
-    ) => {
-        return `[<interface>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
-    },
-    type: (
+    ) {
+        return `[<interface>${name}|${props.map(p => this.propertyTemplate(p)).join(";")}|${methods.map(m => this.methodTemplate(m)).join(";")}]`;
+    }
+
+    public type(
         name: string,
         props: PropertyDetails[],
         methods: MethodDetails[]
-    ) => {
-        return `[<type>${name}|${props.map(propertyTemplate).join(";")}|${methods.map(methodTemplate).join(";")}]`;
-    },
-    enum: (
+    ) {
+        return `[<type>${name}|${props.map(p => this.propertyTemplate(p)).join(";")}|${methods.map(m => this.methodTemplate(m)).join(";")}]`;
+    }
+
+    public enum(
         name: string,
         enumItems: string[]
-    ) => {
+    ) {
       return `[<enumeration>${name}|${enumItems.join(";")}]`;
-    },
-    memberAssociation: memberAssociation
-};
-
-function methodTemplate(method: MethodDetails): string {
-    method = escapeMethodDetails(method);
-
-    let retVal = method.name + "()";
-    if (method.returnType && SETTINGS.propertyTypes) {
-        retVal += ": " + method.returnType;
     }
 
-    retVal = modifierTemplate(method.modifierFlags) + retVal;
+    public memberAssociation(association: MemberAssociation) {
+        return `${this.plainClassOrInterface(association.a.name)} ${association.a.multiplicity ?? ''} - ${association.b.multiplicity ?? ''} ${this.plainClassOrInterface(association.b.name)}`;
+    }
 
-    return retVal;
-} 
-
-function propertyTemplate(property: PropertyDetails): string {
-    property = escapePropertyDetails(property)
-
-    let retVal = property.name;
-    if (property.type && SETTINGS.propertyTypes) {
-        if(property?.optional) {
-            retVal += "?";
+    private methodTemplate(method: MethodDetails): string {
+        method = escapeMethodDetails(method);
+    
+        let retVal = method.name + "()";
+        if (method.returnType && this.settings.propertyTypes) {
+            retVal += ": " + method.returnType;
         }
-        retVal += ": " + property.type;
-        
+    
+        retVal = this.modifierTemplate(method.modifierFlags) + retVal;
+    
+        return retVal;
+    } 
+    
+    private propertyTemplate(property: PropertyDetails): string {
+        property = escapePropertyDetails(property)
+    
+        let retVal = property.name;
+        if (property.type && this.settings.propertyTypes) {
+            if(property?.optional) {
+                retVal += "?";
+            }
+            retVal += ": " + property.type;
+            
+        }
+    
+        retVal = this.modifierTemplate(property.modifierFlags) + retVal
+    
+        return retVal;
     }
 
-    retVal = modifierTemplate(property.modifierFlags) + retVal
+    private modifierTemplate(modifierFlags: ModifierFlags): string {
 
-    return retVal;
-}
-
-function modifierTemplate(modifierFlags: ModifierFlags): string {
-
-    if (!SETTINGS.modifiers) {
-        return "";
+        if (!this.settings.modifiers) {
+            return "";
+        }
+    
+        let retVal = "";
+    
+           // UML2: static member should be underlined --> Not supported by nomnoml 
+        if(modifierFlags & ModifierFlags.Static) {
+            retVal = "static " ;
+        }
+    
+        if(modifierFlags & ModifierFlags.Abstract) {
+            retVal = "abstract " ;
+        }
+    
+        if(modifierFlags & ModifierFlags.Private) {
+            retVal = "-" + retVal;
+        } else if(modifierFlags & ModifierFlags.Protected) {
+            retVal = "\\#" + retVal;
+        } else {
+            retVal = "+" + retVal;
+        }
+    
+     
+    
+        return retVal;
     }
-
-    let retVal = "";
-
-       // UML2: static member should be underlined --> Not supported by nomnoml 
-    if(modifierFlags & ModifierFlags.Static) {
-        retVal = "static " ;
-    }
-
-    if(modifierFlags & ModifierFlags.Abstract) {
-        retVal = "abstract " ;
-    }
-
-    if(modifierFlags & ModifierFlags.Private) {
-        retVal = "-" + retVal;
-    } else if(modifierFlags & ModifierFlags.Protected) {
-        retVal = "\\#" + retVal;
-    } else {
-        retVal = "+" + retVal;
-    }
-
- 
-
-    return retVal;
-}
-
-
-function memberAssociation(association: MemberAssociation) {
-    return `${nomnomlTemplate.plainClassOrInterface(association.a.name)} ${association.a.multiplicity ?? ''} - ${association.b.multiplicity ?? ''} ${nomnomlTemplate.plainClassOrInterface(association.b.name)}`;
-}
+};
 
 
 // utility functions

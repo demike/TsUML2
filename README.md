@@ -290,10 +290,12 @@ Viking~WT~  --  Gender
 
 
 ```js
- const {createDiagram} = require('tsuml2')
+ const {createDiagram, TsUML2Settings} = require('tsuml2')
 
-
- createDiagram({glob: `./src/app/**/!(*.d|*.spec).ts`,outFile: 'd:/apps/src/demo.svg'}); 
+ const settings = new TsUML2Settings();
+ settings.glob = `./src/app/**/!(*.d|*.spec).ts`;
+ settings.outFile = 'd:/apps/src/demo.svg'
+ createDiagram(settings); 
 ```
 
 
