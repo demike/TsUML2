@@ -45,6 +45,10 @@ import * as fs  from "fs";
             describe: "the path to the output DSL file (nomnoml)",
             string: true,
             required: false,
+        }).option('mermaid', {
+            describe: "mermaid layouting and styling options (an array of strings, each representing a mermaid line), i.e.: --mermaid \"direction LR\" ",
+            array: true,
+            string: true
         }).option('outMermaidDsl', {
             describe: "the path to the output mermaid DSL file",
             string: true,
@@ -101,6 +105,10 @@ import * as fs  from "fs";
 
         if(argv.outDsl != null && !(yargs.parsed as any).defaulted.outDsl) {
             settings.outDsl = argv.outDsl;
+        }
+
+        if(argv.mermaid) {
+            settings.mermaid = argv.mermaid;
         }
 
         if(argv.outMermaidDsl != null && !(yargs.parsed as any).defaulted.outMermaidDsl) {

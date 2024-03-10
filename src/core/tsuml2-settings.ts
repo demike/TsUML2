@@ -48,6 +48,11 @@ export class TsUML2Settings {
     outMermaidDsl: string = "";
 
     /**
+     * mermaid layouting and styling options
+     */
+    mermaid: string[] = [];
+
+    /**
      * show associations between classes, interfaces, types and their member types
      */
     memberAssociations = false;
