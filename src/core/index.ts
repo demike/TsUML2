@@ -147,7 +147,7 @@ function getNomnomlDSLHeader(settings: TsUML2Settings): string {
 }
 
 function getMermaidDSLHeader(settings: TsUML2Settings): string {
-  return '\nclassDiagram\n'; 
+  return '\nclassDiagram\n' + settings.mermaid.join("\n") + '\n'; 
 }
 
 

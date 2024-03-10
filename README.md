@@ -43,7 +43,6 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
   -g, --glob                pattern to match the source files (i.e.:
                             ./src/**/*.ts)                   [string] [required]
       --tsconfig            the path to tsconfig.json file
-                                                    [default: "./tsconfig.json"]
   -o, --outFile             the path to the output file     [default: "out.svg"]
       --propertyTypes       show property types and method return types
                                                        [boolean] [default: true]
@@ -56,6 +55,9 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
                             --nomnoml "#arrowSize: 1" "#.interface: fill=#8f8
                             dashed"                                      [array]
       --outDsl              the path to the output DSL file (nomnoml)   [string]
+      --mermaid             mermaid layouting and styling options (an array of
+                            strings, each representing a mermaid line), i.e.:
+                            --mermaid "direction LR"                     [array]
       --outMermaidDsl       the path to the output mermaid DSL file     [string]
   -m, --memberAssociations  show associations between classes, interfaces, types
                             and their member types    [boolean] [default: false]
