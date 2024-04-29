@@ -50,11 +50,9 @@ export class NomnomlTemplate implements Template {
     }
 
     private methodTemplate(method: MethodDetails): string {
-        method = escapeMethodDetails(method);
-    
         let retVal = method.name + "()";
         if (method.returnType && this.settings.propertyTypes) {
-            retVal += ": " + method.returnType;
+            retVal += ": " + escapeNomnoml(method.returnType);
         }
     
         retVal = this.modifierTemplate(method.modifierFlags) + retVal;
@@ -63,14 +61,13 @@ export class NomnomlTemplate implements Template {
     } 
     
     private propertyTemplate(property: PropertyDetails): string {
-        property = escapePropertyDetails(property)
     
-        let retVal = property.name;
+        let retVal = escapeNomnoml(property.name);
         if (property.type && this.settings.propertyTypes) {
             if(property?.optional) {
                 retVal += "?";
             }
-            retVal += ": " + property.type;
+            retVal += ": " + escapeNomnoml(property.type);
             
         }
     
@@ -114,20 +111,4 @@ export class NomnomlTemplate implements Template {
 // utility functions
 function escapeNomnoml(str: string) {
     return str.replace(/[|\][\#]/g, '\\$&');
-}
-
-
-function escapeMethodDetails(details: MethodDetails) {
-    if(details.returnType) {
-        details.returnType = escapeNomnoml(details.returnType);
-    }
-    return details;
-}
-
-function escapePropertyDetails(details: PropertyDetails) {
-    details.name = escapeNomnoml(details.name);
-    if(details.type) {
-        details.type = escapeNomnoml(details.type);
-    }
-    return details;
 }
