@@ -1,6 +1,6 @@
 {
   "name": "tsuml2",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "UML diagrams for TypeScript",
   "main": "dist/lib/index.js",
   "bin": {
