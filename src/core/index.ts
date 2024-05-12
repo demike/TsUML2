@@ -5,12 +5,12 @@ import { NomnomlTemplate } from  './renderer/nomnoml-template';
 import { TsUML2Settings } from "./tsuml2-settings";
 import chalk from 'chalk';
 import { FileDeclaration, TypeAlias } from "./model";
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import { parseAssociations } from "./parser";
 import { MermaidTemplate } from "./renderer/mermaid-template";
 import { ExportGetableNode } from "ts-morph";
 
-export function createDiagram(settings: TsUML2Settings) {
+export async function createDiagram(settings: TsUML2Settings) {
   // parse
   const declarations = parseProject(settings)
   if(declarations.length === 0) {
@@ -19,8 +19,8 @@ export function createDiagram(settings: TsUML2Settings) {
   }
 
     // emit
-    createMermaidDSL(declarations, settings);
-    createNomnomlSVG(declarations, settings);
+    return Promise.all([ createMermaidDSL(declarations, settings),
+                  createNomnomlSVG(declarations, settings)]);
 }
 
 /**
@@ -71,7 +71,7 @@ export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
 }
 
 
-function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Settings) {
+async function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Settings) {
   const outDSL = settings.outDsl ;
   const outFile = settings.outFile;
 
@@ -79,9 +79,11 @@ function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Setti
     return;
   }
 
+  let promises = [];
+
   const dsl = getNomnomlDSL(declarations,settings);
   if(outDSL !== "") {
-    writeDsl(dsl, outDSL, 'nomnoml');
+    promises.push(writeDsl(dsl, outDSL, 'nomnoml'));
   }
 
   if(outFile === "") {
@@ -97,21 +99,22 @@ function createNomnomlSVG(declarations: FileDeclaration[], settings: TsUML2Setti
   }
 
   console.log(chalk.green("\nwriting SVG"));
-  fs.writeFile(outFile,svg,(err) => {
-    if(err) {
-        console.log(chalk.redBright("Error writing file: " + err));
-    }
-  });
+  try {
+    promises.push(fs.writeFile(outFile,svg));
+    await Promise.all(promises);
+  } catch(err) {
+    console.log(chalk.redBright("Error writing file: " + err));  
+  }
 
   return svg;
 }
 
-function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+async function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   if(!settings.outMermaidDsl) {
     return;
   }
   const dsl = getMermaidDSL(declarations,settings);
-  writeDsl(dsl, settings.outMermaidDsl, 'mermaid');
+  await writeDsl(dsl, settings.outMermaidDsl, 'mermaid');
   return dsl;
 }
 
@@ -151,13 +154,13 @@ function getMermaidDSLHeader(settings: TsUML2Settings): string {
 }
 
 
-function writeDsl(dsl: string, fileName: string, dslType: 'mermaid'| 'nomnoml') {
+async function writeDsl(dsl: string, fileName: string, dslType: 'mermaid'| 'nomnoml') {
   console.log(chalk.green(`\nwriting ${dslType} DSL`));
-  fs.writeFile(fileName,dsl,(err) => {
-    if(err) {
-        console.log(chalk.redBright(`Error writing ${dslType} DSL file: ${err}`));
-    }
-  });
+  try  {
+    await fs.writeFile(fileName,dsl);
+  } catch( err) {
+    console.log(chalk.redBright(`Error writing ${dslType} DSL file: ${err}`));
+  }
 }
 
 
