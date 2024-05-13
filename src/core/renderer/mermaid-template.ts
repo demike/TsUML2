@@ -1,8 +1,8 @@
 
-import { ModifierFlags } from 'typescript';
 import { MemberAssociation, MethodDetails, PropertyDetails } from '../model';
 import { TsUML2Settings } from '../tsuml2-settings';
 import { Template } from './template';
+import { ts } from 'ts-morph';
 export class  MermaidTemplate implements Template {
     public readonly composition = "+->";
 
@@ -89,7 +89,7 @@ export class  MermaidTemplate implements Template {
         return this.applyModifiers(method.modifierFlags, retVal);
     }
     
-    private applyModifiers(modifierFlags: ModifierFlags, method: string): string {
+    private applyModifiers(modifierFlags: ts.ModifierFlags, method: string): string {
 
         if (!this.settings.modifiers) {
             return method;
@@ -97,9 +97,9 @@ export class  MermaidTemplate implements Template {
     
         let retVal = "";
     
-        if(modifierFlags & ModifierFlags.Private) {
+        if(modifierFlags & ts.ModifierFlags.Private) {
             retVal = "-" ;
-        } else if(modifierFlags & ModifierFlags.Protected) {
+        } else if(modifierFlags & ts.ModifierFlags.Protected) {
             retVal = "#";
         } else {
             retVal = "+";
@@ -108,12 +108,12 @@ export class  MermaidTemplate implements Template {
         retVal += method;
     
         // UML2: static member will be underlined 
-        if(modifierFlags & ModifierFlags.Static) {
+        if(modifierFlags & ts.ModifierFlags.Static) {
             retVal = retVal + "$" ;
         }
     
         // abstract member will be italic
-        if(modifierFlags & ModifierFlags.Abstract) {
+        if(modifierFlags & ts.ModifierFlags.Abstract) {
             retVal = retVal + "*" ;
         }
     

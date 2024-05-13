@@ -1,9 +1,9 @@
-import { ModifierFlags } from "typescript";
+import { ts } from "ts-morph";
 import { relative, resolve, dirname } from "path";
 import chalk from "chalk";
 
 export interface MemberDetails {
-    modifierFlags: ModifierFlags;
+    modifierFlags: ts.ModifierFlags;
     name: string;
 }
 
