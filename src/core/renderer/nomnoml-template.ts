@@ -1,5 +1,5 @@
 import { PropertyDetails, MethodDetails, MemberAssociation} from "../model";
-import { ModifierFlags } from "typescript";
+import { ts } from "ts-morph";
 import { TsUML2Settings } from "../tsuml2-settings";
 import { Template } from "./template";
 
@@ -76,7 +76,7 @@ export class NomnomlTemplate implements Template {
         return retVal;
     }
 
-    private modifierTemplate(modifierFlags: ModifierFlags): string {
+    private modifierTemplate(modifierFlags: ts.ModifierFlags): string {
 
         if (!this.settings.modifiers) {
             return "";
@@ -85,17 +85,17 @@ export class NomnomlTemplate implements Template {
         let retVal = "";
     
            // UML2: static member should be underlined --> Not supported by nomnoml 
-        if(modifierFlags & ModifierFlags.Static) {
+        if(modifierFlags & ts.ModifierFlags.Static) {
             retVal = "static " ;
         }
     
-        if(modifierFlags & ModifierFlags.Abstract) {
+        if(modifierFlags & ts.ModifierFlags.Abstract) {
             retVal = "abstract " ;
         }
     
-        if(modifierFlags & ModifierFlags.Private) {
+        if(modifierFlags & ts.ModifierFlags.Private) {
             retVal = "-" + retVal;
-        } else if(modifierFlags & ModifierFlags.Protected) {
+        } else if(modifierFlags & ts.ModifierFlags.Protected) {
             retVal = "\\#" + retVal;
         } else {
             retVal = "+" + retVal;
