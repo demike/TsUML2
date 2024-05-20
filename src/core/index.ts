@@ -126,7 +126,7 @@ async function createMermaidDSL(declarations: FileDeclaration[], settings: TsUML
  */
 export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting nomnoml declarations:"));
-  return getNomnomlDSLHeader(settings) + emit(declarations, new Emitter(new NomnomlTemplate(settings)));
+  return getNomnomlDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new NomnomlTemplate(settings)));
 }
 
 /**
@@ -137,7 +137,7 @@ export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2S
  */
 export function getMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
   console.log(chalk.yellow("\nemitting mermaid declarations:"));
-  return getMermaidDSLHeader(settings) + emit(declarations, new Emitter(new MermaidTemplate(settings)));
+  return getMermaidDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new MermaidTemplate(settings)));
 }
 
 
