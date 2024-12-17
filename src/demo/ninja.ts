@@ -9,6 +9,7 @@ export class Ninja {
     
     public gender: Gender = Gender.Else;
     public static IdCnt=0;
+    position: {x: number, y: number} = {x: 0, y: 0};
     private _weapon: Weapon;
     protected secondaryWeapon?: Weapon;
     private blockade?: Blockade; // private interface test

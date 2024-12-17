@@ -12,7 +12,7 @@ export interface Magic {
 
 export type MagicDurability = {
     fire: number;
-    water: number
+    water: number;
 }
 
 export type Durable = {
