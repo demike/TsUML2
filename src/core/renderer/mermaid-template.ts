@@ -124,5 +124,5 @@ export class  MermaidTemplate implements Template {
 
 // utility functions
 function escapeMermaid(str: string) {
-    return str.replace(/[<>]/g,'~')
+    return str.replace(/[<>]/g,'~').replace('{',"#123;").replace('}',"#125;");
 }
