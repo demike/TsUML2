@@ -67,6 +67,12 @@ import * as fs  from "fs";
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
+        }).option('import', {
+          describe: 'Automatically include import files',
+          alias: 'i',
+          boolean: true,
+          required: false,
+          default: settings.import,
         }).argv as Partial<TsUML2Settings & { config: string}>;
 
         if (argv.config) {
@@ -121,5 +127,9 @@ import * as fs  from "fs";
 
         if(argv.exportedTypesOnly != null && !(yargs.parsed as any).defaulted.exportedTypesOnly) {
             settings.exportedTypesOnly = argv.exportedTypesOnly;
+        }
+
+        if(argv.import != null && !(yargs.parsed as any).defaulted.import) {
+            settings.import = argv.import;
         }
     }
