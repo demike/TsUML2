@@ -59,6 +59,7 @@ tsuml2 --glob "./src/**/!(*.d|*.spec).ts"
                             strings, each representing a mermaid line), i.e.:
                             --mermaid "direction LR"                     [array]
       --outMermaidDsl       the path to the output mermaid DSL file     [string]
+  -i, --import              trace import files        [boolean] [default: false]
   -m, --memberAssociations  show associations between classes, interfaces, types
                             and their member types    [boolean] [default: false]
       --exportedTypesOnly   show only exported types, classes, interfaces, enums

@@ -8,7 +8,7 @@ import { FileDeclaration, TypeAlias } from "./model";
 import * as fs from 'fs/promises';
 import { parseAssociations } from "./parser";
 import { MermaidTemplate } from "./renderer/mermaid-template";
-import { ExportGetableNode } from "ts-morph";
+import { ExportGetableNode, Project, SourceFile } from "ts-morph";
 
 export async function createDiagram(settings: TsUML2Settings) {
   // parse
@@ -24,6 +24,37 @@ export async function createDiagram(settings: TsUML2Settings) {
 }
 
 /**
+ * get import files
+ * @param ast ts-morph project
+ * @returns 
+ */
+export function getImportFiles(ast: Project): SourceFile[] {
+  const entryFiles = ast.getSourceFiles();
+  const visitedPaths = new Set<string>();
+  const queue = [...entryFiles];
+
+  const pushIfNeeded = (sf: SourceFile) => {
+    if (sf.isInNodeModules()) return;
+    const filePath = sf.getFilePath();
+    if (!visitedPaths.has(filePath)) {
+      visitedPaths.add(filePath);
+      queue.push(sf);
+    }
+  };
+  
+  while (queue.length > 0) {
+    const file = queue.shift();
+    if (!file) continue;
+  
+    file.getImportDeclarations().forEach(decl => {
+      const imported = decl.getModuleSpecifierSourceFile();
+      if (imported) pushIfNeeded(imported);
+    });
+  }
+  return Array.from(visitedPaths).map(path => ast.getSourceFile(path)).filter((f): f is SourceFile => !!f);
+}
+
+/**
  * parse a typescript project
  * @param settings tsuml2 settings
  * @returns 
@@ -31,9 +62,11 @@ export async function createDiagram(settings: TsUML2Settings) {
 export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
   const ast = getAst(settings.tsconfig, settings.glob);
   const files = ast.getSourceFiles();
+  const importFiles = settings?.import ? getImportFiles(ast) : [];
+
   // parser
   console.log(chalk.yellow("parsing source files:"));
-  const declarations: FileDeclaration[] = files.map(f => {
+  const declarations: FileDeclaration[] = [...files, ...importFiles].map(f => {
     let classes = f.getClasses();
     let interfaces = f.getInterfaces();
     let enums = f.getEnums();

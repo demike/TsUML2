@@ -61,6 +61,11 @@ export class TsUML2Settings {
      * show only exported types, classes, interfaces, enums
      */
     exportedTypesOnly = false;
+
+    /**
+     * automatically include import files
+     */
+    import = false;
 }
 
 /*
