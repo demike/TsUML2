@@ -197,21 +197,20 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
 
     // the implemented interfaces
     interfaces.forEach(interf => {
-       let ifName: string| undefined;
-       const type = interf.getType();
-       const targetType =  type.getTargetType();
-        if (interf && (ifName = getClassOrInterfaceName(targetType || type))) {
-
-            heritageClauses.push(
-                {
-                    clause: ifName,
-                    clauseTypeId: includeTypeIds ? (getTypeIdsFromType(interf.getType())?.[0] ?? "") : "",
-                    className,
-                    classTypeId,
-                    type: HeritageClauseType.Implements
-                }
-            );
+        const ifName = getClassOrInterfaceName(interf);
+        if (!ifName) {
+            return;
         }
+
+        heritageClauses.push({
+            clause: ifName,
+            clauseTypeId: includeTypeIds
+                ? (getFullyQualifiedNameNormalized(interf.getExpression().getSymbol()) ?? "")
+                : "",
+            className,
+            classTypeId,
+            type: HeritageClauseType.Implements
+        });
     })
 
     return heritageClauses;
@@ -237,7 +236,7 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
                 heritageClauses.push(
                     {
                         clause: bdName,
-                        clauseTypeId: includeTypeIds ? (getTypeIdsFromType(bd.getType())?.[0] ?? "") : "",
+                        clauseTypeId: includeTypeIds ? (getFullyQualifiedNameNormalized(bd.getSymbol()) ?? "") : "",
                         className: ifName,
                         classTypeId,
                         type: HeritageClauseType.Implements
