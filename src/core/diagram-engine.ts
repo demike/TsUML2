@@ -7,13 +7,12 @@ import { parseAssociations } from "./parser";
 import { getAst, parseClasses, parseEnum, parseInterfaces, parseTypes } from "./parser/parser";
 import { MermaidTemplate } from "./renderer/mermaid-template";
 import { NomnomlTemplate } from "./renderer/nomnoml-template";
-import type { DiagnosticsCollector } from "./diagnostics";
 
 /**
  * Functional core: parses a TypeScript project into declarations.
  * No logging, no file IO.
  */
-export function parseProject(settings: TsUML2Settings, diagnostics?: DiagnosticsCollector): FileDeclaration[] {
+export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
   const ast = getAst(settings.tsconfig, settings.glob);
   const files = ast.getSourceFiles();
 
@@ -30,15 +29,15 @@ export function parseProject(settings: TsUML2Settings, diagnostics?: Diagnostics
       types = removeNonExportedNodes(types);
     }
 
-    const classDeclarations = classes.map((c) => parseClasses(c, diagnostics));
-    const interfaceDeclarations = interfaces.map((i) => parseInterfaces(i, diagnostics));
+    const classDeclarations = classes.map((c) => parseClasses(c));
+    const interfaceDeclarations = interfaces.map((i) => parseInterfaces(i));
 
     return {
       fileName: file.getFilePath(),
       classes: classDeclarations,
       interfaces: interfaceDeclarations,
-      types: types.map((t) => parseTypes(t, diagnostics)).filter((t) => t !== undefined) as TypeAlias[],
-      enums: enums.map((e) => parseEnum(e, diagnostics)),
+      types: types.map((t) => parseTypes(t)).filter((t) => t !== undefined) as TypeAlias[],
+      enums: enums.map((e) => parseEnum(e)),
       heritageClauses: [
         ...classDeclarations
           .filter((decl) => decl.heritageClauses.length > 0)
@@ -58,13 +57,13 @@ export function parseProject(settings: TsUML2Settings, diagnostics?: Diagnostics
 }
 
 /** Pure: returns nomnoml DSL for given declarations/settings. */
-export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2Settings, diagnostics?: DiagnosticsCollector) {
-  return getNomnomlDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new NomnomlTemplate(settings)), diagnostics);
+export function getNomnomlDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+  return getNomnomlDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new NomnomlTemplate(settings)));
 }
 
 /** Pure: returns mermaid DSL for given declarations/settings. */
-export function getMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings, diagnostics?: DiagnosticsCollector) {
-  return getMermaidDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new MermaidTemplate(settings)), diagnostics);
+export function getMermaidDSL(declarations: FileDeclaration[], settings: TsUML2Settings) {
+  return getMermaidDSLHeader(settings) + "\n" + emit(declarations, new Emitter(new MermaidTemplate(settings)));
 }
 
 /**
@@ -75,13 +74,12 @@ export function renderNomnomlSvgFromDeclarations(
   declarations: FileDeclaration[],
   settings: TsUML2Settings,
   diagramPathForLinks?: string | null,
-  diagnostics?: DiagnosticsCollector,
 ) {
-  const dsl = getNomnomlDSL(declarations, settings, diagnostics);
+  const dsl = getNomnomlDSL(declarations, settings);
   let svg = renderNomnomlSVG(dsl);
 
   if (settings.typeLinks && diagramPathForLinks) {
-    svg = postProcessSvg(svg, diagramPathForLinks, declarations, diagnostics);
+    svg = postProcessSvg(svg, diagramPathForLinks, declarations);
   }
 
   return { dsl, svg };

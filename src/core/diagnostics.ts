@@ -20,6 +20,23 @@ export const NullDiagnosticsCollector: DiagnosticsCollector = {
   error: () => {},
 };
 
+let currentDiagnosticsCollector: DiagnosticsCollector = NullDiagnosticsCollector;
+
+/** Returns the currently configured diagnostics collector (defaults to no-op). */
+export function logger(): DiagnosticsCollector {
+  return currentDiagnosticsCollector;
+}
+
+/**
+ * Sets the diagnostics collector globally.
+ * Returns the previously configured collector (useful for temporary overrides in tests).
+ */
+export function provideDiagnostics(collector: DiagnosticsCollector): DiagnosticsCollector {
+  const previous = currentDiagnosticsCollector;
+  currentDiagnosticsCollector = collector;
+  return previous;
+}
+
 export function createArrayDiagnosticsCollector() {
   const diagnostics: Diagnostic[] = [];
 

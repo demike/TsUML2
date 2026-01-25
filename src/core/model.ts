@@ -1,6 +1,6 @@
 import { ts } from "ts-morph";
 import { relative, resolve, dirname } from "path";
-import type { DiagnosticsCollector } from "./diagnostics";
+import { logger } from "./diagnostics";
 
 export interface MemberDetails {
     modifierFlags: ts.ModifierFlags;
@@ -63,11 +63,11 @@ export class NamedType {
         this.id = options.id;
     }
 
-    getRelativeFilePath(fromFile?: string | null, diagnostics?: DiagnosticsCollector) {
+    getRelativeFilePath(fromFile?: string | null) {
         const rx = /"(.*)"/;
         const result = rx.exec(this.id);
         if(!result) {
-            diagnostics?.warn("Could not compute path to class/interface definition", { id: this.id });
+            logger().warn("Could not compute path to class/interface definition", { id: this.id });
             return "";
         }
 

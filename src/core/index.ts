@@ -2,12 +2,25 @@ import chalk from "chalk";
 import * as fs from "fs/promises";
 import { TsUML2Settings } from "./tsuml2-settings";
 import type { FileDeclaration } from "./model";
-import { getMermaidDSL, getNomnomlDSL, parseProject, renderNomnomlSvgFromDeclarations } from "./diagram-engine";
-import { createConsoleDiagnosticsCollector } from "./diagnostics";
+import {
+  getMermaidDSL,
+  getNomnomlDSL,
+  parseProject,
+  renderNomnomlSvgFromDeclarations,
+} from "./diagram-engine";
+import { createConsoleDiagnosticsCollector, provideDiagnostics } from "./diagnostics";
+import type { DiagnosticsCollector } from "./diagnostics";
 
-export async function createDiagram(settings: TsUML2Settings) {
-  const diagnostics = createConsoleDiagnosticsCollector();
-  const declarations = parseProject(settings, diagnostics);
+export type CreateDiagramOptions = {
+  diagnostics?: DiagnosticsCollector;
+};
+
+export async function createDiagram(settings: TsUML2Settings, options: CreateDiagramOptions = {}) {
+  const diagnostics = options.diagnostics ?? createConsoleDiagnosticsCollector();
+  const previous = provideDiagnostics(diagnostics);
+
+  try {
+    const declarations = parseProject(settings);
 
   if (declarations.length === 0) {
     console.log(
@@ -19,19 +32,36 @@ export async function createDiagram(settings: TsUML2Settings) {
     return;
   }
 
-  return Promise.all([
-    writeMermaidDslIfRequested(declarations, settings),
-    writeNomnomlOutputsIfRequested(declarations, settings),
-  ]);
+    return await Promise.all([
+      writeMermaidDslIfRequested(declarations, settings),
+      writeNomnomlOutputsIfRequested(declarations, settings),
+    ]);
+  } finally {
+    provideDiagnostics(previous);
+  }
 }
 
 // Re-export pure APIs for library usage.
-export { parseProject, getNomnomlDSL, getMermaidDSL, renderNomnomlSvgFromDeclarations };
+export {
+  parseProject,
+  getNomnomlDSL,
+  getMermaidDSL,
+  renderNomnomlSvgFromDeclarations,
+};
 
 export type { Diagnostic, DiagnosticLevel, DiagnosticsCollector } from "./diagnostics";
-export { NullDiagnosticsCollector, createArrayDiagnosticsCollector, createConsoleDiagnosticsCollector } from "./diagnostics";
+export {
+  NullDiagnosticsCollector,
+  createArrayDiagnosticsCollector,
+  createConsoleDiagnosticsCollector,
+  provideDiagnostics,
+  logger,
+} from "./diagnostics";
 
-async function writeNomnomlOutputsIfRequested(declarations: FileDeclaration[], settings: TsUML2Settings) {
+async function writeNomnomlOutputsIfRequested(
+  declarations: FileDeclaration[],
+  settings: TsUML2Settings,
+) {
   const outDsl = settings.outDsl;
   const outFile = settings.outFile;
 
@@ -62,7 +92,10 @@ async function writeNomnomlOutputsIfRequested(declarations: FileDeclaration[], s
   return svg;
 }
 
-async function writeMermaidDslIfRequested(declarations: FileDeclaration[], settings: TsUML2Settings) {
+async function writeMermaidDslIfRequested(
+  declarations: FileDeclaration[],
+  settings: TsUML2Settings,
+) {
   if (!settings.outMermaidDsl) {
     return;
   }

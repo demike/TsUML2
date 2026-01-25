@@ -1,6 +1,6 @@
 import * as SimpleAST from "ts-morph";
 import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "../model";
-import type { DiagnosticsCollector } from "../diagnostics";
+import { logger } from "../diagnostics";
 
 export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
@@ -13,7 +13,7 @@ export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     return ast;
 }
 
-export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration, diagnostics?: DiagnosticsCollector) {
+export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     
     const className = getClassOrInterfaceName(classDeclaration) || "undefined";
     const propertyDeclarations = classDeclaration.getProperties();
@@ -24,7 +24,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration, diagn
     let id = getTypeIdFromTypeName(sourceFile, className);
 
     if (!id.length) {
-        diagnostics?.warn("missing class id", { className, file: sourceFile.getFilePath() });
+        logger().warn("missing class id", { className, file: sourceFile.getFilePath() });
     }
 
     let properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
@@ -43,10 +43,10 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration, diagn
 
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
-    return new Clazz({ name: className, properties, methods, id, heritageClauses: parseClassHeritageClauses(classDeclaration, diagnostics) });
+    return new Clazz({ name: className, properties, methods, id, heritageClauses: parseClassHeritageClauses(classDeclaration) });
 }
 
-export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration, diagnostics?: DiagnosticsCollector) {
+export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
     const interfaceName = getClassOrInterfaceName(interfaceDeclaration) || 'undefined';
     const propertyDeclarations = interfaceDeclaration.getProperties();
@@ -55,17 +55,17 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const sourceFile = interfaceDeclaration.getSourceFile();
     let id = getTypeIdFromTypeName(sourceFile, interfaceName);
     if (!id.length) {
-        diagnostics?.warn("missing interface id", { interfaceName, file: sourceFile.getFilePath() });
+        logger().warn("missing interface id", { interfaceName, file: sourceFile.getFilePath() });
     }
 
 
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
-    return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration, diagnostics) });
+    return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration) });
 }
 
-export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration, diagnostics?: DiagnosticsCollector) {
+export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
 
     const name = getClassOrInterfaceName(typeDeclaration) || 'undefined';
     const t = typeDeclaration.getType();
@@ -86,7 +86,7 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration, diag
     let id = getTypeIdFromTypeName(sourceFile,name);
 
     if (!id.length) {
-        diagnostics?.warn("missing type id", { name, file: sourceFile.getFilePath() });
+        logger().warn("missing type id", { name, file: sourceFile.getFilePath() });
     }
 
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
@@ -130,13 +130,13 @@ function parseMethod(methodDeclaration: SimpleAST.MethodDeclaration | SimpleAST.
     }
 }
 
-export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration, diagnostics?: DiagnosticsCollector) {
+export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     const enumName = enumDeclaration.getSymbol()!.getName();
 
     const sourceFile = enumDeclaration.getSourceFile();
     let id = getTypeIdFromTypeName(sourceFile, enumName);
     if (!id.length) {
-        diagnostics?.warn("missing enum id", { enumName, file: sourceFile.getFilePath() });
+        logger().warn("missing enum id", { enumName, file: sourceFile.getFilePath() });
     }
 
     let enumItems: string[] = []
@@ -146,9 +146,9 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration, diagnostic
     return new Enum({ name: enumName, id, enumItems });
 }
 
-export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration, diagnostics?: DiagnosticsCollector ) {
+export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration) {
 
-    const className = getClassOrInterfaceName(classDeclaration, diagnostics);
+    const className = getClassOrInterfaceName(classDeclaration);
     const classTypeId = getFullyQualifiedNameNormalized(classDeclaration.getSymbol()) ?? "";
     const baseClass =  classDeclaration.getBaseClass();
     const interfaces = classDeclaration.getImplements();
@@ -195,9 +195,9 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
     return heritageClauses;
 }
 
-export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration, diagnostics?: DiagnosticsCollector) {
+export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
 
-    const ifName = getClassOrInterfaceName(interfaceDeclaration, diagnostics);
+    const ifName = getClassOrInterfaceName(interfaceDeclaration);
     const classTypeId = getFullyQualifiedNameNormalized(interfaceDeclaration.getSymbol()) ?? "";
     const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
 
@@ -209,7 +209,7 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
 
     if (baseDeclarations) {
         baseDeclarations.forEach(bd => {
-            const bdName = getClassOrInterfaceName(bd, diagnostics);
+            const bdName = getClassOrInterfaceName(bd);
             if (bdName) {
                 heritageClauses.push(
                     {
@@ -300,7 +300,7 @@ function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
     return ids.filter(id => id !== undefined) as string[] ;
 }
 
-function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments | SimpleAST.Type, diagnostics?: DiagnosticsCollector ) {
+function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments | SimpleAST.Type) {
     try {
         let name: string | undefined;
         let generics: string[] = [];
@@ -337,7 +337,7 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
 
         return name;
     } catch(err) {
-        diagnostics?.warn("Failed to compute class/interface name", { err });
+        logger().warn("Failed to compute class/interface name", { err });
         return undefined;
     }
 }

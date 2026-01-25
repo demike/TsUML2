@@ -1,5 +1,5 @@
 import { HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
-import type { DiagnosticsCollector } from "./diagnostics";
+import { logger } from "./diagnostics";
 
 import { Template } from "./renderer/template";
 export class Emitter {
@@ -37,9 +37,9 @@ public emitMemberAssociations(associations?: MemberAssociation[]) {
 }
 
 
-export function emit(declarations: FileDeclaration[], emitter: Emitter, diagnostics?: DiagnosticsCollector) {
+export function emit(declarations: FileDeclaration[], emitter: Emitter) {
     const entities = declarations.map(d => {
-    diagnostics?.info("emitting declarations", { fileName: d.fileName });
+    logger().info("emitting declarations", { fileName: d.fileName });
       const classes = d.classes.map((c) => emitter.emitSingleClass(c));
       const interfaces = d.interfaces.map((i) => emitter.emitSingleInterface(i));
       const enums = d.enums.map((i) => emitter.emitSingleEnum(i));
@@ -53,7 +53,7 @@ export function emit(declarations: FileDeclaration[], emitter: Emitter, diagnost
   
     if(entities.length === 0) {
       const errorMsg = "Could not process any class / interface / enum / type";
-            diagnostics?.error(errorMsg);
+            logger().error(errorMsg);
       entities.push(`[${errorMsg}]`);
     }
   
@@ -80,12 +80,7 @@ function xmlEncode(str: string) {
  * @param declarations 
  * @returns 
  */
-export function postProcessSvg(
-    svg: string,
-    diagramPath: string | undefined | null,
-    declarations: FileDeclaration[],
-    diagnostics?: DiagnosticsCollector,
-) {
+export function postProcessSvg(svg: string, diagramPath: string | undefined | null, declarations: FileDeclaration[]) {
     const classes: {[key:string]:Clazz} = {};
     const interfaces: {[key:string]:Interface} = {};
     const enums: {[key: string]:Enum} = {};
@@ -106,7 +101,7 @@ export function postProcessSvg(
         if(line.startsWith("<text") && (regexResult = rx.exec(line))) {
             let target = classes[regexResult[1]] || interfaces[regexResult[1]] || enums[regexResult[1]] || types[regexResult[1]];
             if(target) {
-                const relPath = target.getRelativeFilePath(diagramPath, diagnostics);
+                const relPath = target.getRelativeFilePath(diagramPath);
                 line = `<a id="${relPath}.${xmlEncode(target.name)}" xlink:href="${relPath}">${line}</a>`; 
             }
         }   
