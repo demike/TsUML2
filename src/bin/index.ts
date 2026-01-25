@@ -14,6 +14,7 @@ import { parseSettingsFromArgs } from "../core/parse-settings";
         if (settings.glob.length === 0) {
             console.log(chalk.redBright("Missing --glob"));
         } else {
+            console.log(chalk.yellow("parsing source files:"));
             createDiagram(settings);
         }
 
