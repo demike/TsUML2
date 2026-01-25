@@ -1,5 +1,6 @@
 import * as SimpleAST from "ts-morph";
 import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "../model";
+import { logger } from "../diagnostics";
 
 export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
@@ -23,7 +24,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
     let id = getTypeIdFromTypeName(sourceFile, className);
 
     if (!id.length) {
-        console.error("missing class id");
+        logger().warn("missing class id", { className, file: sourceFile.getFilePath() });
     }
 
     let properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
@@ -54,7 +55,7 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     const sourceFile = interfaceDeclaration.getSourceFile();
     let id = getTypeIdFromTypeName(sourceFile, interfaceName);
     if (!id.length) {
-        console.error("missing interface id");
+        logger().warn("missing interface id", { interfaceName, file: sourceFile.getFilePath() });
     }
 
 
@@ -85,7 +86,7 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
     let id = getTypeIdFromTypeName(sourceFile,name);
 
     if (!id.length) {
-        console.error("missing type id");
+        logger().warn("missing type id", { name, file: sourceFile.getFilePath() });
     }
 
     const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
@@ -135,7 +136,7 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     const sourceFile = enumDeclaration.getSourceFile();
     let id = getTypeIdFromTypeName(sourceFile, enumName);
     if (!id.length) {
-        console.error("missing class id");
+        logger().warn("missing enum id", { enumName, file: sourceFile.getFilePath() });
     }
 
     let enumItems: string[] = []
@@ -145,7 +146,7 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     return new Enum({ name: enumName, id, enumItems });
 }
 
-export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration ) {
+export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration) {
 
     const className = getClassOrInterfaceName(classDeclaration);
     const classTypeId = getFullyQualifiedNameNormalized(classDeclaration.getSymbol()) ?? "";
@@ -299,7 +300,7 @@ function getTypeIdsFromType(t?: SimpleAST.Type<SimpleAST.ts.Type>): string[] {
     return ids.filter(id => id !== undefined) as string[] ;
 }
 
-function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments | SimpleAST.Type ) {
+function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleAST.InterfaceDeclaration | SimpleAST.TypeAliasDeclaration | SimpleAST.ExpressionWithTypeArguments | SimpleAST.Type) {
     try {
         let name: string | undefined;
         let generics: string[] = [];
@@ -336,7 +337,7 @@ function getClassOrInterfaceName(classOrIf: SimpleAST.ClassDeclaration | SimpleA
 
         return name;
     } catch(err) {
-        console.log(err);
+        logger().warn("Failed to compute class/interface name", { err });
         return undefined;
     }
 }

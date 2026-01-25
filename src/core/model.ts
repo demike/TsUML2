@@ -1,6 +1,6 @@
 import { ts } from "ts-morph";
 import { relative, resolve, dirname } from "path";
-import chalk from "chalk";
+import { logger } from "./diagnostics";
 
 export interface MemberDetails {
     modifierFlags: ts.ModifierFlags;
@@ -67,7 +67,7 @@ export class NamedType {
         const rx = /"(.*)"/;
         const result = rx.exec(this.id);
         if(!result) {
-            console.log(chalk.redBright("Could not compute path to class / interface definition: " + this.id));
+            logger().warn("Could not compute path to class/interface definition", { id: this.id });
             return "";
         }
 

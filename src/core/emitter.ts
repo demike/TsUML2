@@ -1,5 +1,5 @@
-import chalk from "chalk";
 import { HeritageClause, HeritageClauseType, Clazz, Interface, FileDeclaration, Enum, TypeAlias, MemberAssociation } from "./model";
+import { logger } from "./diagnostics";
 
 import { Template } from "./renderer/template";
 export class Emitter {
@@ -39,7 +39,7 @@ public emitMemberAssociations(associations?: MemberAssociation[]) {
 
 export function emit(declarations: FileDeclaration[], emitter: Emitter) {
     const entities = declarations.map(d => {
-      console.log(chalk.yellow(d.fileName));
+    logger().info("emitting declarations", { fileName: d.fileName });
       const classes = d.classes.map((c) => emitter.emitSingleClass(c));
       const interfaces = d.interfaces.map((i) => emitter.emitSingleInterface(i));
       const enums = d.enums.map((i) => emitter.emitSingleEnum(i));
@@ -53,7 +53,7 @@ export function emit(declarations: FileDeclaration[], emitter: Emitter) {
   
     if(entities.length === 0) {
       const errorMsg = "Could not process any class / interface / enum / type";
-      console.log(chalk.red(errorMsg));
+            logger().error(errorMsg);
       entities.push(`[${errorMsg}]`);
     }
   
