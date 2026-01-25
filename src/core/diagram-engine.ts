@@ -16,6 +16,11 @@ export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
   const ast = getAst(settings.tsconfig, settings.glob);
   const files = ast.getSourceFiles();
 
+  const parserOptions = {
+    propertyTypes: settings.propertyTypes,
+    memberAssociations: settings.memberAssociations,
+  };
+
   const declarations: FileDeclaration[] = files.map((file) => {
     let classes = file.getClasses();
     let interfaces = file.getInterfaces();
@@ -29,14 +34,14 @@ export function parseProject(settings: TsUML2Settings): FileDeclaration[] {
       types = removeNonExportedNodes(types);
     }
 
-    const classDeclarations = classes.map((c) => parseClasses(c));
-    const interfaceDeclarations = interfaces.map((i) => parseInterfaces(i));
+    const classDeclarations = classes.map((c) => parseClasses(c, parserOptions));
+    const interfaceDeclarations = interfaces.map((i) => parseInterfaces(i, parserOptions));
 
     return {
       fileName: file.getFilePath(),
       classes: classDeclarations,
       interfaces: interfaceDeclarations,
-      types: types.map((t) => parseTypes(t)).filter((t) => t !== undefined) as TypeAlias[],
+      types: types.map((t) => parseTypes(t, parserOptions)).filter((t) => t !== undefined) as TypeAlias[],
       enums: enums.map((e) => parseEnum(e)),
       heritageClauses: [
         ...classDeclarations
