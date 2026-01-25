@@ -19,24 +19,32 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      id-token: write
+
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [24.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
+          cache: npm
 
       # build application
-      - name: npm ci and npm run build
+      - name: Install and build
         run: |
           npm ci
           npm run build
+
+      - name: Test
+        run: npm test
 
       # set the npm package version to the release tag version
       - name: Check package version
@@ -48,10 +56,8 @@ jobs:
       # create a github release
       - name: create release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           generate_release_notes: true
           name: Release ${{ github.ref }}
@@ -60,6 +66,6 @@ jobs:
 
       # publish to npm
       - name: publish to npm
-        run: npm publish
+        run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

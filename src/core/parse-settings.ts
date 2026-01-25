@@ -1,4 +1,5 @@
-import yargs from "yargs";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
 import { TsUML2Settings } from "./tsuml2-settings";
 import * as fs  from "fs";
 
@@ -12,8 +13,9 @@ import * as fs  from "fs";
     }
 
     export function parseSettingsFromArgs(settings: TsUML2Settings) {
+        const parser = yargs(hideBin(process.argv));
 
-        const argv = yargs.option('glob', {
+        const argv = parser.option('glob', {
             describe: "pattern to match the source files (i.e.: ./src/**/*.ts)",
             alias: "g",
             string: true,
@@ -67,7 +69,7 @@ import * as fs  from "fs";
         }).option('config', {
             describe: "path to a json config file (command line options can be provided as keys in it)",
             string: true
-        }).argv as Partial<TsUML2Settings & { config: string}>;
+        }).parseSync() as Partial<TsUML2Settings & { config: string}>;
 
         if (argv.config) {
             //parse and apply the config file
@@ -79,11 +81,11 @@ import * as fs  from "fs";
             settings.glob = argv.glob;
         }
 
-        if(argv.tsconfig && !(yargs.parsed as any).defaulted.tsconfig) {
+        if(argv.tsconfig && !(parser.parsed as any).defaulted.tsconfig) {
             settings.tsconfig = argv.tsconfig;
         }
 
-        if(argv.outFile && !(yargs.parsed as any).defaulted.outFile) {
+        if(argv.outFile && !(parser.parsed as any).defaulted.outFile) {
             settings.outFile = argv.outFile;
         }
        
@@ -91,19 +93,19 @@ import * as fs  from "fs";
             settings.nomnoml = argv.nomnoml;
         }
 
-        if(argv.modifiers != null && !(yargs.parsed as any).defaulted.modifiers) {
+        if(argv.modifiers != null && !(parser.parsed as any).defaulted.modifiers) {
             settings.modifiers = argv.modifiers;
         }
 
-        if(argv.propertyTypes != null && !(yargs.parsed as any).defaulted.propertyTypes) {
+        if(argv.propertyTypes != null && !(parser.parsed as any).defaulted.propertyTypes) {
             settings.propertyTypes = argv.propertyTypes;
         }
 
-        if(argv.typeLinks != null && !(yargs.parsed as any).defaulted.typeLinks) {
+        if(argv.typeLinks != null && !(parser.parsed as any).defaulted.typeLinks) {
             settings.typeLinks = argv.typeLinks;
         }
 
-        if(argv.outDsl != null && !(yargs.parsed as any).defaulted.outDsl) {
+        if(argv.outDsl != null && !(parser.parsed as any).defaulted.outDsl) {
             settings.outDsl = argv.outDsl;
         }
 
@@ -111,15 +113,15 @@ import * as fs  from "fs";
             settings.mermaid = argv.mermaid;
         }
 
-        if(argv.outMermaidDsl != null && !(yargs.parsed as any).defaulted.outMermaidDsl) {
+        if(argv.outMermaidDsl != null && !(parser.parsed as any).defaulted.outMermaidDsl) {
             settings.outMermaidDsl = argv.outMermaidDsl;
         }
 
-        if(argv.memberAssociations != null && !(yargs.parsed as any).defaulted.memberAssociations) {
+        if(argv.memberAssociations != null && !(parser.parsed as any).defaulted.memberAssociations) {
             settings.memberAssociations = argv.memberAssociations;
         }
 
-        if(argv.exportedTypesOnly != null && !(yargs.parsed as any).defaulted.exportedTypesOnly) {
+        if(argv.exportedTypesOnly != null && !(parser.parsed as any).defaulted.exportedTypesOnly) {
             settings.exportedTypesOnly = argv.exportedTypesOnly;
         }
     }
