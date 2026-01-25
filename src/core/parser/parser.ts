@@ -355,7 +355,10 @@ function getTypeIdFromTypeName(sourceFile: SimpleAST.SourceFile, typeName: strin
         //it is already a unique id starting with the source file
         return typeName;
     }
-    return `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${typeName}`;
+    // IDs are used for linking and association mapping. Symbols' fully-qualified names
+    // typically do not include generic parameters, so strip them to keep IDs stable.
+    const normalizedTypeName = typeName.replace(/<.*>$/, "");
+    return `"${sourceFile.getDirectoryPath()}/${sourceFile.getBaseNameWithoutExtension()}".${normalizedTypeName}`;
 }
 
 
