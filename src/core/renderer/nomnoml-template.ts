@@ -50,7 +50,7 @@ export class NomnomlTemplate implements Template {
     }
 
     private methodTemplate(method: MethodDetails): string {
-        let retVal = method.name + "()";
+        let retVal = escapeNomnoml(method.name) + "()";
         if (method.returnType && this.settings.propertyTypes) {
             retVal += ": " + escapeNomnoml(method.returnType);
         }
