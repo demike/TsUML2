@@ -2,6 +2,21 @@ import * as SimpleAST from "ts-morph";
 import { PropertyDetails, MethodDetails, HeritageClause, HeritageClauseType, Interface, Clazz, Enum, TypeAlias } from "../model";
 import { logger } from "../diagnostics";
 
+export type ParserOptions = {
+    /** Whether property type strings should be computed. */
+    propertyTypes?: boolean;
+    /** Whether member associations are requested (requires property typeIds + some heritage ids). */
+    memberAssociations?: boolean;
+};
+
+function shouldComputePropertyTypeString(options?: ParserOptions) {
+    return options?.propertyTypes !== false || options?.memberAssociations === true;
+}
+
+function shouldComputePropertyTypeIds(options?: ParserOptions) {
+    return options?.memberAssociations === true;
+}
+
 export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     const ast = new SimpleAST.Project({
         tsConfigFilePath: tsConfigPath,
@@ -13,7 +28,7 @@ export function getAst(tsConfigPath?: string, sourceFilesPathsGlob?: string) {
     return ast;
 }
 
-export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
+export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration, options?: ParserOptions) {
     
     const className = getClassOrInterfaceName(classDeclaration) || "undefined";
     const propertyDeclarations = classDeclaration.getProperties();
@@ -27,7 +42,7 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
         logger().warn("missing class id", { className, file: sourceFile.getFilePath() });
     }
 
-    let properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    let properties = propertyDeclarations.map((p) => parseProperty(p, options)).filter((p) => p !== undefined) as PropertyDetails[];
 
     if (ctors && ctors.length) {
         //find the properties declared by using a modifier before a constructor paramter
@@ -36,17 +51,17 @@ export function parseClasses(classDeclaration: SimpleAST.ClassDeclaration) {
                 if(!param.getModifiers().length) {
                     return undefined; 
                 }
-                return parseProperty(param);
+                return parseProperty(param, options);
             }).filter(p => p !== undefined) as PropertyDetails[];
         properties.push(...ctorProperties);
     }
 
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
-    return new Clazz({ name: className, properties, methods, id, heritageClauses: parseClassHeritageClauses(classDeclaration) });
+    return new Clazz({ name: className, properties, methods, id, heritageClauses: parseClassHeritageClauses(classDeclaration, options) });
 }
 
-export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
+export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclaration, options?: ParserOptions) {
 
     const interfaceName = getClassOrInterfaceName(interfaceDeclaration) || 'undefined';
     const propertyDeclarations = interfaceDeclaration.getProperties();
@@ -59,13 +74,13 @@ export function parseInterfaces(interfaceDeclaration: SimpleAST.InterfaceDeclara
     }
 
 
-    const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    const properties = propertyDeclarations.map((p) => parseProperty(p, options)).filter((p) => p !== undefined) as PropertyDetails[];
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
   
-    return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration) });
+    return new Interface({ name: interfaceName, properties, methods, id, heritageClauses: parseInterfaceHeritageClauses(interfaceDeclaration, options) });
 }
 
-export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
+export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration, options?: ParserOptions) {
 
     const name = getClassOrInterfaceName(typeDeclaration) || 'undefined';
     const t = typeDeclaration.getType();
@@ -89,7 +104,7 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
         logger().warn("missing type id", { name, file: sourceFile.getFilePath() });
     }
 
-    const properties = propertyDeclarations.map(parseProperty).filter((p) => p !== undefined) as PropertyDetails[];
+    const properties = propertyDeclarations.map((p) => parseProperty(p, options)).filter((p) => p !== undefined) as PropertyDetails[];
     const methods = methodDeclarations.map(parseMethod).filter((p) => p !== undefined) as MethodDetails[];
 
 
@@ -98,15 +113,21 @@ export function parseTypes(typeDeclaration: SimpleAST.TypeAliasDeclaration) {
 }
 
 const optParameterEnding = " | undefined";
-function parseProperty(propertyDeclaration: SimpleAST.PropertyDeclaration | SimpleAST.PropertySignature | SimpleAST.ParameterDeclaration) : PropertyDetails | undefined {
+function parseProperty(
+    propertyDeclaration: SimpleAST.PropertyDeclaration | SimpleAST.PropertySignature | SimpleAST.ParameterDeclaration,
+    options?: ParserOptions,
+) : PropertyDetails | undefined {
     const sym = propertyDeclaration.getSymbol();
     
     if (sym) {
+        const includeTypeString = shouldComputePropertyTypeString(options);
+        const includeTypeIds = shouldComputePropertyTypeIds(options);
+
         const prop = {            
             modifierFlags: propertyDeclaration.getCombinedModifierFlags(),
             name: sym.getName(),
-            type: getPropertyTypeName(sym),
-            typeIds: getTypeIdsFromSymbol(sym),
+            type: includeTypeString ? getPropertyTypeName(sym) : undefined,
+            typeIds: includeTypeIds ? getTypeIdsFromSymbol(sym) : [],
             optional: propertyDeclaration.hasQuestionToken(),
         }
 
@@ -146,10 +167,11 @@ export function parseEnum(enumDeclaration: SimpleAST.EnumDeclaration) {
     return new Enum({ name: enumName, id, enumItems });
 }
 
-export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration) {
+export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDeclaration, options?: ParserOptions) {
 
     const className = getClassOrInterfaceName(classDeclaration);
-    const classTypeId = getFullyQualifiedNameNormalized(classDeclaration.getSymbol()) ?? "";
+    const includeTypeIds = options?.memberAssociations === true;
+    const classTypeId = includeTypeIds ? (getFullyQualifiedNameNormalized(classDeclaration.getSymbol()) ?? "") : "";
     const baseClass =  classDeclaration.getBaseClass();
     const interfaces = classDeclaration.getImplements();
  
@@ -165,7 +187,7 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
         if(baseClassName) {
             heritageClauses.push({
                         clause: baseClassName,
-                        clauseTypeId: getFullyQualifiedNameNormalized(baseClass.getSymbol())!,
+                        clauseTypeId: includeTypeIds ? (getFullyQualifiedNameNormalized(baseClass.getSymbol()) ?? "") : "",
                         className,
                         classTypeId,
                         type: HeritageClauseType.Extends
@@ -183,7 +205,7 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
             heritageClauses.push(
                 {
                     clause: ifName,
-                    clauseTypeId: getTypeIdsFromType(interf.getType())?.[0]!,
+                    clauseTypeId: includeTypeIds ? (getTypeIdsFromType(interf.getType())?.[0] ?? "") : "",
                     className,
                     classTypeId,
                     type: HeritageClauseType.Implements
@@ -195,10 +217,11 @@ export function parseClassHeritageClauses(classDeclaration: SimpleAST.ClassDecla
     return heritageClauses;
 }
 
-export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration) {
+export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.InterfaceDeclaration, options?: ParserOptions) {
 
     const ifName = getClassOrInterfaceName(interfaceDeclaration);
-    const classTypeId = getFullyQualifiedNameNormalized(interfaceDeclaration.getSymbol()) ?? "";
+    const includeTypeIds = options?.memberAssociations === true;
+    const classTypeId = includeTypeIds ? (getFullyQualifiedNameNormalized(interfaceDeclaration.getSymbol()) ?? "") : "";
     const baseDeclarations =  interfaceDeclaration.getBaseDeclarations();
 
     let heritageClauses: HeritageClause[] = [];
@@ -214,7 +237,7 @@ export function parseInterfaceHeritageClauses(interfaceDeclaration: SimpleAST.In
                 heritageClauses.push(
                     {
                         clause: bdName,
-                        clauseTypeId: getTypeIdsFromType(bd.getType())?.[0]!,
+                        clauseTypeId: includeTypeIds ? (getTypeIdsFromType(bd.getType())?.[0] ?? "") : "",
                         className: ifName,
                         classTypeId,
                         type: HeritageClauseType.Implements
