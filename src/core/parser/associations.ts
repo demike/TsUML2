@@ -96,7 +96,7 @@ function checkInheritedAssociation(srcTypeId: string, associatedTypeId: string, 
         inherited = checkInheritedAssociation(base.id, associatedTypeId, associationMap, typeMap ) || inherited;
         if( inherited)
         {
-            associationMap.get(`${srcTypeId}_${associatedTypeId}`)!.inerhited = true;
+            associationMap.get(`${srcTypeId}_${associatedTypeId}`)!.inherited = true;
         }
 
     }
@@ -106,6 +106,6 @@ function checkInheritedAssociation(srcTypeId: string, associatedTypeId: string, 
 
 function deduplicateAssociations(declarations: FileDeclaration[]) {
     declarations.forEach(decl => {
-        decl.memberAssociations = decl.memberAssociations?.filter(ass => !ass.inerhited);
+        decl.memberAssociations = decl.memberAssociations?.filter(ass => !ass.inherited);
     }) 
 }
