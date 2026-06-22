@@ -16,7 +16,7 @@
     "chalk": "^4.1.2",
     "nomnoml": "^1.6.2",
     "ts-morph": "^22.0.0",
-    "yargs": "^17.7.2"
+    "yargs": "^18.0.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
