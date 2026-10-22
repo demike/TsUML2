@@ -132,7 +132,7 @@ export class MemberAssociation {
         public readonly a: AssociationEnd, 
         public readonly b: AssociationEnd, 
         public readonly associationType: AssociationType = AssociationType.Association,
-        public inerhited = false) {}
+        public inherited = false) {}
 }
 
 export interface AssociationEnd {
